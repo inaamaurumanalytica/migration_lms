@@ -1,0 +1,37 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>UPDATE QUALIFIED STATUS</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+	<mat-dialog-content class="main-content" style="font-size: 12px !important;" class="mat-dialog-container-div">
+		<form>
+			<div class="form-group">
+				<label style="font-weight: 500">Name</label>
+				<input placeholder="Name" type="text" class="form-input" name="name" id="name"
+					[(ngModel)]="dataSource.name" readonly>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Qualified</label>
+				<div>
+					<mat-slide-toggle class="example-margin" [checked]="dataSource.qualified"
+						(change)="dataSource.qualified = !dataSource.qualified">
+					</mat-slide-toggle>
+				</div>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Lead Expiry Hours</label>
+				<input placeholder="Lead Expiry Hours" type="number" class="form-input" name="lead_expiry"
+					id="lead_expiry" [(ngModel)]="dataSource.lead_expiry" [readonly]="!dataSource.qualified">
+			</div>
+		</form>
+	</mat-dialog-content>
+
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="save()" *ngIf="!btnStatus">Update</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Updating...</button>
+</div>

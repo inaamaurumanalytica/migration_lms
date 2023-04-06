@@ -1,0 +1,123 @@
+<footer class="home-footer">
+    <section class="home-footer-top">
+        <div class="container-fluid">
+            <div fxLayout="row" fxLayout.lt-md="column">
+                <div class="footer-box" fxFlex="30">
+                    <img src="../../assets/images/logo-white.png" width="80%">
+                    <div class="left-side">
+                        <span style="font-size: 12px; color: #00C08D;">formerly known as Blink Advisory Services Private Limited</span>
+                        <p><span>Address: </span>A-33, 3rd floor, Sector - 2 , Noida - 201301</p>
+                        <p><span>Phone: </span>+91-120 4565 098</p>
+                        <p><span>Email: </span>info@aurumanalytica.in</p>
+                        <p>Our Presence: Delhi NCR | Mumbai | Bangalore</p>
+                        </div>
+
+                </div>
+                <div class="footer-box v-line-mob" fxFlex="10" fxLayoutAlign="center start"><div><span class="v-line"></span></div></div>
+
+                <div class="footer-box" fxFlex="15">
+                    <h4 class="footer-box-title">COMPANY</h4>
+                    <mat-list class="mat-list mat-list-base">
+                        <mat-list-item class="mat-list-item mat-3-line mat-list-item-avatar mat-list-item-with-avatar">
+                            <div class="mat-list-item-content">
+                                <div class="mat-list-text">
+                                    <h5 class="mat-line" matline=""><a (click)="ScrollIntoView('#home')">Home</a></h5>
+                                </div>
+                            </div>
+                        </mat-list-item>
+                        <mat-list-item class="mat-list-item mat-3-line mat-list-item-avatar mat-list-item-with-avatar">
+                            <div class="mat-list-item-content">
+                                <div class="mat-list-text">
+                                    <h5 class="mat-line" matline=""><a (click)="ScrollIntoView('#features')">About Us
+                                        </a></h5>
+                                </div>
+                            </div>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+                <div class="footer-box" fxFlex="15" style="flex: 1 1 100%; box-sizing: border-box; max-width: 25%;">
+                    <h4 class="footer-box-title">IMPORTANT LINKS</h4>
+                    <mat-list class="mat-list mat-list-base">
+                        <mat-list-item class="mat-list-item mat-2-line mat-list-item-avatar mat-list-item-with-avatar">
+                            <div class="mat-list-item-content">
+                                <div class="mat-list-text">
+                                    <h5 class="mat-line" matline=""><a [routerLink]="['/privacy-policy']">Privacy
+                                            Policy</a></h5>
+                                </div>
+                            </div>
+                        </mat-list-item>
+                        <mat-list-item class="mat-list-item mat-3-line mat-list-item-avatar mat-list-item-with-avatar">
+                            <div class="mat-list-item-content">
+                                <div class="mat-list-text">
+                                    <h5 class="mat-line" matline=""><a [routerLink]="['/terms-condition']">Terms &
+                                            Conditions</a></h5>
+                                </div>
+                            </div>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+                <div class="footer-box" fxFlex="15" style="flex: 1 1 100%; box-sizing: border-box; max-width: 25%;">
+                    <h4 class="footer-box-title">QUICK LINKS</h4>
+                    <mat-list class="mat-list mat-list-base">
+                        <mat-list-item class="mat-list-item mat-3-line mat-list-item-avatar mat-list-item-with-avatar">
+                            <div class="mat-list-item-content">
+                                <div class="mat-list-text">
+                                    <h5 class="mat-line" matline=""><a (click)="ScrollIntoView('#features')">Features
+                                        </a></h5>
+                                </div>
+                            </div>
+                        </mat-list-item>
+                        <mat-list-item class="mat-list-item mat-3-line mat-list-item-avatar mat-list-item-with-avatar">
+                            <div class="mat-list-item-content">
+                                <div class="mat-list-text">
+                                    <h5 class="mat-line" matline=""><a (click)="ScrollIntoView('#contact-section')">Request a Demo</a></h5>
+                                </div>
+                            </div>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+                <div class="footer-box" fxFlex="15" style="flex: 1 1 100%; box-sizing: border-box; max-width: 25%;">
+                    <h4 class="footer-box-title">CRM</h4>
+                    <mat-list class="mat-list mat-list-base">
+                        <mat-list-item class="mat-list-item mat-2-line mat-list-item-avatar mat-list-item-with-avatar">
+                            <div class="mat-list-item-content">
+                                <div class="mat-list-text">
+                                    <h5 class="mat-line" matline=""><a  [routerLink]="['/auth/login']">Sign In</a></h5>
+                                </div>
+                            </div>
+                        </mat-list-item>
+                        <mat-list-item class="mat-list-item mat-3-line mat-list-item-avatar mat-list-item-with-avatar">
+                            <div class="mat-list-item-content">
+                                <div class="mat-list-text">
+                                    <h5 class="mat-line" matline=""><a  [routerLink]="['/auth/sign-up']">Sign Up</a></h5>
+                                </div>
+                            </div>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+              
+            </div>
+        </div>
+        <div class="footer-copyright" fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start start">©
+                Copyright Aurum Analytica Pvt. Ltd. All Rights Reserved
+            <!-- <a [routerLink]="['/']"> www.persquarefeet.in</a>  -->
+            </div>
+
+            <div class="socials pt-1" fxLayout="row" fxLayoutAlign="start end">
+                <ul>
+                    <li><a class="social-icon linkedin" href="https://www.linkedin.com/company/aurumanalytica"></a>
+                    </li>
+                    <li><a class="social-icon twitter" href="https://twitter.com/aurumanalytica"></a>
+                    </li>
+                    <li><a class="social-icon instagram" href="https://www.instagram.com/aurumanalytica/"></a>
+                    </li>
+                    <li><a class="social-icon facebook" href="https://www.facebook.com/Aurum-Analytica-108789875510137"></a>
+                    </li>
+                    <li><a class="social-icon youtube" href="https://www.youtube.com/@aurumanalytica"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</footer>

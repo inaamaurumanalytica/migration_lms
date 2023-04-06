@@ -1,0 +1,41 @@
+<!-- <div fxLayout="column" fxFlexFill fxLayoutAlign="center center" class="signin-container" style="background-image:url('../../assets/images/home-1.jpg');
+background-repeat: no-repeat;
+background-position: center;
+background-size: cover;
+float: left; ">
+    <div fxLayout="column">
+        <h1 style="color:white;text-transform: capitalize;">{{message}}</h1>
+        <a href="/login" target="_blank" style="color: #39ec59;font-size: 25px;text-align: center;">Click To Login</a>
+    </div>
+</div> -->
+<div class="wrapper" style="height: 100%;margin: 0px; background: url(../../assets/images/lms/banner.png);background-size: cover;">
+    <div class="" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx" style="height: 100vh">
+        <mat-card style="min-width: 400px;">
+            <div class="mat-header" fxLayoutAlign="center">
+                <mat-icon class="verified-user">verified_user</mat-icon>
+            </div>
+            <mat-card-content fxLayout="column" fxLayoutAlign="center" *ngIf="showContainer">
+                <div *ngIf="successMessage">
+                    <h1 fxLayoutAlign="center" style="color: #444;">
+                        Congratulations !
+                    </h1>
+                    <div fxLayoutAlign="center">
+                        <p style="color: #00C08D;">{{message}}</p>
+                    </div>
+                </div>
+                <div *ngIf="!successMessage">
+                    <h1 fxLayoutAlign="center" style="color: #444;">
+                        Oops !
+                    </h1>
+                    <div fxLayoutAlign="center">
+                        <p style="color: #00C08D;">{{message}}</p>
+                    </div>
+                </div>
+                <div class="user-verified-btn" fxLayoutAlign="center">
+                    <a href="/login" target="_blank" mat-button class="click-btn" (click)="backToLogin()">Click to
+                        login</a>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

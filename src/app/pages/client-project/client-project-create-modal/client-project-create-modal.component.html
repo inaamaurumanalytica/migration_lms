@@ -1,0 +1,127 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>CREATE PROJECT</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+	<mat-dialog-content class="main-content" class="mat-dialog-container-div">
+		<form [formGroup]="createProjectForm" fxLayout="column" fxLayoutAlign="start">
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group" fxFlex="33">
+					<label>Name <span style="color: #00C08D">*</span></label>
+					<input type="text" class="form-input" name="name" id="name" placeholder="Name *"
+						formControlName="name" required>
+				</div>
+				<div class="form-group" fxFlex="33">
+					<label>Assign Client <span style="color: #00C08D">*</span></label>
+					<mat-select placeholder="Assign Client" formControlName="client" class="form-input">
+						<mat-option [value]="client" *ngFor="let client of clients">{{client.name}}
+						</mat-option>
+					</mat-select>
+				</div>
+				<div class="form-group" fxFlex="33">
+					<label>Possession Date <span style="color: #00C08D">*</span></label>
+					<input type="date" class="form-input" name="possession" id="possession"
+						placeholder="Possession Date" formControlName="possession" required>
+				</div>
+			</div>
+			<div class="form-group" style="position: relative;">
+				<label>Emails</label>
+				<input type="text" class="form-input" (keyup.enter)="addEmails()" name="email" id="email"
+					placeholder="Emails" formControlName="email">
+				<mat-icon class="project-input-icon" (click)="addEmails()">add_circle</mat-icon>
+			</div>
+			<div class="form-group">
+				<mat-chip-list #chipListEmail>
+					<mat-chip style="font-size: 12px;border-radius: 5px;padding: 10px;min-height: 20px;"
+						*ngFor="let email of emails" [selectable]="selectable" [removable]="removable"
+						(removed)="removeEmail(email)">
+						{{email}}
+						<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+					</mat-chip>
+				</mat-chip-list>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group" fxFlex="33">
+					<label>Min. Price <span style="color: #00C08D">*</span></label>
+					<input type="number" class="form-input" name="pice" id="pice" placeholder="Miniumn Price"
+						formControlName="min_price" required>
+				</div>
+				<div class="form-group" fxFlex="33">
+					<label>Project Type <span style="color: #00C08D">*</span></label>
+					<mat-select class="form-input" placeholder="Select Project Type" formControlName="project_type"
+						required>
+						<mat-option value="Residential">Residential</mat-option>
+						<mat-option value="Commercial">Commercial</mat-option>
+						<mat-option value="Plot">Plot</mat-option>
+						<mat-option value="Villa">Villa</mat-option>
+					</mat-select>
+				</div>
+				<div class="form-group" fxFlex="33">
+					<label>RERA Number <span style="color: #00C08D">*</span></label>
+					<input type="text" class="form-input" name="rera" id="rera_id" placeholder="RERA Number *"
+						formControlName="rera_id" required>
+				</div>
+			</div>
+
+			<div style="margin-bottom: 20px;">
+				<div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+					<mat-slide-toggle [checked]="mapView" (change)="changeView($event)">Map View
+					</mat-slide-toggle>
+				</div>
+			</div>
+			<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="!mapView">
+				<div class="form-group" fxFlex="50">
+					<label>Latitude <span style="color: #00C08D">*</span></label>
+					<input type="text" class="form-input" name="Latitude" id="Latitude" placeholder="Latitude"
+						formControlName="latitude" required>
+				</div>
+				<div class="form-group" fxFlex="50">
+					<label>Longitude <span style="color: #00C08D">*</span></label>
+					<input type="text" class="form-input" name="longitude" id="longitude" placeholder="Longitude"
+						formControlName="longitude" required>
+				</div>
+			</div>
+			<div [hidden]="!mapView">
+				<span *ngIf="mapView">Address <span style="color: #00C08D">*</span></span>
+				<span *ngIf="mapView" style="color:#BF9724; font-size: 11px;display: flex;margin:10px 0px">Note : Please
+					click to 'Locate on
+					Map' after filling up full address</span>
+				<div *ngIf="mapView" fxLayout="row" fxLayoutGap="20px">
+					<div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+						<mat-form-field class="example-full-width" style="width:100%">
+							<input matInput placeholder="Search Address" formControlName="location">
+						</mat-form-field>
+					</div>
+					<div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+						<a mat-stroked-button [style.margin-right]="'.5rem'" (click)="clearMap()">Clear</a>
+						<button mat-button style="background: #00C08D;color: #fff;"
+							[disabled]="createProjectForm.value.location.trim() == ''"
+							(click)="locateAddressOnMap()">Locate on
+							map</button>
+					</div>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start center">
+					<div fxFlex="100">
+						<mat-card style="margin-bottom: 20px;">
+							<div #mapContainer id="map" [ngStyle]="{'max-height': mapView ? '200px': '0px'}"></div>
+							<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" *ngIf="latLngCoords">
+								<div>Latitude: <strong style="color: #00C08D;">{{latitude}}</strong></div>
+								<div>Longitude: <strong style="color: #00C08D;">{{longitude}}</strong></div>
+							</div>
+						</mat-card>
+					</div>
+				</div>
+			</div>
+		</form>
+	</mat-dialog-content>
+
+
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="save()" [disabled]="!createProjectForm.valid"
+		*ngIf="!btnStatus">Save</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Saving...</button>
+</div>

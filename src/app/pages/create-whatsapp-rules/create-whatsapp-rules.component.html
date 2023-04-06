@@ -1,0 +1,36 @@
+<i class="material-icons close-modal" style="float: right;cursor: pointer;" (click)="close()">
+	clear
+</i>
+
+<!-- <div *ngIf="!isShow">Loading...</div> -->
+<!-- <div class="dark-overlay" *ngIf="!isShow">
+	<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div> -->
+  <mat-dialog-content *ngIf="!isShow" style="width: 300px !important; height:400px !important;">
+	<div class="image loader" style="position: fixed;top: 48%;left: 48%;">
+		<img src="/assets/images/logo-A.png" class="image ajax-loader" style="width:50px;">
+		<div class="spin spinner"></div>
+	</div>
+</mat-dialog-content>
+<div *ngIf="isShow">
+<form class="example-form" [formGroup]="whatsappRuleForm">
+	
+	<mat-form-field class="example-container"  required>
+		<input matInput placeholder="Whatsapp Rule Name" formControlName="whatsappRule" required>
+	</mat-form-field> 
+
+	  <mat-label>Project</mat-label>
+	  <input type="text"
+			 placeholder="Select a Project"
+			 aria-label="Number"
+			 matInput
+			 [formControlName]="myControl"
+			 [matAutocomplete]="auto">
+	  <mat-autocomplete #auto="matAutocomplete">
+		<mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+		  {{option.name}}
+		</mat-option>
+	  </mat-autocomplete>
+
+  </form>
+</div>

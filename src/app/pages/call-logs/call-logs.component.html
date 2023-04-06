@@ -1,0 +1,66 @@
+<!-- *ngIf="!showComponentLoader" -->
+<div class="page-container wrapper" >
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+      <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+          <div class="logo" fxlayout="row" fxlayoutalign="start center">
+              <span class="logo-text h1 ng-trigger ng-trigger-animate"> CALL LOGS </span>
+          </div>
+      </div>
+  </div>
+
+  <mat-card
+   
+    style="margin-top: 1rem;" 
+    
+    >
+      <mat-card-content>
+          <div class="users-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+              <div class="user-info" fxFlex="1 1 20%">
+                  <p class="user-title">
+                    <!-- {{campaign.name}} -->.
+                  </p>
+              </div>
+              <div class="create-date" fxFlex="1 1 20%" >
+                <p class="title">Status</p>
+                <span class="status-check">
+                  <!-- {{campaign.schedule_time | date : 'dd/MM/yyyy'}} -->
+                </span>
+            </div>
+              <div class="create-date" fxFlex="1 1 20%" >
+                <p class="title">To</p>
+                <span class="status-check">
+                  <!-- {{campaign.schedule_time | date : 'dd/MM/yyyy'}} -->
+                </span>
+            </div>
+            <div class="create-date" fxFlex="1 1 20%" >
+              <p class="title">From</p>
+              <span class="status-check">
+                <!-- {{campaign.schedule_time | date : 'dd/MM/yyyy'}} -->
+              </span>
+          </div>
+          <div class="create-date" fxFlex="1 1 20%" >
+            <p class="title">Direction</p>
+            <span class="status-check">
+              <!-- {{campaign.schedule_time | date : 'dd/MM/yyyy'}} -->
+            </span>
+        </div>
+        <div class="create-date" fxFlex="1 1 20%" >
+          <p class="title">Duration</p>
+          <span class="status-check">
+            <!-- {{campaign.schedule_time | date : 'dd/MM/yyyy'}} -->
+          </span>
+      </div>
+              <div class="create-date" fxFlex="1 1 20%">
+                  <p class="title">Created At</p>
+                  <span class="status-check">
+                    <!-- {{campaign.created_at | date : 'dd/MM/yyyy'}} -->
+                  </span>
+              </div>
+          </div>
+      </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- <div class="dark-overlay" *ngIf="showComponentLoader">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div> -->

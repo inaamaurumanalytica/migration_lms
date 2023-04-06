@@ -1,0 +1,103 @@
+<mat-toolbar class="primary m-0">
+	<mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+		<span class="dialog-title">{{lead.name}}</span>
+		<span fxFlex="1 1 auto"></span>
+		<button mat-icon-button (click)="close()" aria-label="Close dialog">
+			<mat-icon>close</mat-icon>
+		</button>
+	</mat-toolbar-row>
+</mat-toolbar>
+<mat-dialog-content>
+	<h1 style="text-align: center;margin-top: 40vh;" *ngIf="callList.calls == undefined || callList.calls.length == 0">
+		No
+		Call Found</h1>
+	<div style="margin:20px;" *ngIf="callList.calls != undefined"
+		[ngStyle]="{'display':callList.calls.length == 0 ? 'none' : '' }">
+		<mat-card style="border-top: 2px solid #00C08D;">
+			<mat-card-subtitle style="font-weight: 600;">Summary</mat-card-subtitle>
+			<mat-divider></mat-divider>
+			<mat-card-content fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+				<table class="summary-info">
+					<tr>
+						<td style="border-right: 2px solid #e3e3e3;">
+							<div style="margin-bottom: 20px;">
+								<label class="call-summary-header">First Call Attempt</label>
+								<p class="report-info-value">{{firstAttempt | date : 'dd/MM/yyyy hh:mm a'}}</p>
+							</div>
+							<div>
+								<label class="call-summary-header">Last Call Attempt</label>
+								<p class="report-info-value">{{lastAttempt | date : 'dd/MM/yyyy hh:mm a'}}</p>
+							</div>
+						</td>
+						<td style="border-right: 2px solid #e3e3e3;">
+							<div style="margin-bottom: 20px;">
+								<label class="call-summary-header">First Successful Attempt</label>
+								<p class="report-info-value" *ngIf="firstSuccessfull != ''">{{firstSuccessfull | date :
+									'dd/MM/yyyy hh:mm a'}}</p>
+								<p class="report-info-value" *ngIf="firstSuccessfull == ''">-</p>
+							</div>
+							<div>
+								<label class="call-summary-header">Last Successful Attempt</label>
+								<p class="report-info-value" *ngIf="lastSuccessfull != ''">{{lastSuccessfull | date :
+									'dd/MM/yyyy hh:mm a'}}</p>
+								<p class="report-info-value" *ngIf="lastSuccessfull == ''">-</p>
+							</div>
+						</td>
+						<td style="border-right: 2px solid #e3e3e3;">
+							<div style="margin-bottom: 20px;">
+								<label class="call-summary-header">Total Attempt</label>
+								<p class="report-info-value">{{totalAttempt}}</p>
+							</div>
+							<div>
+								<label class="call-summary-header">Total Successful Attempt</label>
+								<p class="report-info-value">{{totalSuccessfullAttempt}}</p>
+							</div>
+						</td>
+						<td>
+							<label class="call-summary-header">Longest Talk Time</label>
+							<p class="report-info-value">{{longTalkTime == '' ? '0' : longTalkTime }} Seconds</p>
+						</td>
+					</tr>
+				</table>
+			</mat-card-content>
+		</mat-card>
+		<mat-card *ngFor="let call of callList.calls" style="margin-top: 1rem;" [hidden]="callList.calls == 0">
+			<mat-card-content>
+				<div class="vendor-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<div class="vendor-info">
+						<p class="title">From</p>
+						<span class="status-check">{{call.from_number}}</span>
+					</div>
+					<div class="vendor-info">
+						<p class="title">To</p>
+						<span class="status-check">{{call.to_number}}</span>
+					</div>
+					<div class="vendor-info">
+						<p class="title">Status</p>
+						<span class="status-check">{{call.status}}</span>
+					</div>
+					<div class="vendor-info">
+						<p class="title">Call Direction</p>
+						<span class="status-check">{{call.call_direction}}</span>
+					</div>
+					<div class="vendor-info">
+						<p class="title">Duration (in Seconds)</p>
+						<span class="status-check">{{call.duration}}</span>
+					</div>
+					<div class="vendor-info">
+						<p class="title">Recording Link</p>
+						<span class="status-check">
+							<audio controls style="height:30px;width: 250px;" *ngIf="call.recording_link != null">
+								<source [src]="call.recording_link" type="audio/mpeg">
+							</audio>
+						</span>
+					</div>
+					<div class="vendor-info">
+						<p class="title">Date & Time</p>
+						<span class="status-check">{{call.created_at | date:'dd/MM/yyyy hh:mm a'}}</span>
+					</div>
+				</div>
+			</mat-card-content>
+		</mat-card>
+	</div>
+</mat-dialog-content>

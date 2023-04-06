@@ -1,0 +1,286 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>EDIT LEAD</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+	<mat-dialog-content class="main-content">
+		<form [formGroup]="editLeadForm">
+
+			<div class="form-group">
+				<label>Name <span style="color: #00C08D">*</span></label>
+				<input type="text" class="form-input" name="firstName" formControlName="name" placeholder="Name">
+			</div>
+
+			<div class="form-group" *ngIf="showEmail">
+				<label>Email</label>
+				<input type="text" class="form-input" name="email" formControlName="email" placeholder="Email">
+				<div *ngIf="editLeadForm.get('email').hasError('pattern') && editLeadForm.get('email').touched">
+					Please enter valid email</div>
+			</div>
+
+			<div class="form-group" *ngIf="showPhone">
+				<label>Phone <span style="color: #00C08D">*</span></label>
+				<input type="text" class="form-input" name="phone" formControlName="phone" placeholder="Phone">
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group w-100">
+					<label for="">Lead Status <span style="color: #00C08D">*</span></label>
+					<mat-select class="form-input" placeholder="Select Lead Status" formControlName="leadStatus" required (selectionChange)="changeLeadStatus()">
+						<mat-option value="Fresh" *ngIf="userInfo.member_type != 'Client'">Fresh</mat-option>
+						<mat-option value="Verified">Verified</mat-option>
+						<mat-option value="Appointment Proposed">Appointment Proposed</mat-option>
+						<mat-option value="Interested" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Interested
+							{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}</mat-option>
+						<mat-option value="V Not Interested" *ngIf="userInfo.member_type != 'Client'">V Not Interested
+						</mat-option>
+						<mat-option value="V Not Responding" *ngIf="userInfo.member_type != 'Client'">V Not Responding
+						</mat-option>
+						<mat-option value="V Not Available" *ngIf="userInfo.member_type != 'Client'">V Not Available
+						</mat-option>
+						<mat-option value="Not Interested" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Not
+							Interested {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+						</mat-option>
+						<mat-option value="Not Responding" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Not
+							Responding {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+						</mat-option>
+						<mat-option value="Not Available" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Not
+							Available
+							{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+						</mat-option>
+						<mat-option value="Contacted" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Contacted
+							{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+						</mat-option>
+						<mat-option value="Follow Up" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Follow Up
+							{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}</mat-option>
+						<mat-option value="Callback" *ngIf="userInfo.member_type != 'Client'">Callback</mat-option>
+						<mat-option value="Wrong Number" *ngIf="userInfo.member_type != 'Client'">Wrong Number
+						</mat-option>
+						<mat-option value="Closed/Won" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Closed/Won
+							{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}</mat-option>
+						<mat-option value="Site Visit" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">Site
+							Visit
+							{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}</mat-option>
+					</mat-select>
+				</div>
+
+				<div class="form-group w-100">
+					<label>Source</label>
+					<input type="text" class="form-input" name="source" formControlName="source" placeholder="Source">
+				</div>
+			</div>
+			
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group w-100">
+					<label>Score</label>
+					<mat-select placeholder="Select Score" class="form-input" formControlName="score">
+						<mat-option value="1">1</mat-option>
+						<mat-option value="2">2</mat-option>
+						<mat-option value="3">3</mat-option>
+						<mat-option value="4">4</mat-option>
+						<mat-option value="5">5</mat-option>
+						<mat-option value="6">6</mat-option>
+						<mat-option value="7">7</mat-option>
+						<mat-option value="8">8</mat-option>
+						<mat-option value="9">9</mat-option>
+						<mat-option value="10">10</mat-option>
+						<mat-option value="11">11</mat-option>
+						<mat-option value="12">12</mat-option>
+						<mat-option value="13">13</mat-option>
+						<mat-option value="14">14</mat-option>
+						<mat-option value="15">15</mat-option>
+						<mat-option value="16">16</mat-option>
+						<mat-option value="17">17</mat-option>
+						<mat-option value="18">18</mat-option>
+						<mat-option value="19">19</mat-option>
+						<mat-option value="20">20</mat-option>
+					</mat-select>
+				</div>
+
+				<div class="form-group w-100">
+					<label for="">Budget</label>
+					<mat-select class="form-input" placeholder="Select Budget" formControlName="budget">
+						<mat-option value="">Select Budget</mat-option>
+						<mat-option value="10L-30L">10 Lakh - 30 Lakh</mat-option>
+						<mat-option value="30L-50L">30 Lakh - 50 Lakh</mat-option>
+						<mat-option value="50L-70L">50 Lakh - 70 Lakh </mat-option>
+						<mat-option value="70L-1Cr">70 Lakh- 1 Crore</mat-option>
+						<mat-option value="1Cr-2Cr">1 Crore - 2 Crore</mat-option>
+						<mat-option value="2Cr-Above">2 Crore - Above</mat-option>
+					</mat-select>
+				</div>
+			</div>						
+
+			<div class="form-group"
+				*ngIf="userInfo.member_type == 'Vendor' && editLeadForm.value.leadStatus == 'Appointment Proposed'">
+				<label for="">Appointment Date <span style="color: #00C08D">*</span></label>
+				<input class="form-input" placeholder="Date Time:" formControlName="dateTime" [min]="min"
+					[owlDateTimeTrigger]="dt" [owlDateTime]="dt">
+				<owl-date-time #dt [hour12Timer]="true"></owl-date-time>
+			</div>
+			<div class="form-group">
+				<label>Vendor Remark <span *ngIf="vendorRequired" style="color: #00C08D">*</span></label>
+				<textarea class="form-input" name="vendor-remark" formControlName="vendorRemark"></textarea>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
+				<div (click)="showMoreField()" class="view-more-field"><mat-icon>play_arrow</mat-icon></div>
+				<div (click)="showMoreField()" class="view-more-field">View More Fields</div>
+			</div>
+
+			<div *ngIf="isShowMoreField">			
+
+			<!-- <div class="form-group">
+				<label>Client Remark</label>
+				<textarea class="form-input" name="vendor-remark" formControlName="clientRemark" placeholder="Client Remark"></textarea>
+			</div> -->
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group w-100">
+					<label>UTM Source</label>
+					<input type="text" class="form-input" name="utmSource" formControlName="utmSource" placeholder="UTM Source">
+				</div>
+				<div class="form-group w-100">
+					<label>UTM Medium</label>
+					<input type="text" class="form-input" name="utmMedium" formControlName="utmMedium" placeholder="UTM Medium">
+				</div>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group w-100">
+					<label>UTM Campaign</label>
+					<input type="text" class="form-input" name="utmCampaign" formControlName="utmCampaign" placeholder="UTM Campaign">
+				</div>
+
+				<div class="form-group w-100">
+					<label>UTM Term</label>
+					<input type="text" class="form-input" name="utmTerm" formControlName="utmTerm" placeholder="UTM Term">
+				</div>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group w-100">
+					<label>UTM Content</label>
+					<input type="text" class="form-input" name="utmContent" formControlName="utmContent" placeholder="UTM Content">
+				</div>
+
+				<div class="form-group w-100">
+					<label>UTM Checksum</label>
+					<input type="text" class="form-input" name="metaChecksum" formControlName="metaChecksum" placeholder="UTM Checksum">
+				</div>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group w-100">
+					<label>FB Campaign Id</label>
+					<input type="text" class="form-input" name="fbCampaignId" formControlName="fbCampaignId" placeholder="FB Campaign Id">
+				</div>
+
+				<div class="form-group w-100">
+					<label>FB Campaign Name</label>
+					<input type="text" class="form-input" name="fbCampaignName" formControlName="fbCampaignName" placeholder="FB Campaign Name">
+				</div>
+			</div>			
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group w-100">
+					<label>FB Adset Id</label>
+					<input type="text" class="form-input" name="fbAdsetId" formControlName="fbAdsetId" placeholder="FB Adset Id">
+				</div>
+
+				<div class="form-group w-100">
+					<label>FB Adset Name</label>
+					<input type="text" class="form-input" name="fbAdsetName" formControlName="fbAdsetName" placeholder="FB Adset Name">
+				</div>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group w-100">
+					<label>FB Ad Id</label>
+					<input type="text" class="form-input" name="fbAdId" formControlName="fbAdId" placeholder="FB Ad Id">
+				</div>
+
+				<div class="form-group w-100">
+					<label>FB Ad Name</label>
+					<input type="text" class="form-input" name="fbAdName" formControlName="fbAdName" placeholder="FB Ad Name">
+				</div>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group w-100">
+					<label>Google Campaign Id</label>
+					<input type="text" class="form-input" name="googleCampaignId" formControlName="googleCampaignId" placeholder="Google Campaign Id">
+				</div>
+
+				<div class="form-group w-100">
+					<label>Google Campaign Name</label>
+					<input type="text" class="form-input" name="googleCampaignName" formControlName="googleCampaignName" placeholder="Google Campaign Name">
+				</div>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group w-100">
+					<label>Google Ad group Id</label>
+					<input type="text" class="form-input" name="googleAdgroupId" formControlName="googleAdgroupId" placeholder="Google Ad group Id">
+				</div>
+
+				<div class="form-group w-100">
+					<label>Google Ad group Name</label>
+					<input type="text" class="form-input" name="googleAdgroupName" formControlName="googleAdgroupName" placeholder="Google Ad group Name">
+				</div>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group w-100">
+					<label>Google Keyword Id</label>
+					<input type="text" class="form-input" name="googleKeywordId" formControlName="googleKeywordId" placeholder="Google Keyword Id">
+				</div>
+
+				<div class="form-group w-100">
+					<label>Google Keyword Name</label>
+					<input type="text" class="form-input" name="googleKeywordName" formControlName="googleKeywordName" placeholder="Google Keyword Name">
+				</div>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group w-100">
+					<label>Google Ad Id</label>
+					<input type="text" class="form-input" name="googleAdId" formControlName="googleAdId" placeholder="Google Ad Id">
+				</div>
+
+				<div class="form-group w-100">
+					<label>Google Ad Name</label>
+					<input type="text" class="form-input" name="googleAdName" formControlName="googleAdName" placeholder="Google Ad Name">
+				</div>
+			</div>
+
+			<!-- <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group w-100">
+					<label>Meta</label>
+					<input type="text" class="form-input" name="meta" formControlName="meta" placeholder="Meta">
+				</div>
+			</div> -->
+			
+			</div>
+			
+		</form>
+	</mat-dialog-content>
+</div>
+
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="save()" [disabled]="!editLeadForm.valid"
+		*ngIf="!btnStatus">Update</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Updating...</button>
+</div>

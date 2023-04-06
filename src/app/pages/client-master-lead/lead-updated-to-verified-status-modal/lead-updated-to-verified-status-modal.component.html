@@ -1,0 +1,269 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>LEAD STATUS - Verified</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+	<mat-dialog-content class="mat-dialog-container-div">
+
+		<div style="margin-top: 20px;">
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div fxFlex="40">
+					<p style="font-size: 12px;color: #9c9a9a;letter-spacing: 0.8px;">
+						<strong>Budget</strong>
+					</p>
+					<mat-select class="form-input" placeholder="Select Budget" (selectionChange)="changeBudget()"
+						[(ngModel)]="budget">
+						<mat-option value="10L-30L">10 Lakh - 30 Lakh</mat-option>
+						<mat-option value="30L-50L">30 Lakh - 50 Lakh</mat-option>
+						<mat-option value="50L-70L">50 Lakh - 70 Lakh </mat-option>
+						<mat-option value="70L-1Cr">70 Lakh- 1 Crore</mat-option>
+						<mat-option value="1Cr-2Cr">1 Crore - 2 Crore</mat-option>
+						<mat-option value="2Cr-Above">2 Crore - Above</mat-option>
+					</mat-select>
+				</div>
+				<div fxFlex="60">
+					<p style="font-size: 12px;color: #9c9a9a;letter-spacing: 0.8px;">
+						<strong>Possession At</strong>
+					</p>
+					<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+						<mat-radio-group fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px"
+							[(ngModel)]="possession" (change)="changeBudget()">
+							<mat-radio-button value="2021">2021</mat-radio-button>
+							<mat-radio-button value="2022">2022</mat-radio-button>
+							<mat-radio-button value="2023">2023</mat-radio-button>
+							<mat-radio-button value="2024">2024</mat-radio-button>
+							<mat-radio-button value="2025">2025</mat-radio-button>
+							<mat-radio-button value="2026">2026</mat-radio-button>
+						</mat-radio-group>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<p style="font-size: 12px;color: #9c9a9a;letter-spacing: 0.8px;">
+			<strong>Select BHK Type</strong>
+		</p>
+
+		<div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="10px">
+			<div class="detail-content-type" [ngClass]="bhkType.one ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.one = !bhkType.one; selectBHKType()" fxLayout="row" fxLayoutAlign="start"
+				fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.one ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">1 BHK</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.oneFive ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.oneFive = !bhkType.oneFive; selectBHKType()" fxLayout="row"
+				fxLayoutAlign="start" fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.oneFive ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">1.5 BHK</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.two ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.two = !bhkType.two; selectBHKType()" fxLayout="row" fxLayoutAlign="start"
+				fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.two ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">2 BHK</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.twoFive ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.twoFive = !bhkType.twoFive; selectBHKType()" fxLayout="row"
+				fxLayoutAlign="start" fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.twoFive ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">2.5 BHK</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.three ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.three = !bhkType.three; selectBHKType()" fxLayout="row"
+				fxLayoutAlign="start" fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.three ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">3 BHK</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.threeFive ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.threeFive = !bhkType.threeFive; selectBHKType()" fxLayout="row"
+				fxLayoutAlign="start" fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.threeFive ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">3.5 BHK</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.four ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.four = !bhkType.four; selectBHKType()" fxLayout="row"
+				fxLayoutAlign="start" fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.four ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">4 BHK</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.fourFive ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.fourFive = !bhkType.fourFive; selectBHKType()" fxLayout="row"
+				fxLayoutAlign="start" fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.fourFive ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">4.5 BHK</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.five ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.five = !bhkType.five; selectBHKType()" fxLayout="row"
+				fxLayoutAlign="start" fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.five ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">5 BHK</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.fiveFive ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.fiveFive = !bhkType.fiveFive; selectBHKType()" fxLayout="row"
+				fxLayoutAlign="start" fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.fiveFive ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">5.5 BHK</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.six ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.six = !bhkType.six; selectBHKType()" fxLayout="row" fxLayoutAlign="start"
+				fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.six ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">6 BHK</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.sixPlus ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.sixPlus = !bhkType.sixPlus; selectBHKType()" fxLayout="row"
+				fxLayoutAlign="start" fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.sixPlus ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">6+ BHK</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.shop ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.shop = !bhkType.shop; selectBHKType()" fxLayout="row"
+				fxLayoutAlign="start" fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.shop ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">Shop</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.office ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.office = !bhkType.office; selectBHKType()" fxLayout="row"
+				fxLayoutAlign="start" fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.office ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">Office</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.plot ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.plot = !bhkType.plot; selectBHKType()" fxLayout="row"
+				fxLayoutAlign="start" fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.plot ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">Plot</span>
+				</div>
+			</div>
+			<div class="detail-content-type" [ngClass]="bhkType.studio ? 'active-report': ''" fxFlex="15"
+				(click)="bhkType.studio = !bhkType.studio; selectBHKType()" fxLayout="row"
+				fxLayoutAlign="start" fxLayoutGap="10px">
+				<div>
+					<mat-icon [ngStyle]="{'color': bhkType.studio ? '#00C08D': '' }">check_circle
+					</mat-icon>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<span class="emailLabel">Studio</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group" style="width: 100%;margin-top: 20px;">
+			<textarea name="remark" placeholder="Enter Remark" class="form-input" rows="3" style="width: 100%;"
+				[(ngModel)]="remark"></textarea>
+		</div>
+
+		<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+			<div fxFlex.xs="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100">
+				<mat-form-field class="example-container">
+					<mat-label>Search Locations e.g.- Sec-18, Noida, India</mat-label>
+					<mat-chip-list #chipListLocation>
+						<mat-chip style="font-size: 12px;" *ngFor="let location of locations" [selectable]="selectable"
+							[removable]="removable" (removed)="remove(location)">
+							{{location}}
+							<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+						</mat-chip>
+						<input placeholder="Add Locations e.g.- Sec-18, Noida, India"
+							[matChipInputFor]="chipListLocation" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+							[matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+					</mat-chip-list>
+				</mat-form-field>
+			</div>
+		</div>
+		<div>
+			<div fxLayout="row" fxLayoutAlign="start center">
+				<div fxFlex="100">
+					<mat-card style="margin-bottom: 20px;">
+						<div #mapContainer id="map"></div>
+					</mat-card>
+				</div>
+			</div>
+		</div>
+	</mat-dialog-content>
+</div>
+
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-primary" [disabled]="checkStatus() || remark.trim() == ''" *ngIf="!btnStatus"
+		(click)="yes()">Submit</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Submitting..</button>
+</div>

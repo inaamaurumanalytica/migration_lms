@@ -1,0 +1,41 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>ASSIGN USER</h3>
+		<button mat-icon-button tabindex="-1" matTooltip="Close" (click)="close()">
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+	<!-- <span style="font-size: 12px;color: #b7b7b7;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span> -->
+	<mat-dialog-content class="mat-dialog-container-div">
+
+		<div class="assign-container" *ngIf="assignedUser.length != 0">
+			<h4>ASSIGNED USER</h4>
+			<div class="assign-project-container">
+				<div class="assign-project" *ngFor="let user of assignedUser">
+					<label class="assign-project-name">{{user.name}}</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group" [formGroup]="userAssignForm" *ngIf="users.length != 0">
+			<label style="font-weight: 500">Select User</label>
+			<mat-select placeholder="Select User" (selectionChange)="assignUserMultiple()" class="form-input"
+				name="partner" formControlName="user" *ngIf="data.multiple != undefined">
+				<mat-option [value]="user" *ngFor="let user of users">{{user.name}}</mat-option>
+			</mat-select>
+			<mat-select placeholder="Select User" (selectionChange)="assignUser()" class="form-input" name="partner"
+				formControlName="user" *ngIf="data.multiple == undefined">
+				<mat-option [value]="user" *ngFor="let user of users">{{user.name}}</mat-option>
+			</mat-select>
+		</div>
+
+		<h1 style="color:#BF9724" *ngIf="users.length == 0"> No User Found</h1>
+		<span style="color: red;font-weight: 600;">Note :</span><span style="color: red;font-size: 13px;"> If no user
+			found
+			then first assign this project to user from <a href="javascript:void(0)">"Users"</a>
+			Tab
+		</span>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+</div>

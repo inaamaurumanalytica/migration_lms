@@ -1,0 +1,46 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center">
+		<h3>
+			EDIT NOTE
+		</h3>
+		<i class="material-icons close-modal" (click)="close()">
+			clear
+		</i>
+	</div>
+	<!-- <span style="font-size: 12px;color: #b7b7b7;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span> -->
+	<mat-dialog-content style="margin-bottom: 100px;">
+		<div class="form-group">
+			<label for="">Title <span style="color: #00C08D;">*</span></label>
+			<input type="text" class="form-input" name="title" id="title" placeholder="Title" [(ngModel)]="note.title">
+		</div>
+		<div class="form-group">
+			<label for="">Description <span style="color: #00C08D;">*</span></label>
+			<textarea class="form-input" rows="3" placeholder="Add Description"
+				[(ngModel)]="note.description"></textarea>
+		</div>
+		<div class="form-group">
+			<input id="attach" class="form-input" type="file" (change)="selectFile($event)" multiple
+				accept="image/*,.pdf">
+		</div>
+		<div class="form-group" *ngIf="attachNoteFiles.length != 0">
+			<div class="assign-container">
+				<h4>Attachments</h4>
+				<div class="assign-project-container">
+					<div class="assign-project" *ngFor="let file of attachNoteFiles">
+						<label class="assign-project-name">{{file.name}}</label>
+						<label class="cancel-assign-project" (click)="removeFile(file)"
+							style="cursor: pointer">x</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<label style="color:red"><b>Note :</b> Fields with * mark are mandetory</label>
+	</mat-dialog-content>
+</div>
+<div class="user-action-btn"
+	style="bottom: 0px;position: fixed;width: 96%;padding: 10px;border-top: 2px solid #eaeaea;background: #eaeaea;">
+	<button mat-button class="click-btn" *ngIf="!saveStatus" (click)="saveNote()"
+		[disabled]="note.title == '' || note.description == ''">UPDATE</button>
+	<button mat-button class="click-btn" *ngIf="saveStatus" disabled>UPDATING...</button>
+	<button mat-button class="close-btn" (click)="close()">CANCEL</button>
+</div>

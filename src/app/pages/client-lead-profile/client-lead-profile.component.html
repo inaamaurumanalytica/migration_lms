@@ -1,0 +1,857 @@
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="dark-overlay" *ngIf="showComponentLoader1">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="page-container timeline-wrapper" *ngIf="!showComponentLoader">
+    <div class="left-content" fxFlex="66.33%" style="z-index: 0;">
+        <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+            <div class="logo" fxlayout="row" fxlayoutalign="start center" style="display: flex;padding: 10px 0px;">
+                <div class="export-lead" matTooltip="Back To Leads" (click)="backToLeads()">
+                    <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" style="margin-top: 3px;"
+                        role="img" aria-hidden="true">
+                        arrow_back
+                    </mat-icon>
+                </div>
+                <span class="logo-text h1 ng-trigger ng-trigger-animate" style="margin-top: 8px;"> {{leadInfo.name}} -
+                    {{projectInfo.name}}
+                </span>
+            </div>
+        </div>
+        <mat-tab-group>
+            <mat-tab label="Timeline" *ngIf="userInfo.member_type == 'Vendor'">
+                <ng-template matTabContent>
+                    <div class="" style="padding: 16px;">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+                            style="margin-bottom: 16px;">
+                            <div>
+                                <h3 class="header">TIMELINE</h3>
+                            </div>
+                            <div *ngIf="userInfo.admin && (userInfo.member_type == 'Vendor' && userInfo.org_admin)"
+                            class="filter-form" fxLayout="row wrap" fxLayoutAlign="space-between center"
+                                fxLayoutGap="5px">
+                                <span class="dashboard-form">
+                                    <mat-select class="form-input" placeholder="User" [(ngModel)]="filterLogs.user"
+                                        (selectionChange)="changeByAction()">
+                                        <mat-option value="">Select User</mat-option>
+                                        <mat-option [value]="user.id" *ngFor="let user of users">{{user.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </span>
+                                <span class="dashboard-form">
+                                    <mat-select class="form-input" placeholder="Action" [(ngModel)]="filterLogs.action"
+                                        (selectionChange)="changeByAction()">
+                                        <mat-option value="">Select Action</mat-option>
+                                        <mat-option value="Created">Created</mat-option>
+                                        <mat-option value="Updated">Updated</mat-option>
+                                        <mat-option value="Deleted">Deleted</mat-option>
+                                        <mat-option value="Sms">SMS</mat-option>
+                                    </mat-select>
+                                </span>
+                                <span class="dashboard-form">
+                                    <mat-select class="form-input" *ngIf="!hideSms" placeholder="Object Type"
+                                        [(ngModel)]="filterLogs.lms_object_type">
+                                        <mat-option value="">Select Object Type</mat-option>
+                                        <mat-option value="Lead" *ngIf="!hideObjectType">Lead</mat-option>
+                                        <mat-option value="Address">Address</mat-option>
+                                        <mat-option value="Note">Note</mat-option>
+                                        <mat-option value="Task">Task</mat-option>
+                                        <mat-option value="Mailing" *ngIf="!mailing">Email</mat-option>
+                                        <mat-option value="LeadAttachment" *ngIf="!hideLeadAttachment">LeadAttachment
+                                        </mat-option>
+                                        <mat-option value="Profile" *ngIf="!hideProfile">Profile</mat-option>
+                                    </mat-select>
+                                    <mat-select class="form-input" *ngIf="hideSms" placeholder="Object Type"
+                                        [(ngModel)]="filterLogs.lms_object_type">
+                                        <mat-option value="">Select Object Type</mat-option>
+                                        <mat-option value="Lead">Lead</mat-option>
+                                    </mat-select>
+                                </span>
+                                <my-date-range-picker [options]="myDateRangePickerOptions"
+                                    [(ngModel)]="filterLogsCreateDate"
+                                    (dateRangeChanged)="onTimelineCreateDateRangeChanged($event)"
+                                    placeholder="Created At" class="my-date-picker">
+                                </my-date-range-picker>
+                                <div class="dashboard-form apply-refresh">
+                                    <a class="button" (click)="filterLogsApply()"> apply</a>
+                                    <span class="pill-btn" (click)="clearfilterLogs()">
+                                        <mat-icon>refresh</mat-icon>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+                            *ngIf="profileLogs.time_lines.length == 0">No Logs Found</h1>
+                        <div fxLayout="column" fxLayoutGap="15px"
+                            style="background-color: #fff;padding:20px;margin-bottom:20px;"
+                            *ngFor="let logs of profileLogs.time_lines">
+                            <h4 class="header">{{logs.event_type}}</h4>
+                            <p class="tim-para">{{logs.user_name}} created new lead
+                                {{logs.created_at | date :'dd/MM/yyyy'}} at {{logs.created_at | date :'hh:mm a'}}</p>
+
+                            <div *ngIf="logs.details != undefined && (logs.details | json) != '{}'">
+                                <mat-accordion>
+                                    <mat-expansion-panel>
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                <a class="view-detail">
+                                                    <span>View Details</span>
+                                                </a>
+                                            </mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <div>
+                                            <table>
+                                                <tr *ngFor="let key of Object.keys(logs.details)" style="width:400px">
+                                                    <td style="width: 200px;font-weight: 500;">{{key | json}}</td>
+                                                    <td style="width: 200px;font-weight: 500;"
+                                                        *ngIf="logs.details[key].length == undefined">
+                                                        {{logs.details[key] | json}}</td>
+                                                    <td style="max-width: 200px;word-wrap: break-word;"
+                                                        *ngIf="logs.details[key].length != undefined && logs.details[key].length != 0 && logs.action != 'Created'">
+                                                        {{logs.details[key][0] | json}}</td>
+                                                    <td style="max-width: 200px;word-wrap: break-word;"
+                                                        *ngIf="logs.details[key].length != undefined && logs.details[key].length != 0">
+                                                        {{logs.details[key][1] | json}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </mat-expansion-panel>
+                                </mat-accordion>
+                            </div>
+                        </div>
+                        <mat-paginator [ngStyle]="{'display':profileLogs.time_lines.length == 0 ? 'none' : 'block' }"
+                            style="margin-top: 1rem;" #paginator [length]="profileLogs.pagination.total_count"
+                            [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="[25, 50, 100]"
+                            (page)="getNextLogs($event)">
+                        </mat-paginator>
+                    </div>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Task">
+                <ng-template matTabContent>
+                    <div style="padding: 16px;">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+                            style="margin-bottom: 16px;">
+                            <div>
+                                <h3 class="header">Task</h3>
+                            </div>
+                            <div class="filter-form" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+                                <span class="dashboard-form">
+                                    <mat-select class="form-input" placeholder="Category"
+                                        [(ngModel)]="filterTask.task_category">
+                                        <mat-option value="">Select Category</mat-option>
+                                        <mat-option value="Follow Up">Follow Up</mat-option>
+                                        <mat-option value="Appointment">Appointment</mat-option>
+                                        <mat-option value="Call">Call</mat-option>
+                                        <mat-option value="Email">Email</mat-option>
+                                    </mat-select>
+                                </span>
+                                <span class="dashboard-form">
+                                    <mat-select class="form-input" placeholder="Priority"
+                                        [(ngModel)]="filterTask.priority">
+                                        <mat-option value="">Select Priority</mat-option>
+                                        <mat-option value="1">High</mat-option>
+                                        <mat-option value="2">Medium</mat-option>
+                                        <mat-option value="3">Low</mat-option>
+                                    </mat-select>
+                                </span>
+                                <my-date-range-picker [options]="myDateRangePickerOptions" placeholder="Created At"
+                                    [(ngModel)]="filterTaskCreateDate"
+                                    (dateRangeChanged)="onCreateDateRangeChanged($event)" class="my-date-picker">
+                                </my-date-range-picker>
+                                <my-date-range-picker [options]="myDateRangePickerOptions" placeholder="Due Date"
+                                    [(ngModel)]="filterTaskDueDate" (dateRangeChanged)="onDueDateChanged($event)"
+                                    class="my-date-picker">
+                                </my-date-range-picker>
+                                <div class="dashboard-form apply-refresh">
+                                    <a class="button" (click)="filterTaskApply()"> apply</a>
+                                    <span class="pill-btn" (click)="clearfilterTask()">
+                                        <mat-icon>refresh</mat-icon>
+                                    </span>
+                                </div>
+                                <span class="user-action-btn">
+                                    <button mat-button class="click-btn" (click)="openCreateTaskModal()">
+                                        <mat-icon>add_circle</mat-icon> Task
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+                            *ngIf="profileTask.tasks.length == 0">No Task Found</h1>
+                        <div class="task" fxLayout="column" fxLayoutGap="3px" *ngFor="let task of profileTask.tasks"
+                            style="margin-top: 15px !important">
+                            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx"
+                                style="background-color: #fff; padding: 5px 20px 5px 62px;">
+                                <div>
+                                    <small>{{task.created_at | date : 'dd/MM/yyyy'}} at
+                                        {{task.created_at | date : 'hh:mm a'}}, by - {{task.created_by}}</small>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="20px">
+                                    <a class="edit-icon">
+                                        <mat-icon (click)="openEditTaskModal(task)">edit</mat-icon>
+                                    </a>
+                                    <a class="edit-icon">
+                                        <mat-icon (click)="deleteTask(task)">clear</mat-icon>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="task-content" style="background-color: #fff;padding: 16px 16px 16px 24px;">
+                                <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="16px">
+                                    <mat-icon *ngIf="task.status == null || task.status == false"
+                                        (click)="markAsDoneModal(task)">check_circle
+                                    </mat-icon>
+                                    <mat-icon *ngIf="task.status" style="color:green; cursor: default;">check_circle
+                                    </mat-icon>
+                                    <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 1 0%" fxLayoutGap="gappx">
+                                        <div class="info" fxLayout="column" fxLayoutAlign="start start" fxFlex="1 1 0%"
+                                            fxLayoutGap="10px">
+                                            <div class="" fxLayout="row wrap" fxLayoutAlign="start center"
+                                                fxLayoutGap="10px">
+                                                <div>{{task.task_category}}</div>
+                                                <div class="title alarm-icon" fxLayoutAlign="start center">
+                                                    <mat-icon>alarm</mat-icon>
+                                                    {{task.priority == 1 ? 'High': task.priority == 2 ? 'Medium': 'Low'
+                                                    }}
+                                                    Priority
+                                                </div>
+                                            </div>
+                                            <p class="tim-para">{{task.description}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="view-detail">
+                                        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+                                            <div class="title">Due Date</div>
+                                            <div>{{task.due_date | date : 'dd/MM/yyyy hh:mm a'}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-paginator [ngStyle]="{'display':profileTask.tasks.length == 0 ? 'none' : 'block' }"
+                            style="margin-top: 1rem;" #paginator [length]="profileTask.pagination.total_count"
+                            [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="[25, 50, 100]"
+                            (page)="getNextTask($event)">
+                        </mat-paginator>
+                    </div>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Notes">
+                <ng-template matTabContent>
+                    <div style="padding: 16px;">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+                            style="margin-bottom: 16px;">
+                            <div>
+                                <h3 class="header">NOTE</h3>
+                            </div>
+                            <div class="filter-form" fxLayout="row" fxLayoutAlign="space-between center"
+                                fxLayoutGap="5px">
+                                <my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="filterNoteCreateDate"
+                                    (dateRangeChanged)="onNoteCreateDateRangeChanged($event)" placeholder="Created At"
+                                    class="my-date-picker">
+                                </my-date-range-picker>
+                                <my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="filterNoteModified"
+                                    (dateRangeChanged)="onNoteModifiedDateChanged($event)" placeholder="Updated Date"
+                                    class="my-date-picker">
+                                </my-date-range-picker>
+
+                                <div class="dashboard-form apply-refresh">
+                                    <a class="button" (click)="filterNoteApply()"> apply</a>
+                                    <span class="pill-btn" (click)="clearfilterNote()">
+                                        <mat-icon>refresh</mat-icon>
+                                    </span>
+                                </div>
+                                <span class="user-action-btn">
+                                    <button mat-button class="click-btn" (click)="openCreateNoteModal()">
+                                        <mat-icon>add_circle</mat-icon> NOTE
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+                            *ngIf="profileNote.notes.length == 0">No Note Found</h1>
+                        <div class="task" fxLayout="column" fxLayoutGap="3px" style="margin-top:15px !important"
+                            *ngFor="let note of profileNote.notes">
+                            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx"
+                                style="background-color: #fff; padding: 5px 20px">
+                                <div>
+                                    <small>{{note.created_at | date : 'dd/MM/yyyy'}} at
+                                        {{note.created_at | date : 'hh:mm a'}}, by - {{note.created_by}}</small>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+                                    <a class="edit-icon">
+                                        <mat-icon (click)="openEditNoteModal(note)">edit</mat-icon>
+                                    </a>
+                                    <a class="edit-icon">
+                                        <mat-icon (click)="openDeleteNoteModal(note)">clear</mat-icon>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="task-content" style="background-color: #fff;padding: 16px 16px 16px 24px;">
+                                <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="16px">
+                                    <!-- <mat-icon>check_circle</mat-icon> -->
+                                    <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 1 0%" fxLayoutGap="gappx">
+                                        <div class="info" fxLayout="column" fxLayoutAlign="start start" fxFlex="1 1 0%"
+                                            fxLayoutGap="10px">
+                                            <div class="" fxLayout="row wrap" fxLayoutAlign="start center"
+                                                fxLayoutGap="10px">
+                                                <div>{{note.title}}</div>
+                                            </div>
+                                            <p class="tim-para">{{note.description}}</p>
+                                            <div class="" fxLayout="row wrap" fxLayoutAlign="start center"
+                                                fxLayoutGap="10px"
+                                                *ngIf="note.documents != null && note.documents.length != 0">
+                                                <div *ngFor="let docs of note.documents"
+                                                    style="padding: 10px 20px;background: #e3e3e3;"
+                                                    [matTooltip]="docs.link">
+                                                    <a [href]="docs.link" download="" target="_blank">{{docs.name}}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-paginator [ngStyle]="{'display':profileNote.notes.length == 0 ? 'none' : 'block' }"
+                            style="margin-top: 1rem;" #paginator [length]="profileNote.pagination.total_count"
+                            [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="[25, 50, 100]"
+                            (page)="getNextNotes($event)">
+                        </mat-paginator>
+                    </div>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Address">
+                <ng-template matTabContent>
+                    <div style="padding: 16px;">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+                            style="margin-bottom: 16px;">
+                            <div>
+                                <h3 class="header">Address</h3>
+                            </div>
+                            <div class="filter-form" fxLayout="row wrap" fxLayoutAlign="space-between center"
+                                fxLayoutGap="5px">
+                                <span class="user-action-btn">
+                                    <button mat-button class="click-btn" (click)="openCreateAddressModal()">
+                                        <mat-icon>add_circle</mat-icon> ADDRESS
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+                            *ngIf="profile.addresses.length == 0">No Address Found</h1>
+                        <div class="task" fxLayout="column" fxLayoutGap="3px" *ngFor="let address of profile.addresses"
+                            style="margin-top: 15px !important">
+                            <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="gappx"
+                                style="background-color: #fff; padding: 5px 20px 5px 62px;">
+                                <div>
+                                    <mat-icon *ngIf="profile.addresses.length>1 && !address.is_primary"
+                                        (click)="clickToMakePrimary(address)"
+                                        [ngClass]="address.is_primary ? 'isPrimary' :''">check_circle</mat-icon>
+                                    <label *ngIf="!address.is_primary">Make Primary Address</label>
+                                    <label *ngIf="address.is_primary">Primary Address</label>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+                                    <a class="edit-icon">
+                                        <mat-icon (click)="openEditAddressModal(address)">edit</mat-icon>
+                                    </a>
+                                    <a class="edit-icon">
+                                        <mat-icon (click)="deleteAddressModal(address)">clear</mat-icon>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="task-content" style="background-color: #fff;padding: 16px 16px 16px 24px;">
+                                <div>{{address.address_category}} ADDRESS</div>
+                                <div class="title">
+                                    {{address.line}}, {{address.city}},
+                                </div>
+                                <div class="title">
+                                    {{address.state}}, {{address.country}} - 1000090
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Email">
+                <ng-template matTabContent>
+                    <div style="padding: 16px;">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+                            style="margin-bottom: 16px;">
+                            <div>
+                                <h3 class="header">EMAILS</h3>
+                            </div>
+                            <div class="filter-form" fxLayout="row wrap" fxLayoutAlign="space-between center"
+                                fxLayoutGap="5px">
+                                <my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="filterMailingCreateDate"
+                                    (dateRangeChanged)="onMailCreatedDateChanged($event)" placeholder="Created At"
+                                    class="my-date-picker">
+                                </my-date-range-picker>
+
+                                <div class="dashboard-form apply-refresh">
+                                    <a class="button" (click)="filterMailApply()"> apply</a>
+                                    <span class="pill-btn" (click)="clearfilterMail()">
+                                        <mat-icon>refresh</mat-icon>
+                                    </span>
+                                </div>
+                                <span class="user-action-btn"
+                                    *ngIf="userInfo.member_type == 'Client' && userInfo.org_admin">
+                                    <button mat-button class="click-btn" (click)="openSendEmailModal()">
+                                        <mat-icon>add_circle</mat-icon> COMPOSE
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+                            *ngIf="profileMail.mailings.length == 0">No Mail Found</h1>
+                        <div class="task" style="border-bottom: 1px solid;" fxLayout="column" fxLayoutGap="3px"
+                            *ngFor="let mail of profileMail.mailings">
+                            <div class="task-content" style="background-color: #fff;padding: 16px 16px 16px 24px;">
+                                <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="16px">
+                                    <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 1 0%" fxLayoutGap="gappx">
+                                        <div class="info" fxLayout="column" fxLayoutAlign="start start" fxFlex="1 1 0%"
+                                            fxLayoutGap="10px">
+                                            <div class="" fxLayout="row wrap" fxLayoutAlign="start center"
+                                                fxLayoutGap="10px">
+                                                <div>{{mail.subject}}</div>
+                                                <small>{{mail.created_at | date : 'dd/MM/yyyy'}} at
+                                                    {{mail.created_at | date : 'hh:mm a'}}, by -
+                                                    {{mail.send_by}}</small>
+                                            </div>
+                                            <p class="tim-para" [innerHTML]="mail.message"></p>
+                                            <div class="" fxLayout="row wrap" fxLayoutAlign="start center"
+                                                fxLayoutGap="10px">
+                                                <div style="padding: 10px 20px;background: #e3e3e3;"
+                                                    *ngFor="let file of mail.file_links" [matTooltip]="file.link">
+                                                    {{file.name}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-paginator *ngIf="profileMail.mailings != undefined" #paginator
+                            [ngStyle]="{'display':profileMail.mailings.length == 0 ? 'none' : 'block' }"
+                            [length]="profileMail.pagination.total_count" [pageIndex]="0" [pageSize]="25"
+                            [pageSizeOptions]="[25, 50, 100]" (page)="getProfileMailNext($event)">
+                        </mat-paginator>
+                    </div>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Documents">
+                <ng-template matTabContent>
+                    <div style="padding: 16px;">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+                            style="margin-bottom: 16px;">
+                            <div>
+                                <h3 class="header">DOCUMENTS</h3>
+                            </div>
+                            <div class="filter-form" fxLayout="row wrap" fxLayoutAlign="space-between center"
+                                fxLayoutGap="5px">
+                                <span class="user-action-btn">
+                                    <button mat-button class="click-btn" (click)="openAttachmentModal()">
+                                        <mat-icon>add_circle</mat-icon> ATTACH FILE
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+                            *ngIf="profileAttachment.lead_attachments.length == 0">No Document Found</h1>
+                        <div class="task" fxLayout="column" fxLayoutGap="5px" style="margin-bottom: 10px;"
+                            *ngFor="let doc of profileAttachment.lead_attachments">
+                            <div class="task-content" style="background-color: #fff;padding: 16px 16px 16px 24px;">
+                                <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="16px">
+                                    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+                                        <a [href]="doc.link" [title]="doc.link" target="_blank"
+                                            *ngIf="doc.ext === 'jpg' || doc.ext === 'jpeg' ||doc.ext === 'png'">
+                                            <img style="width:75px;" [src]="doc.link" style="max-width:4rem;">
+                                        </a>
+                                        <a href="javascript:void(0)" *ngIf="doc.ext === 'mp3' || doc.ext === 'm4a'"
+                                            style="padding-top:.2rem;">
+                                            <audio controls style="height:40px;">
+                                                <source [src]="doc.link" type="audio/mpeg">
+                                            </audio>
+                                        </a>
+                                        <a [href]="doc.link" [title]="doc.link" target="_blank"
+                                            *ngIf="doc.ext === 'pdf'">
+                                            <img style="width:75px;" src="assets/images/pdf-icon.png" alt="">
+                                        </a>
+                                        <a [href]="doc.link" [title]="doc.link" target="_blank"
+                                            *ngIf="doc.ext === 'csv'">
+                                            <img style="width:75px;" src="assets/images/csv-icon.png" alt="">
+                                        </a>
+                                        <a [href]="doc.link" [title]="doc.link" target="_blank"
+                                            *ngIf="doc.ext === 'xlsx'">
+                                            <img style="width:75px;" src="assets/images/xlsx-icon.png" alt="">
+                                        </a>
+                                        <a [href]="doc.link" [title]="doc.link" target="_blank"
+                                            *ngIf="doc.ext === 'docx'">
+                                            <img style="width:75px;" src="assets/images/xlsx-icon.jpg" alt="">
+                                        </a>
+                                        <a [href]="doc.link" [title]="doc.link" target="_blank"
+                                            *ngIf="doc.ext != 'docx' && doc.ext != 'xlsx' && doc.ext != 'csv' && doc.ext != 'pdf' && doc.ext != 'docx' && doc.ext != 'mp3' && doc.ext != 'm4a' && doc.ext != 'jpg' && doc.ext != 'jpeg' && doc.ext != 'png'">
+                                            <img style="width:75px;" src="assets/images/other-file-icon.png" alt="">
+                                        </a>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 1 0%" fxLayoutGap="gappx">
+                                        <div class="info" fxLayout="column" fxLayoutAlign="start start" fxFlex="1 1 0%"
+                                            fxLayoutGap="10px">
+                                            <div class="" fxLayout="row wrap" fxLayoutAlign="start center"
+                                                fxLayoutGap="10px">
+                                                <div>{{doc.name}}</div>
+                                            </div>
+                                            <small>{{doc.created_at | date : 'dd/MM/yyyy'}} at
+                                                {{doc.created_at | date : 'hh:mm a'}}</small>
+                                            <small>{{doc.created_by}}</small>
+                                        </div>
+                                        <a class="edit-icon">
+                                            <mat-icon (click)="deleteDoc(doc)">clear</mat-icon>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-paginator #paginator
+                            [ngStyle]="{'display':profileAttachment.lead_attachments.length == 0 ? 'none' : 'block' }"
+                            [length]="profileAttachment.pagination.total_count" [pageIndex]="0" [pageSize]="25"
+                            [pageSizeOptions]="[25, 50, 100]" (page)="getProfileDocNext($event)">
+                        </mat-paginator>
+                    </div>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Remarks" *ngIf="userInfo.member_type == 'Vendor'">
+                <ng-template matTabContent>
+                    <div class="" style="padding: 16px;">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+                            style="margin-bottom: 16px;">
+                            <div>
+                                <h3 class="header">REMARKS</h3>
+                            </div>
+                        </div>
+                        <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+                            *ngIf="leadVendorRemark.vendor_remarks.length == 0">No Remark Found</h1>
+                        <div fxLayout="column" fxLayoutGap="15px"
+                            style="background-color: #fff;padding:20px;margin-bottom:20px;"
+                            *ngFor="let remark of leadVendorRemark.vendor_remarks">
+                            <h4 class="header">{{remark.remark}}</h4>
+                            <p class="tim-para">Created at
+                                {{remark.created_at | date :'dd/MM/yyyy'}} at {{remark.created_at | date :'hh:mm a'}}
+                            </p>
+                        </div>
+                        <mat-paginator
+                            [ngStyle]="{'display':leadVendorRemark.vendor_remarks.length == 0 ? 'none' : 'block' }"
+                            style="margin-top: 1rem;" #paginator [length]="leadVendorRemark.pagination.total_count"
+                            [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="[25, 50, 100]"
+                            (page)="getLeadVendorRemarkNext($event)">
+                        </mat-paginator>
+                    </div>
+                </ng-template>
+            </mat-tab>
+            <mat-tab [label]="userInfo.member_type == 'Vendor' ? 'Client Remarks' : 'Remarks'">
+                <ng-template matTabContent>
+                    <div class="" style="padding: 16px;">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+                            style="margin-bottom: 16px;">
+                            <div>
+                                <h3 class="header">{{userInfo.member_type == 'Vendor' ? 'CLIENT REMARKS' : 'REMARKS'}}
+                                </h3>
+                            </div>
+                        </div>
+                        <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+                            *ngIf="leadClientRemark.client_remarks.length == 0">No Remark Found</h1>
+                        <div fxLayout="column" fxLayoutGap="15px"
+                            style="background-color: #fff;padding:20px;margin-bottom:20px;"
+                            *ngFor="let remark of leadClientRemark.client_remarks">
+                            <h4 class="header">{{remark.remark}}</h4>
+                            <p class="tim-para">Created at
+                                {{remark.created_at | date :'dd/MM/yyyy'}} at {{remark.created_at | date :'hh:mm a'}}
+                            </p>
+                        </div>
+                        <mat-paginator
+                            [ngStyle]="{'display':leadClientRemark.client_remarks.length == 0 ? 'none' : 'block' }"
+                            style="margin-top: 1rem;" #paginator [length]="leadClientRemark.pagination.total_count"
+                            [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="[25, 50, 100]"
+                            (page)="getLeadClientRemarkNext($event)">
+                        </mat-paginator>
+                    </div>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Calls" *ngIf="userInfo.member_type == 'Vendor' || projectInfo.recording_access_to_client">
+                <ng-template matTabContent>
+                    <div class="" style="padding: 16px;">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+                            style="margin-bottom: 16px;">
+                            <div>
+                                <h3 class="header">CALLS</h3>
+                            </div>
+                        </div>
+                        <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+                            *ngIf="callList.calls.length == 0">No Call Found</h1>
+                        <div fxLayout="column" fxLayoutGap="15px"
+                            style="background-color: #fff;padding:20px;margin-bottom:20px;"
+                            *ngFor="let call of callList.calls">
+
+                            <div class="vendor-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+                                <div class="vendor-info">
+                                    <p class="title">From</p>
+                                    <span class="status-check">{{call.from_number}}</span>
+                                </div>
+                                <div class="vendor-info">
+                                    <p class="title">To</p>
+                                    <span class="status-check">{{call.to_number}}</span>
+                                </div>
+                                <div class="vendor-info">
+                                    <p class="title">Status</p>
+                                    <span class="status-check">{{call.status}}</span>
+                                </div>
+                                <div class="vendor-info">
+                                    <p class="title">Duration (in Seconds)</p>
+                                    <span class="status-check">{{call.duration}}</span>
+                                </div>
+                                <div class="vendor-info">
+                                    <p class="title">Recording Link</p>
+                                    <span class="status-check">
+                                        <audio controls style="height:30px;width: 250px;"
+                                            *ngIf="call.recording_link != null">
+                                            <source [src]="call.recording_link" type="audio/mpeg">
+                                        </audio>
+                                    </span>
+                                </div>
+                                <div class="vendor-info">
+                                    <p class="title">Date & Time</p>
+                                    <span class="status-check">{{call.created_at | date:'dd/MM/yyyy hh:mm a'}}</span>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+    <div class="right-content" fxFlex="33.33">
+        <section class="about-profile">
+            <div class="" *ngIf = "userInfo.admin || (userInfo.member_type == 'Vendor' && userInfo.org_admin)">
+                <mat-chip-list>
+                    <mat-chip (click)="enrichLead()" style="background: #00C08D;color: white;cursor: pointer;">Enrich Lead
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="px">
+                <div mat-card-avatar class="example-header-image" *ngIf="profile.avatar == null">
+                    <div class="logo" style="text-transform:uppercase;">
+                        {{leadInfo.shortName}}</div>
+                    <div class="img-content">
+                        <label for="leadProfilefile">
+                            <a class="edit-icon">
+                                <mat-icon>edit</mat-icon>
+                            </a>
+                        </label>
+                    </div>
+                    <input type="file" name="leadProfilefile" id="leadProfilefile" hidden
+                        (change)="fileChangeEvent($event)" accept="image/x-png,image/jpeg,image/jpg" />
+                </div>
+                <div mat-card-avatar class="example-header-image"
+                    [ngStyle]="{'background-image': 'url('+ profile.avatar +')'}" *ngIf="profile.avatar != null">
+                    <!-- <img [src]="profile.avatar" class="profile-image"> -->
+                    <div class="img-content">
+                        <label for="leadProfilefile">
+                            <a class="edit-icon">
+                                <mat-icon>edit</mat-icon>
+                            </a>
+                        </label>
+                    </div>
+                    <input type="file" name="leadProfilefile" id="leadProfilefile" hidden
+                        (change)="fileChangeEvent($event)" accept="image/x-png,image/jpeg,image/jpg" />
+                </div>
+                <div class="" style="text-align: center; margin-bottom: 1em;">
+                    <p style="margin-bottom: 0px">{{leadInfo.name}}</p>
+                    <small>Created On - {{leadInfo.created_at | date : 'dd/MM/yyyy'}}</small>
+                </div>
+                <div *ngIf="profile.social_links != null && profile.social_links != undefined && (profile.social_links | json) != {}"
+                    fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+                    <div *ngFor="let item of profile.social_links | keyvalue">
+                        <button [matTooltip]="item.value" mat-mini-fab style="background-color: #00C08D;">
+                            <a target="_blank" [href]="item.value">
+                                <i class="fab fa-{{item.key | lowercase }}" style="color: white;font-size: 24px;"></i>
+                            </a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="profile-detail" style="background-color: #fff;">
+            <div fxLayout="column" fxLayoutGap="5px">
+                <div class="" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx"
+                    style="margin-bottom: 15px;">
+                    <p class="prop">Property Preferences</p>
+                    <div>
+                        <mat-icon (click)="editProfile(profile, 'Property preferences')">edit</mat-icon>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                    <div class="">
+                        <h4 class="title">Budget</h4>
+                        <p class="p-info">{{profile.budget != null && profile.budget != '' ? profile.budget : '---'}}
+                        </p>
+                    </div>
+                    <div class="text-end">
+                        <h4 class="title">Property Type</h4>
+                        <p class="p-info">{{profile.property_category !=null && profile.property_category != '' ?
+                            profile.property_category : '---'}}</p>
+                    </div>
+                </div>
+
+                <div class="tags"
+                    *ngIf="profile.looking_for_location != undefined && profile.looking_for_location.length != 0">
+                    <h4 class="title">Preferred Location</h4>
+                    <div fxLayout="row" fxLayoutGap="10px">
+                        <span class="tag" *ngFor="let tag of profile.looking_for_location;let i = index">{{tag}}</span>
+                    </div>
+                </div>
+                <div class="tags" *ngIf="profile.tag != undefined && profile.tag.length != 0">
+                    <h4 class="title">Tags</h4>
+                    <div fxLayout="row" fxLayoutGap="10px">
+                        <span class="tag" *ngFor="let tag of profile.tag;let i = index">{{tag}}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="profile-detail" style="background-color: #fff;">
+            <div fxLayout="column" fxLayoutGap="5px">
+                <div class="" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx"
+                    style="margin-bottom: 15px;">
+                    <p class="prop">Personal Details</p>
+                    <div>
+                        <mat-icon (click)="editProfile(profile, 'Personal Details')">edit</mat-icon>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                    <div class="">
+                        <h4 class="title">Comapnay Name</h4>
+                        <p class="p-info">{{profile.company != null && profile.company != '' ? profile.company : '---'}}
+                        </p>
+                    </div>
+                    <div class="text-end">
+                        <h4 class="title">Occupation</h4>
+                        <p class="p-info">{{profile.occupation != null && profile.occupation != '' ? profile.occupation
+                            : '---'}}</p>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                    <div class="">
+                        <h4 class="title">Alternate Contact No.</h4>
+                        <p class="p-info">{{profile.alternate_number != null && profile.alternate_number != '' ?
+                            profile.alternate_number : '---'}}</p>
+                    </div>
+                    <div class="text-end">
+                        <h4 class="title">Alternate Mail</h4>
+                        <p class="p-info">{{profile.email != null && profile.email != '' ? profile.email : '---'}}</p>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                    <div class="">
+                        <h4 class="title">Spending Potential</h4>
+                        <!-- <p class="p-info">{{profile.fax != null && profile.fax != '' ? profile.fax : '---'}}</p> -->
+                        <p class="p-info">---</p>
+                    </div>
+                    <div class="text-end">
+                        <h4 class="title">Gender</h4>
+                        <p class="p-info">{{profile.gender != null && profile.gender != '' ? profile.gender : '---'}}
+                        </p>
+                    </div>
+                </div>
+                <div class="tags" *ngIf="profile.website != undefined && profile.website.length != 0">
+                    <h4 class="title">Website Link</h4>
+                    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px"
+                        *ngFor="let website of profile.website;let i = index">
+                        <mat-icon>link</mat-icon>
+                        <a target="_blank" [href]="website">{{website}}</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="profile-detail" style="background-color: #fff;">
+            <div fxLayout="column" fxLayoutGap="5px">
+                <div class="" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx"
+                    style="margin-bottom: 15px;">
+                    <p class="prop">Project -
+                        {{projectInfo.name}}</p>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx"
+                    *ngIf="leadInfo.client != undefined ">
+                    <div class="">
+                        <h4 class="title">Client</h4>
+                        <p class="p-info">{{leadInfo.client.name}}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="profile-detail" style="background-color: #fff;">
+            <div fxLayout="column" fxLayoutGap="5px">
+                <div class="" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx"
+                    style="margin-bottom: 15px;">
+                    <p class="prop">Additional Info</p>
+                    <div>
+                        <mat-icon (click)="editProfile(profile, 'Additional Info')">edit</mat-icon>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                    <div class="" *ngIf="profile.description != null && profile.description != ''">
+                        <p align="justify" class="profile-description" *ngIf="!showMoreInfo">
+                            {{profile.description | slice:0:500}}{{profile.description.length >= 500 ? '...': ''}}
+                        </p>
+                        <p align="justify" class="profile-description" *ngIf="showMoreInfo"> {{profile.description}}
+                        </p>
+                        <label (click)="readMore()" class="readmore"
+                            *ngIf="profile.description != undefined && profile.description.length > 150">{{!showMoreInfo
+                            ? 'Read More >>' : '<< Read Less'}}</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="profile-detail" style="background-color: #fff;">
+            <div fxLayout="column" fxLayoutGap="5px">
+                <div class="" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx"
+                    style="margin-bottom: 15px;">
+                    <p class="prop">Quality</p>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                    <div class="">
+                        <h4 class="title">Score</h4>
+                        <p class="p-info">{{leadInfo.score != null && leadInfo.score != '' ? leadInfo.score : '---'}}
+                        </p>
+                    </div>
+                    <div class="text-end">
+                        <h4 class="title">Source</h4>
+                        <p class="p-info">{{leadInfo.source != null && leadInfo.source != '' ? leadInfo.source : '---'}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="profile-detail" style="background-color: #fff;">
+            <div fxLayout="column" fxLayoutGap="5px">
+                <div class="" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx"
+                    style="margin-bottom: 15px;">
+                    <p class="prop">Date & Time</p>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                    <div class="">
+                        <h4 class="title">Created At</h4>
+                        <p class="p-info">{{leadInfo.created_at | date: 'dd/MM/yyyy'}}</p>
+                    </div>
+                    <div class="text-end">
+                        <h4 class="title">Client Modified At</h4>
+                        <p class="p-info">{{leadInfo.last_client_status_updated_at | date: 'dd/MM/yyyy'}}</p>
+                    </div>
+                    <!-- <div class="">
+                        <h4 class="title">Vendor Modified At</h4>
+                        <p class="p-info">{{leadInfo.last_vendor_status_updated_at | date: 'dd/MM/yyyy'}}</p>
+                    </div> -->
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

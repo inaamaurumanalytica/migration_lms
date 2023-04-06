@@ -1,0 +1,148 @@
+<div style="height: 100%;background-color: #ffffff94 !important;" *ngIf="showComponentLoader">
+	<div class="loader" style="position: fixed;top: 50%;left: 50%;">
+		<img src="/assets/orange-loader.gif" class="ajax-loader" style="width:50px;">
+	</div>
+</div>
+<div style="margin-left: 7%;margin-right: 0%;" fxLayout="column" class="components-container-gt-xs" [ngClass.xs]="'components-container-xs'" fxLayoutGap="20px">
+	<div *ngIf="!showComponentLoader">
+		<div style="display:flex;">
+			<span style="padding:6px;margin-right: 5px;">
+				<mat-icon  routerLink="/page/whatsapp-rules" style="cursor:pointer; border:1px solid;border-radius: 10rem;"
+					title="Back To Whatsapp Rule">
+					arrow_back</mat-icon>
+			</span>
+
+			<h2 style="font-family: ProximaNovaLight,sans-serif;font-weight: normal;line-height: 0px">
+				Lead
+				Whatsapp Rule
+			</h2>
+		</div>
+		<div>
+			<table id="tbl" border="0" cellspacing="0" cellpadding="0"
+				class="wf_form_UI wf_view_form w400 sandboxDiffChanges">
+				<tbody>
+					<tr>
+						<td style="font-family: ProximaNovaRegular,sans-serif;">Rule Name</td>
+						<td style="font-weight: 600"><span class="proximas"
+								*ngIf="whatsappRule.name != undefined">{{whatsappRule.name}}</span></td>
+					</tr>
+					<tr>
+						<td style="font-family: ProximaNovaRegular,sans-serif;">Project Name</td>
+						<td style="font-weight: 600"><span class="proximas"
+								*ngIf="whatsappRule.project != undefined">{{whatsappRule.project.name}}</span>
+							<!-- <span class="f12 color_9 pL10">On&nbsp;12/11/2018</span> -->
+						</td>
+					</tr>
+					<tr>
+						<td style="font-family: ProximaNovaRegular,sans-serif;">Created By</td>
+						<td style="font-weight: 600"><span class="proximas"
+								*ngIf="whatsappRule.created_by != undefined">{{whatsappRule.created_by}}</span>
+							<span
+								class="f12 color_9 pL10">On&nbsp;{{whatsappRule.created_at | date : 'dd/MM/yyyy'}}</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div *ngIf="!showComponentLoader" >
+		<span style="font-weight:600;font-family: ProximaNovaLight,sans-serif;">Rule Entries:</span>
+		<button class="reorder-button" style="float:right" (click)="cancelReorder()"
+			*ngIf="showDataTable">Cancel</button>
+		<button class="save-reorder-button" style="float:right" (click)="saveReorder()"
+			*ngIf="showDataTable">Save</button>
+		<button class="reorder-button" style="float:right" (click)="reorder()"
+			*ngIf="whatsappRule.whats_app_rule_criterias.length != 0 && !showDataTable">Reorder</button>
+		<button class="create-rule-button" style="float:right" *ngIf="!showDataTable" (click)="createRuleEntry()">Create
+			Rule
+			Entry</button>
+	</div>
+	<div fxFlex class="mat-elevation-z4 table-component-holder" style="display:flex;width:70px;gap:40px;" *ngIf="!showComponentLoader" style="background: white;">
+		<div class="table-container" style="justify-self:flex-end;" >
+			<div [hidden]="whatsappRule.whats_app_rule_criterias.length != 0" style="text-align:center">
+				<button class="create-rule-button" style="margin-top: 35px;" (click)="createRuleEntry()">Create Rule
+					Entry</button>
+				<h2 style="color: rgb(253, 143, 29);text-align: center;">
+					No Whatsapp Rule Criteria Available
+				</h2>
+			</div>
+
+			<mat-table [dataSource]="whatsappRule.whats_app_rule_criterias"
+				*ngIf="whatsappRule.whats_app_rule_criterias.length != 0 && showDataTable == false" matSort
+				class="mat-elevation-z8">
+				<ng-container matColumnDef="name">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> Criteria </mat-header-cell>
+					<mat-cell *matCellDef="let element" style="display:block; margin: 10px;">
+						<div *ngFor="let criteria of element.rules" style="padding:5px;">
+							<span
+								style="color:#20b8a8; font-size: 15px;word-wrap: break-word;">{{criteria.field}}</span>&nbsp;
+							<span style="font-size: 15px;word-wrap: break-word;">{{criteria.operator}}</span>&nbsp;
+							<span style="color:#20b8a8; font-size: 15px;word-wrap: break-word;"
+								*ngIf="criteria.values != undefined">{{criteria.values}}</span>
+							<span style="color:#20b8a8; font-size: 15px;word-wrap: break-word;"
+								*ngIf="criteria.value != undefined">{{criteria.value}}</span>
+						</div>
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="active">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> Active </mat-header-cell>
+					<mat-cell *matCellDef="let element">
+						<mat-slide-toggle class="example-margin" [checked]="element.active"
+							(change)="changeActive(element)"></mat-slide-toggle>
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="action">
+					<mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+					<mat-cell *matCellDef="let element">
+						<button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"
+							(click)="menuTrigger.openMenu()">
+							<mat-icon>more_vert</mat-icon>
+						</button>
+						<mat-menu #menu="matMenu">
+							<span (mouseleave)="menuTrigger.closeMenu()">
+								<button mat-menu-item (click)="edit(element)">
+									<mat-icon>edit</mat-icon>
+									<span>Edit</span>
+								</button>
+								<button mat-menu-item (click)="delete(element)">
+									<mat-icon>delete</mat-icon>
+									<span>Delete</span>
+								</button>
+							</span>
+						</mat-menu>
+					</mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+			</mat-table>
+
+			<mat-paginator #paginator *ngIf="!showDataTable"
+				[ngStyle]="{'display':whatsappRule.whats_app_rule_criterias.length == 0 ? 'none' : 'block' }"
+				[length]="whatsappRule.whats_app_rule_criterias.length" [pageIndex]="0" [pageSize]="25"
+				[pageSizeOptions]="[5, 10, 25, 100]">
+			</mat-paginator>
+		</div>
+		<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="showDataTable">
+			<div class="example-header-box" style="display:-webkit-box;">
+				<div style="width:50%">Criteria</div>
+				<div>Assign To</div>
+			</div>
+			<div class="row example-box" *ngFor="let element of whatsappRule.whats_app_rule_criterias" cdkDrag>
+				<div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+				<div style="width: 50%;">
+					<div *ngFor="let criteria of element.rules" style="padding:5px;word-wrap: break-word;">
+						<span
+							style="color:#20b8a8; font-size: 15px;word-wrap: break-word;">{{criteria.field}}</span>&nbsp;
+						<span style="font-size: 15px;">{{criteria.operator}}</span>&nbsp;
+						<span style="color:#20b8a8; font-size: 15px;word-wrap: break-word;"
+							*ngIf="criteria.values != undefined">{{criteria.values}}</span>
+						<span style="color:#20b8a8; font-size: 15px;word-wrap: break-word;"
+							*ngIf="criteria.value != undefined">{{criteria.value}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

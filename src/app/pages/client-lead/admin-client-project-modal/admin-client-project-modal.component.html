@@ -1,0 +1,85 @@
+<mat-toolbar class="primary m-0">
+	<mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+		<span class="title dialog-title">SETTING</span>
+		<span fxFlex="1 1 auto"></span>
+		<button mat-icon-button (click)="close()" aria-label="Close dialog">
+			<mat-icon>close</mat-icon>
+		</button>
+	</mat-toolbar-row>
+</mat-toolbar>
+<div class="modal-content">
+	<mat-dialog-content *ngIf="showAutoSetting">
+		<mat-tab-group mat-align-tabs="center" class="lead-info">
+			<mat-tab label="Auto Assigned">
+				<div class="permission-view">
+					<div class="form-group">
+						<mat-checkbox [(ngModel)]="autoClientAssign" (change)="autoVerified($event)">Auto Assigned
+						</mat-checkbox>
+					</div>
+					<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="margin-top:30px;">
+						<mat-list>
+							<mat-list-item *ngIf="!showTimeLimit">
+								<label class="limit-title">Registration Time Limit</label>
+								<input style="width: 100px;" [(ngModel)]="project.my_registration_time_limit"
+									type="number" min="0" class="form-input" disabled>
+								<label class="limit-hours">Hours</label>
+
+								<button mat-button class="ml-50 btn btn-primary" (click)="editTimeLimit()">Edit</button>
+							</mat-list-item>
+							<mat-list-item *ngIf="showTimeLimit">
+								<label class="limit-title">Registration
+									Time Limit</label>
+								<input style="width: 100px;" [(ngModel)]="registrationTimeLimit" type="number" min="0"
+									class="form-input" (keypress)="restrictNumeric($event)">
+								<label class="limit-hours">Hours</label>
+								<button mat-button class="ml-50 btn btn-primary" *ngIf="!btnStatus"
+									(click)="saveTimeLimit()">Save</button>
+								<button mat-button class="ml-50 btn btn-primary" *ngIf="btnStatus"
+									disabled>Saving...</button>
+								<button mat-button class="ml-10 btn btn-light" (click)="cancel()">Cancel</button>
+							</mat-list-item>
+						</mat-list>
+					</div>
+				</div>
+			</mat-tab>
+			<mat-tab label="Assign Multiple User">
+				<div>
+					<div style="display: grid;margin-top: 20px;border: 1px solid #fbf3f3;">
+						<table mat-table [dataSource]="users" *ngIf="users.length != 0" class="mat-elevation-z8">
+							<ng-container matColumnDef="select">
+								<th mat-header-cell *matHeaderCellDef>
+									<mat-checkbox (change)="$event ? masterToggle() : null" [checked]="isAllSelected()"
+										[indeterminate]="selection.hasValue() && !isAllSelected()">
+									</mat-checkbox>
+								</th>
+								<td mat-cell *matCellDef="let element">
+									<mat-checkbox (click)="$event.stopPropagation()"
+										(change)="$event ? selection.toggle(element.id) : null"
+										[checked]="selection.isSelected(element.id)">
+									</mat-checkbox>
+								</td>
+							</ng-container>
+							<ng-container matColumnDef="name">
+								<th mat-header-cell *matHeaderCellDef> Name </th>
+								<td mat-cell *matCellDef="let element"> {{element.name}} </td>
+							</ng-container>
+
+							<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+							<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+						</table>
+						<div fxLayout="row" *ngIf="users.length != 0" fxLayout.lt-sm="column" fxLayoutGap="20px"
+							style="margin-top:20px;">
+							<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+							<button mat-button class="btn btn-primary" [disabled]="selection.selected.length == 0"
+								(click)="createWebhook()">Submit</button>
+						</div>
+						<h1 style="text-align: center;color: #BF9724;" *ngIf="users.length == 0">No User Found</h1>
+					</div>
+				</div>
+			</mat-tab>
+		</mat-tab-group>
+	</mat-dialog-content>
+</div>
+<div class="dark-overlay" *ngIf="!showAutoSetting">
+	<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>

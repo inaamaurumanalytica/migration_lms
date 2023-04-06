@@ -1,0 +1,20 @@
+
+<div class="row" style="display:flex;justify-content: space-around;align-items: center;margin-top: 35px;">
+  <div class="d-flex col-4">
+    <mat-card style="width:100px;height:40px;text-align:center;line-height: 40px;background-color: #00c08d;">
+      <mat-card-content style="color:white" >DOCs</mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-4 cpl-calculator" *ngIf="userInfo.admin || userInfo.member_type == 'Vendor' " style="cursor: pointer;" (click)="cplCalculator()">
+    <mat-card class="cpl-calculator-btn">
+      <mat-card-content style="color:white" > 
+        <a target="_blank"   (click)="cplCalculator()"> CPL Calculator</a>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="card col-4">
+    <mat-card style="width:100px;height:40px;text-align:center;line-height: 40px;background-color:#00c08d">
+      <mat-card-content style="color:white">Coming Soon</mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,382 @@
+<div class="dark-overlay" *ngIf="showComponentLoader">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div class="page-container wrapper" *ngIf="!showComponentLoader" style="padding-left: 10px;">
+  
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+    <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+      <div class="logo" fxlayout="row" fxlayoutalign="start center" style="display: flex">
+        <span class="logo-text h1 ng-trigger ng-trigger-animate" style="margin-top: 8px;"> LEAD INFO </span>
+      </div>
+    </div>
+
+    <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+
+
+      <!-- <div class="export-lead" matTooltip="Upload Leads" *ngIf="userInfo.member_type == 'Vendor'"
+              (click)="uploadLead()">
+              <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" style="margin-top: 5px;"
+                  role="img" aria-hidden="true">
+                  cloud_upload
+              </mat-icon>
+          </div> -->
+
+
+      <div class="user-action-btn" *ngIf="userInfo.member_type == 'Vendor'">
+
+        <!-- <button mat-button class="click-btn" (click)="create()">
+                  <mat-icon matTooltip="Create Lead">add</mat-icon>
+                  create lead
+              </button> -->
+
+        <button mat-button class="click-btn" (click)="edit(leadDetail)">
+          <mat-icon matTooltip="Create Lead">edit</mat-icon>
+          update lead
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
+  <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+    *ngIf="leadDetail == 'undefined'">No Lead Found</h1>
+
+  <!-- <mat-card *ngIf="showSelect">
+      <mat-card-content>
+          <div class="lead-info" fxFlex="1 1 5%">
+              <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8px">
+                  <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()"></mat-checkbox>
+              </div>
+          </div>
+          <div class="lead-info" fxFlex="1 1 3%"
+              *ngIf="userInfo.member_type != 'Client' && showSelect && this.selection.selected.length != 0">
+              <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8px">
+                  <mat-icon matTooltip="Delete Lead" style="color: red;line-height: 14px; height: 10px !important;" (click)="deleteLeadModal()">delete</mat-icon>
+              </div>
+          </div>
+      </mat-card-content>
+  </mat-card> -->
+
+  <mat-card style="margin-top: 1rem;" [ngStyle]="{'background-color': lead.lead_status == 'V Hold' ? '#dad3d3' : ''}"
+    [hidden]="leadDetail == 'undefined'">
+
+    <mat-card-content>
+
+      <div id="lead-details" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+
+        <div fxFlex="25">
+          <p>Name</p>
+          <p><strong>{{leadDetail?.name?leadDetail?.name:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>Email</p>
+          <p><strong>{{leadDetail?.email?leadDetail?.email:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>Phone</p>
+          <p><strong>{{leadDetail?.phone?leadDetail?.phone:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>Budget</p>
+          <p><strong>{{leadDetail?.budget?leadDetail?.budget:'NA'}}</strong></p>
+        </div>
+
+      </div>
+
+      <div id="lead-details" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+
+        <div fxFlex="25">
+          <p>Lead Status</p>
+          <p><strong>{{leadDetail?.lead_status?leadDetail?.lead_status:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>Lead Score</p>
+          <p><strong>{{leadDetail?.score?leadDetail?.score:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>Lead Source</p>
+          <p><strong>{{leadDetail?.source?leadDetail?.source:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p></p>
+          <p></p>
+        </div>
+
+      </div>
+
+      <div id="lead-details" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+
+        <div fxFlex="25">
+          <p>Project Id</p>
+          <p><strong>{{leadDetail?.project?.id?leadDetail?.project?.id:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>Project</p>
+          <p><strong>{{leadDetail?.project?.name?leadDetail?.project?.name:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p></p>
+          <p></p>
+        </div>
+
+        <div fxFlex="25">
+          <p></p>
+          <p></p>
+        </div>
+
+      </div>
+
+      <div id="lead-details" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+
+        <!-- <div fxFlex="25">
+            <p>User</p>
+            <p><strong>Name</strong></p>
+          </div> -->
+
+        <div fxFlex="25">
+          <p>Client Id</p>
+          <p><strong>{{leadDetail?.client?.id?leadDetail?.client?.id:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>Client</p>
+          <p><strong>{{leadDetail?.client?.name?leadDetail?.client?.name:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>Client Remark</p>
+          <p><strong>Name</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>Client Modified Date</p>
+          <p><strong>{{ (leadDetail?.last_client_status_updated_at)?(leadDetail?.last_client_status_updated_at |
+              date:'dd-MM-yyyy hh:mm a'):'NA'}}</strong></p>
+        </div>
+
+      </div>
+
+      <div id="lead-details" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+
+        <div fxFlex="25">
+          <p>Vendor Remark</p>
+          <p><strong>{{leadDetail?.vendor_remark?leadDetail?.vendor_remark:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>Vendor Modified Date</p>
+          <p><strong>{{ (leadDetail?.last_vendor_status_updated_at)?(leadDetail?.last_vendor_status_updated_at |
+              date:'dd-MM-yyyy hh:mm a'):'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p></p>
+          <p></p>
+        </div>
+
+        <div fxFlex="25">
+          <p></p>
+          <p></p>
+        </div>
+
+      </div>
+
+      <div id="lead-details" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+
+        <div fxFlex="25">
+          <p>Last Modified By</p>
+          <p><strong>{{leadDetail?.last_modified_by_name?leadDetail?.last_modified_by_name:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>Created Date</p>
+          <p><strong>{{ (leadDetail?.created_at)?(leadDetail?.created_at | date:'dd-MM-yyyy hh:mm a'):'NA'}}</strong>
+          </p>
+        </div>
+
+        <div fxFlex="25">
+          <p></p>
+          <p></p>
+        </div>
+
+        <div fxFlex="25">
+          <p></p>
+          <p></p>
+        </div>
+
+      </div>
+
+      <div *ngIf="lead.ip_info != null && userInfo.member_type =='Vendor'" id="lead-details" fxLayout="row"
+        fxLayoutAlign="start center" fxLayoutGap="20px">
+
+        <div fxFlex="25" *ngFor="let key of Object.keys(leadDetail.form_data)">
+          <p>{{key}}</p>
+          <p><strong>{{leadDetail.form_data[key] | json}}</strong></p>
+        </div>
+
+      </div>
+
+      <div *ngIf="userInfo.member_type =='Vendor'" id="lead-details" fxLayout="row" fxLayoutAlign="start center"
+        fxLayoutGap="20px">
+
+        <div fxFlex="25">
+          <p>UTM Source</p>
+          <p><strong>{{leadDetail.utm_source}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>UTM Medium</p>
+          <p><strong>{{leadDetail.utm_medium}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>UTM Campaign</p>
+          <p><strong>{{leadDetail.utm_campaign}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>UTM Content</p>
+          <p><strong>{{leadDetail.utm_content}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>UTM Term</p>
+          <p><strong>{{leadDetail.utm_term}}</strong></p>
+        </div>
+
+      </div>
+
+      <div *ngIf="userInfo.member_type =='Vendor'" id="lead-details" fxLayout="row" fxLayoutAlign="start center"
+        fxLayoutGap="20px">
+
+        <div fxFlex="25">
+          <p>fb_ad_id</p>
+          <p><strong>{{leadDetail.fb_ad_id?leadDetail.fb_ad_id:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>fb_ad_name</p>
+          <p><strong>{{leadDetail.fb_ad_name?leadDetail.fb_ad_name:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>fb_adset_id</p>
+          <p><strong>{{leadDetail.fb_adset_id?leadDetail.fb_adset_id:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>fb_adset_name</p>
+          <p><strong>{{leadDetail.fb_adset_name?leadDetail.fb_adset_name:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>fb_campaign_id</p>
+          <p><strong>{{leadDetail.fb_campaign_id?leadDetail.fb_campaign_id:'NA'}}</strong></p>
+        </div>
+
+      </div>
+
+      <div *ngIf="userInfo.member_type =='Vendor'" id="lead-details" fxLayout="row" fxLayoutAlign="start center"
+        fxLayoutGap="20px">
+
+        <div fxFlex="25">
+          <p>fb_campaign_name</p>
+          <p><strong>{{leadDetail.fb_campaign_name?leadDetail.fb_campaign_name:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>google_ad_id</p>
+          <p><strong>{{leadDetail.google_ad_id?leadDetail.google_ad_id:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>google_ad_name</p>
+          <p><strong>{{leadDetail.google_ad_name?leadDetail.google_ad_name:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>google_adgroup_id</p>
+          <p><strong>{{leadDetail.google_adgroup_id?leadDetail.google_adgroup_id:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>google_adgroup_name</p>
+          <p><strong>{{leadDetail.google_adgroup_name?leadDetail.google_adgroup_name:'NA'}}</strong></p>
+        </div>
+
+      </div>
+
+      <div *ngIf="userInfo.member_type =='Vendor'" id="lead-details" fxLayout="row" fxLayoutAlign="start center"
+        fxLayoutGap="20px">
+
+        <div fxFlex="25">
+          <p>google_campaign_id</p>
+          <p><strong>{{leadDetail.google_campaign_id?leadDetail.google_campaign_id:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>google_campaign_name</p>
+          <p><strong>{{leadDetail.google_campaign_name?leadDetail.google_campaign_name:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>google_keyword_id</p>
+          <p><strong>{{leadDetail.google_keyword_id?leadDetail.google_keyword_id:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p>google_keyword_name</p>
+          <p><strong>{{leadDetail.google_keyword_name?leadDetail.google_keyword_name:'NA'}}</strong></p>
+        </div>
+
+        <div fxFlex="25">
+          <p></p>
+          <p></p>
+        </div>
+
+      </div>
+
+
+      <div id="weblog-details" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px"
+        style="border-bottom: none;">
+
+        <h2 *ngIf="!leadWebLog?.length" style="color:#BF9724;text-align: center;">Weblog Not Found</h2>
+
+        <!-- <div fxFlex="25">
+            <p>Last Modified By</p>
+            <p><strong>{{leadDetail?.last_modified_by_name?leadDetail?.last_modified_by_name:'NA'}}</strong></p>
+          </div>
+  
+          <div fxFlex="25">
+            <p>Created Date</p>
+            <p><strong>{{ (leadDetail?.created_at)?(leadDetail?.created_at | date:'dd-MM-yyyy hh:mm a'):'NA'}}</strong></p>
+          </div> 
+          
+          <div fxFlex="25">
+            <p></p>
+            <p></p>
+          </div>
+  
+          <div fxFlex="25">
+            <p></p>
+            <p></p>
+          </div> -->
+
+      </div>
+
+    </mat-card-content>
+
+  </mat-card>
+
+
+</div>

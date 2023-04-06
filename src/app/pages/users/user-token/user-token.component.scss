@@ -1,0 +1,24 @@
+.table-header {
+	background-color: #5c6bc0;
+	color: white;
+	padding: 0 5px;
+}
+
+.table-component-holder {
+	border: 1px solid #327ebd;
+	background-color: white;
+}
+
+.example-container {
+	display: flex !important;
+	flex-direction: column;
+}
+  
+.example-container > * {
+	width: 100%;
+}
+
+.close-modal:hover{
+	background: #ccc9c9;
+	border-radius: 20px;
+}

@@ -1,0 +1,25 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>EDIT VENDOR</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+	<mat-dialog-content class="main-content">
+		<form [formGroup]="editVendorForm">
+			<div class="form-group">
+				<label style="font-weight: 500">Name <span style="color: #00C08D">*</span></label>
+				<input type="text" class="form-input" name="name" id="name" placeholder="Name" formControlName="name"
+					required>
+			</div>
+		</form>
+	</mat-dialog-content>
+
+
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="editVendor()" [disabled]="!editVendorForm.valid"
+		*ngIf="!btnStatus">Save</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Saving...</button>
+</div>

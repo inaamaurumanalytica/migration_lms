@@ -1,0 +1,104 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>CREATE USER</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+	<mat-dialog-content class="main-content">
+		<form [formGroup]="createUserForm">
+
+			<div class="form-group" *ngIf="userInfo.org_admin && isVendorAdmin ">
+				<label style="font-weight: 500">User Type <span style="color: #ffa73d"></span></label>
+				<mat-select placeholder="User Type" class="form-input" name="role"
+					formControlName="role">
+					<mat-option value=""> Standard Vendor User</mat-option>
+					<mat-option value="SalesAdmin">Sales Admin</mat-option>
+				</mat-select>
+			</div>
+
+			<!-- hello -->
+
+			<div class="form-group">
+				<label style="font-weight: 500">Name <span style="color: #00C08D">*</span></label>
+				<input type="text" class="form-input" name="name" id="name" placeholder="Name" formControlName="name"
+					required>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">User Name <span style="color: #00C08D">*</span></label>
+				<input type="text" class="form-input" name="username" id="username" placeholder="User Name"
+					formControlName="username" required>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Email <span style="color: #00C08D">*</span></label>
+				<input type="text" class="form-input" name="email" id="email" placeholder="Email"
+					formControlName="email" required autocomplete="off">
+				<div class="mat-form-field-subscript-wrapper"
+					*ngIf="createUserForm.controls['email'].hasError('pattern')">
+					<div class="ng-tns-c21-18" style="opacity: 1; transform: translateY(0%);color: #f44336">
+						Not a valid pattern
+					</div>
+				</div>
+			</div>
+			<div class="form-group" *ngIf="userInfo.admin">
+				<label style="font-weight: 500">User Type <span style="color: #00C08D">*</span></label>
+				<mat-select placeholder="User Type" class="form-input" (selectionChange)="getTypeList()"
+					formControlName="memberType" required>
+					<mat-option value="Vendor">Vendor</mat-option>
+					<mat-option value="Client">Client</mat-option>
+				</mat-select>
+			</div>
+			<div class="form-group" *ngIf="userInfo.admin">
+				<div *ngIf="showVendor">
+					<label style="font-weight: 500">Assign Vendor <span style="color: #00C08D">*</span></label>
+					<mat-select placeholder="Assign Vendor" class="form-input" formControlName="member" required>
+						<mat-option [value]="vendor.id" *ngFor="let vendor of vendors">{{vendor.name}}</mat-option>
+					</mat-select>
+				</div>
+				<div *ngIf="showClient">
+					<label style="font-weight: 500">Assign Client <span style="color: #00C08D">*</span></label>
+					<mat-select placeholder="Assign Client" class="form-input" formControlName="member" required>
+						<mat-option [value]="client.id" *ngFor="let client of clients">{{client.name}}</mat-option>
+					</mat-select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Password <span style="color: #00C08D">*</span></label>
+				<input type="password" class="form-input" name="password" id="password" placeholder="Must have atleast 6 characters"
+					formControlName="password" required autocomplete="off">
+				<div class="mat-form-field-subscript-wrapper"
+					*ngIf="createUserForm.controls['password'].invalid && (createUserForm.controls['password'].dirty || createUserForm.controls['password'].touched)">
+					<div class="ng-tns-c21-18" *ngIf="createUserForm.controls['password'].errors.required"
+						style="opacity: 1; transform: translateY(0%);color: #f44336">
+						You must enter a password
+					</div>
+					<div *ngIf="createUserForm.controls['password'].hasError('minlength')" class="ng-tns-c21-18"
+						style="opacity: 1; transform: translateY(0%);color: #f44336">
+						<span>Password should contain at least 8 characters</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Password Confirm <span style="color: #00C08D">*</span></label>
+				<input type="password" class="form-input" name="password_confirmation" id="password_confirmation"
+					placeholder="Confirm Password" formControlName="password_confirmation" required>
+				<div class="mat-form-field-subscript-wrapper"
+					*ngIf="createUserForm.controls['password_confirmation'].invalid && (createUserForm.controls['password_confirmation'].dirty || createUserForm.controls['password_confirmation'].touched)">
+					<div class="ng-tns-c21-18"
+						*ngIf="createUserForm.controls['password_confirmation'].errors?.notEquivalent"
+						style="opacity: 1; transform: translateY(0%);color: #f44336">
+						Password not match
+					</div>
+				</div>
+			</div>
+			
+
+		</form>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="addUser()" [disabled]="!createUserForm.valid"
+		*ngIf="!btnStatus">Save</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Saving...</button>
+</div>

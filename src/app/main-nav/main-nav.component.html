@@ -1,0 +1,123 @@
+<mat-sidenav-container class="sidenav-container">
+  
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false"
+    [ngClass]="sidebarPin ? 'fix-sidenav':''">
+    <mat-toolbar class="logo-toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="background-color: #FFFFFF;">
+      <div class="logo">
+        <img class="img-logo" src="assets/images/logo-A.png">
+      </div>
+      <div class="buttons">
+        <button type="button" class="menu-btn" aria-label="Toggle sidenav" *ngIf="sidebarFix" mat-icon-button
+          (click)="pinActive()">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <button type="button" class="menu-btn" aria-label="Toggle sidenav" *ngIf="!sidebarFix" mat-icon-button
+          (click)="pinDeactive()">
+          <mat-icon aria-label="Side nav toggle icon">clear</mat-icon>
+        </button>
+      </div>
+      <mat-icon class="sidebar-clear" (click)="drawer.toggle()" style="cursor: pointer">clear</mat-icon>
+    </mat-toolbar>
+    <mat-nav-list id="sidenav-menu">
+      <!-- <div class="lms-user" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px"
+        style="border-bottom: 1px solid rgba(108, 104, 104, 0.63);">
+        <div class="user-img">
+          <img class="avatar" [src]="userInfo.avatar">
+        </div>
+        <div>{{userInfo.name}}</div>
+        <div>{{userInfo.email}}</div>
+      </div> -->
+      <a class="nav-link" *ngFor="let menu of menus" (click)="clipBoardService.select(menu.link)"
+        [ngClass]="{active: clipBoardService.isActive(menu.link)}">
+        <span class="nav-link-icon"><img [src]="menu.icon" width="14px" height="14px"></span>
+        <span class="nav-link-title" [ngClass]="sidebarPin ? 'show-side-menu-link':''">{{menu.name}}</span>
+      </a>
+      <div *ngIf="userInfo.admin">
+        <a class="nav-link" (click)="showSubmenu = !showSubmenu">
+          <span class="nav-link-icon"><img src="/assets/images/sidenav-icon/system-configration.png" width="14px"
+              height="14px"></span>
+          <span class="nav-link-title" [ngClass]="sidebarPin ? 'show-side-menu-link':''"
+            *ngIf="isExpanded || isShowing">System Config</span>
+          <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}" *ngIf="isExpanded || isShowing">
+            expand_more
+          </mat-icon>
+        </a>
+        <div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="(isShowing || isExpanded)"
+          style="margin-bottom: 100px;">
+          <a class="nav-system" (click)="clipBoardService.select('/page/permission')"
+            [ngClass]="{active: clipBoardService.isActive('/page/permission')}">
+            <span class="nav-link-title" [ngClass]="sidebarPin ? 'show-side-menu-link':''">Permission</span>
+          </a>
+          <a class="nav-system" (click)="clipBoardService.select('/page/policy')"
+            [ngClass]="{active: clipBoardService.isActive('/page/policy')}">
+            <span class="nav-link-title" [ngClass]="sidebarPin ? 'show-side-menu-link':''">Customize Policy</span>
+          </a>
+          <a class="nav-system" (click)="clipBoardService.select('/page/color')"
+            [ngClass]="{active: clipBoardService.isActive('/page/color')}">
+            <span class="nav-link-title" [ngClass]="sidebarPin ? 'show-side-menu-link':''">Color</span>
+          </a>
+        </div>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar class="mbv-nav" [ngClass]="sidebarPin ? 'fix-toolbar':''">
+
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+
+      <div class="flex flex-1">
+        <!-- <span fxShow fxHide.xs="true" fxHide.md="false" fxHide.lg="false"><img class="img-logo" src="assets/images/logo.png">
+        </span> -->
+        <span fxShow fxHide.xs="true" fxHide.md="false" fxHide.lg="false">AutomateLeads
+        </span>
+        <span fxShow fxHide.xs="false" fxHide.sm="true" fxHide.md="true" fxHide.lg="true">LMS</span>
+      </div>
+      <div class="flex flex-1">
+        <div class="fresh-lead-container">
+          <marquee direction="right">Fresh Leads -
+            <strong>{{clientLead?.lead_count?clientLead?.lead_count:'0'}}</strong></marquee>
+        </div>
+      </div>
+
+      <div class="flex">
+        <div class="user-name">
+          <span fxShow fxHide.xs="true" fxHide.md="false" fxHide.lg="false" style="color: rgba(0,0,0,.54);">Hi,
+          </span><span class="">{{userInfo.name}}</span>
+        </div>
+        <!-- <img alt="user photo" src="assets/images/sidenav-icon/user-profile.png" class="user-image"
+          [matMenuTriggerFor]="menu" style="cursor: pointer"> -->
+        <img alt="user photo" src="assets/images/sidenav-icon/user-profile.png" class="user-image"
+          [matMenuTriggerFor]="menu" style="cursor: pointer" *ngIf="userInfo.avatar == null || userInfo.avatar == ''">
+        <img alt="user photo" [src]="userInfo.avatar" class="user-image" [matMenuTriggerFor]="menu"
+          style="cursor: pointer" *ngIf="userInfo.avatar != null && userInfo.avatar != ''">
+        <!-- profile dropdown -->
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="showProfile()">
+            <mat-icon>account_circle</mat-icon>
+            Profile
+          </button>
+          <button mat-menu-item (click)="showResource()">
+            <mat-icon>receipt</mat-icon>
+            Resource
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>power_settings_new</mat-icon>
+            Logout
+          </button>
+          <!-- <a mat-menu-item [routerLink]="['/pricing']">Pricing</a> -->
+        </mat-menu>
+      </div>
+
+    </mat-toolbar>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+<div [ngClass]="sidebarPin ? 'fix-page-container':''">
+  <router-outlet></router-outlet>
+</div>

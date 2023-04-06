@@ -1,0 +1,219 @@
+
+.logo .logo-text {
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    font-size: 16px;
+  }
+  
+  .card-p{
+    padding: 0 15px;
+}
+
+#insightCardHeader{
+    padding: 20px 30px 0px 30px;
+    .h-icon{
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 20px;
+        margin:  0 10px 0 0;
+    }
+    .analyse-icon{
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 15px;
+        background: #fff;
+        color: #00C08D;
+        padding: 2px;
+        border-radius: 3px;
+    }
+    .heading{
+        font-size: 18px;
+        font-weight: 500;
+        margin: 0 0 18px 0;
+        display: flex;
+        align-items: flex-start;
+    }
+    .heading1{
+        font-size: 18px;
+        font-weight: 500;
+        margin: 0;
+        display: flex;
+        align-items: flex-start;
+    }
+    .sub-heading{
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0 0 0px 0;
+    }
+    .organge-button{
+        display: inline-block;
+        background: #00C08D;
+        font-size: 12px;
+        color: #fff;
+        padding: 6px 12px;
+        text-decoration: none;
+        border-radius: 7px;
+    }
+    .left{
+      
+    }
+    .right{
+        text-align: right;
+    }
+}
+
+#insightProgressBar{
+    padding: 0px 30px 0px 30px;
+    margin: 10px 0 10px 0;
+    .progress-bar-container{
+        float: left;
+        width: 100%;
+        position: relative;
+        .progress-top{
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            background: #6fef80;
+            height: 20px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .progress-bottom{
+            float: left;
+            width: 100%;
+            background: #f2f2f2;
+            height: 20px;
+            border-radius: 5px;
+        }
+    }
+}
+
+#insightTableHeader{
+    ul{
+        margin: 0;
+        padding: 0 30px;
+        li{
+            margin: 0;
+            padding: 8px 0px;
+            list-style: none;
+            .left{
+
+            }
+            .right{
+                text-align: right;
+            }
+            .table-heading{
+                font-size: 14px;
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+#insightTable{
+    ul{
+        margin: 0;
+        padding: 0 30px;
+        li{
+            margin: 0;
+            padding: 8px 0px;
+            list-style: none;
+            border-bottom: 1px solid #f2f2f2;
+            .left{
+
+            }
+            .right{
+                text-align: right;
+            }
+            .pin{
+                display: inline-block;
+                font-size: 18px;
+                vertical-align: middle;
+            }
+        }
+    }
+}
+
+#insightOtherProject{
+    padding: 0 30px;
+    .project-card{
+        background: #f2f2f2;
+        border-radius: 10px;
+        padding: 10px 10px;
+        margin: 5px 5px 5px 5px;
+        text-align: center;
+    }
+    .heading{
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0 0 10px 0;
+    }
+    .para{
+        margin: 0 0 0 0;
+    }
+    .pin{
+        display: inline-block;
+        font-size: 18px;
+        vertical-align: middle;
+    }
+}
+
+#insightAirport{
+    padding: 0 30px;
+    .plane{
+        float: left;
+        width: 10%;
+        text-align: left;
+    }
+    .airport-line{
+        float: left;
+        width: 75%;
+        text-align: center;
+        img{
+            width: 100%;
+        }
+    }
+    .airport-location{
+        float: right;
+        width: 15%;
+        text-align: center;
+    }
+}
+
+.scroller {
+    width: 100%;
+    height: 200px;
+    overflow-y: scroll;
+  }
+  
+/* width */
+    ::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+    ::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+/* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: #0c0108;
+}
+
+/* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+    background: #88dd88;
+}
+.delete-button {
+    display: none;
+    // position: static;
+    cursor: pointer;
+  }
+  .left:hover .delete-button {
+    display: inline-block;
+  }

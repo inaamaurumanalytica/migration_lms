@@ -1,0 +1,121 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" class="mb-10">
+		<h3><b>MEDIA PLAN</b> <span class="cs-color"> ({{data.name | uppercase}})</span></h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+	<mat-dialog-content class="project-status-dialog" [formGroup]="mediaForm">
+
+		<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+
+			<div class="form-group" fxFlex="33">
+				<label>TOTAL BUDGET</label>
+				<input type="number" class="form-input" name="name" placeholder="Total Budget"
+					formControlName="totalBudget" disabled [(ngModel)]="totalBudget">
+			</div>
+
+			<div class="form-group" fxFlex="33">
+				<label>TOTAL LEADS</label>
+				<input type="number" class="form-input" name="name" placeholder="Total Leads"
+					formControlName="totalLeads" disabled [(ngModel)]="totalLeads">
+			</div>
+
+			<div class="form-group" fxFlex="33">
+				<label>CPL (COST PER LEAD)</label>
+				<input type="number" class="form-input" name="name" placeholder="CPL" formControlName="totalCpl"
+					disabled [(ngModel)]="totalCPL">
+
+			</div>
+
+		</div>
+
+		<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px"
+			style="padding:16px 0px 0px 0px; width: 95%;">
+
+			<div class="form-group mb-0" fxFlex>
+				<label>TYPE </label>
+			</div>
+
+			<div class="form-group mb-0" fxFlex>
+				<label>SOURCE</label>
+			</div>
+
+			<div class="form-group mb-0" fxFlex>
+				<label>BUDGET</label>
+			</div>
+
+			<div class="form-group mb-0" fxFlex>
+				<label>NO. OF LEADS</label>
+			</div>
+
+			<div class="form-group" fxFlex>
+				<label>COST PER LEAD</label>
+			</div>
+
+			
+
+		</div>
+
+		<div fxLayout="row" style="font-size: 12px;" formArrayName="data"
+			*ngFor="let item of mediaForm.get('data')['controls'];let i = index; let isLast = last"
+			fxLayoutAlign="space-between center" fxLayoutGap="20px">
+			<mat-card style="margin-bottom: 10px;">
+
+				<mat-icon class="delete-icon" aria-hidden="false" (click)="delete(i,mediaArr[i]?.id)" aria-label="Delete icon">minimize
+				</mat-icon>
+				<mat-icon class="add-icon" *ngIf="isLast" aria-hidden="false" (click)="addMore()" aria-label="Add icon">
+					add</mat-icon>
+
+				<div fxLayout="row" [formGroupName]="i" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+
+
+					<div class="form-group" fxFlex>
+						<mat-select class="form-input" placeholder="Select Type" formControlName="campaign_type">
+							<mat-option value="CPL">CPL</mat-option>
+							<mat-option value="CPQL">CPQL</mat-option>
+						</mat-select>
+					</div>
+
+					<div class="form-group" fxFlex>
+						<mat-select class="form-input" placeholder="Select source" formControlName="entry_type">
+							<mat-option value="Facebook">Facebook</mat-option>
+							<mat-option value="Google">Google</mat-option>
+						</mat-select>
+					</div>
+
+					<div class="form-group" fxFlex>
+						<input type="number" class="form-input" name="name" placeholder="Budget"
+							formControlName="amount" (input)="gettotalBudget($event, i)">
+					</div>
+
+					<div class="form-group" fxFlex>
+						<input type="number" class="form-input" name="name" placeholder="No. of Leads"
+							formControlName="no_of_leads" (input)="gettotalLeads($event, i)">
+					</div>
+
+					<div class="form-group" fxFlex>
+							<input type="number" class="form-input" name="name" disabled placeholder="Cost Per Lead" formControlName="costperLead" [(ngModel)]="cpl[i]">
+						</div>
+
+					
+
+				</div>
+
+			</mat-card>
+
+		</div>
+	</mat-dialog-content>
+
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" *ngIf="!isUpdate" [disabled]="totalBudget < 1 || totalLeads < 1"
+		(click)="saveMediaForm()">Save</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus && !isUpdate">Saving...</button>
+
+	<button *ngIf="isUpdate" mat-button class="btn btn-primary" [disabled]="totalBudget < 1 || totalLeads < 1" (click)="updateMediaForm()">Update</button>
+	<button *ngIf="isUpdate && btnStatus" mat-button class="btn btn-primary">Updating...</button>
+
+</div>

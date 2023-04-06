@@ -1,0 +1,56 @@
+<div class="page-container wrapper vendor-wrapper" *ngIf="!showComponentLoader">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="5px" style="margin-bottom: 1rem;">
+        <div class="logo" fxlayout="row" fxlayoutalign="start center">
+            <h5 class="logo-text h1"> POLICIES </h5>
+        </div>
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <div class="lms-btn">
+                <button mat-button class="add-btn" matTooltip="Add Policy" (click)="createPolicy()">
+                    <mat-icon class="icon-btn">add_circle</mat-icon>
+                    add policy
+                </button>
+            </div>
+        </div>
+    </div>
+    <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+        *ngIf="policies.length == 0">No policy Found</h1>
+    <mat-card *ngFor="let policy of policies" style="margin-top: 1rem;" [hidden]="policies.length == 0"
+        class="custom-card">
+        <mat-card-content>
+            <div class="vendor-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+                <div class="vendor-info">
+                    <p class="title">Type</p>
+                    <span class="status-check">{{policy.new_doc_type}}</span>
+                </div>
+                <div class="vendor-info">
+                    <p class="title">Version</p>
+                    <span class="status-check">{{policy.version}}</span>
+                </div>
+                <div class="vendor-info">
+                    <p class="title">Published</p>
+                    <span class="status-check">
+                        <mat-slide-toggle [checked]="policy.published" (change)="changeActive(policy)">
+                        </mat-slide-toggle>
+                    </span>
+                </div>
+                <div class="vendor-info">
+                    <p class="title">Created At</p>
+                    <span class="status-check">{{policy.created_at | date: 'dd/MM/yyyy'}}</span>
+                </div>
+                <div class="vendor-info">
+                    <p class="title">Updated At</p>
+                    <span class="status-check">{{policy.updated_at | date: 'dd/MM/yyyy'}}</span>
+                </div>
+                <div class="vendor-info">
+                    <p class="title">Action</p>
+                    <span class="status-check">
+                        <mat-icon (click)="viewInfo(policy)">info</mat-icon>
+                    </span>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>

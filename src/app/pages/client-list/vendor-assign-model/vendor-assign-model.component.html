@@ -1,0 +1,37 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>ASSIGN VENDOR</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+
+	<mat-dialog-content *ngIf="!showComponentLoader && unassignedVendors.length != 0">
+		<form [formGroup]="vendorsClientForm">
+			<div class="form-group">
+				<label for="">Vendor</label>
+				<mat-select class="form-input" placeholder="Select Vendor" formControlName="assign"
+					(selectionChange)="assignVendor()">
+					<mat-option [value]="vendor" *ngFor="let vendor of unassignedVendors">{{vendor.name}}</mat-option>
+				</mat-select>
+			</div>
+		</form>
+	</mat-dialog-content>
+	<div class="assign-container" *ngIf="!showComponentLoader">
+		<h4>ASSIGNED VENDORS</h4>
+		<h1 style="color:#BF9724; text-align:center" *ngIf="assignedVendors.length == 0"> No Client Assigned</h1>
+		<div class="assign-project-container">
+			<div class="assign-project" fxLayoutAlign="space-between" *ngFor="let assignedVendor of assignedVendors">
+				<label class="assign-project-name">{{assignedVendor.name}}</label>
+				<span style="cursor: pointer;font-size: 12px;font-weight: 600;" matTooltip="Click to Unassigned Vendor"
+					(click)="removeVendor(assignedVendor)">x</span>
+			</div>
+		</div>
+	</div>
+
+	<mat-dialog-content *ngIf="showComponentLoader">
+		<div class="dark-overlay">
+			<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+		</div>
+	</mat-dialog-content>
+</div>

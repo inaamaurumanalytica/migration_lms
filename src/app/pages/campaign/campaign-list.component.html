@@ -1,0 +1,39 @@
+<div class="page-container wrapper" *ngIf="!showComponentLoader">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+        <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+            <div class="logo" fxlayout="row" fxlayoutalign="start center">
+                <span class="logo-text h1 ng-trigger ng-trigger-animate"> CAMPAIGN </span>
+            </div>
+        </div>
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+            <div class="user-action-btn" *ngIf="userInfo.admin">
+                <button mat-button class="click-btn" (click)="create()">
+                    <mat-icon>add_circle</mat-icon> create campaign
+                </button>
+            </div>
+        </div>
+    </div>
+    <h1 style="color:#00C08D;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+        *ngIf="campaigns.length == 0">No Campaign Found</h1>
+    <mat-card *ngFor="let campaign of campaigns" style="margin-top: 1rem;" [hidden]="campaigns.length == 0">
+        <mat-card-content>
+            <div class="users-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+                <div class="user-info" fxFlex="1 1 20%">
+                    <p class="user-title">{{campaign.name}}</p>
+                </div>
+                <div class="create-date">
+                    <p class="title">Schedule At</p>
+                    <span class="status-check">{{campaign.schedule_time | date : 'dd/MM/yyyy'}}</span>
+                </div>
+                <div class="create-date">
+                    <p class="title">Created At</p>
+                    <span class="status-check">{{campaign.created_at | date : 'dd/MM/yyyy'}}</span>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>

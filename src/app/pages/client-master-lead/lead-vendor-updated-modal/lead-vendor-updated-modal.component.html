@@ -1,0 +1,88 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>LEAD STATUS</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+	<mat-dialog-content class="mat-dialog-container-div">
+		<h6 style="font-size: 12px;color: #9c9a9a;letter-spacing: 0.8px;">
+			Select Reason for updating status to
+			<strong style="color: #BF9724;">V Not Interested</strong>
+		</h6>
+		<div>
+			<mat-radio-group fxLayout="column">
+				<mat-radio-button value="Not Interested" style="margin-bottom: 20px;"
+					(change)="selectType('Not Interested')" [checked]="selectedReason1">Not interested at all
+				</mat-radio-button>
+				<mat-radio-button value="Mismatch" (change)="selectType('Mismatch')" [checked]="selectedReason2">
+					Location /
+					Budget mismatch
+				</mat-radio-button>
+			</mat-radio-group>
+		</div>
+
+		<div class="form-group" style="margin-top: 20px;">
+			<textarea name="remark" placeholder="Enter Remark *" class="form-input" rows="5"
+				[(ngModel)]="remark"></textarea>
+		</div>
+
+		<div *ngIf="selectedReason2" style="margin-top: 20px;">
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">				
+				<div class="form-group" fxFlex="50">
+					<label for="">Budget</label>
+					<mat-select class="form-input" placeholder="Select Budget" (selectionChange)="changeBudget($event)"
+						[(ngModel)]="budget">
+						<mat-option value="10L-30L">10 Lakh - 30 Lakh</mat-option>
+						<mat-option value="30L-50L">30 Lakh - 50 Lakh</mat-option>
+						<mat-option value="50L-70L">50 Lakh - 70 Lakh </mat-option>
+						<mat-option value="70L-1Cr">70 Lakh- 1 Crore</mat-option>
+						<mat-option value="1Cr-2Cr">1 Crore - 2 Crore</mat-option>
+						<mat-option value="2Cr-Above">2 Crore - Above</mat-option>
+					</mat-select>
+				</div>
+				<div class="form-group" fxFlex="50">
+					<label>Possession Date <span style="color: #00C08D">*</span></label>
+					<input type="date" class="form-input" name="possession" id="possession" (change)="changeBudget(event)" placeholder="Possession Date"
+						[(ngModel)]="possession" required>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="selectedReason2" class="form-group">
+			<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+				<div fxFlex.xs="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100">
+					<mat-form-field class="example-container">
+						<mat-label>Search Locations e.g.- Sec-18, Noida, India</mat-label>
+						<mat-chip-list #chipListLocation>
+							<mat-chip style="font-size: 12px;" *ngFor="let location of locations"
+								[selectable]="selectable" [removable]="removable" (removed)="remove(location)">
+								{{location}}
+								<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+							</mat-chip>
+							<input placeholder="Add Locations e.g.- Sec-18, Noida, India"
+								[matChipInputFor]="chipListLocation"
+								[matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+								(matChipInputTokenEnd)="add($event)">
+						</mat-chip-list>
+					</mat-form-field>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="selectedReason2">
+			<div fxLayout="row" fxLayoutAlign="start center">
+				<div fxFlex="100">
+					<mat-card style="margin-bottom: 20px;">
+						<div #mapContainer id="map"></div>
+					</mat-card>
+				</div>
+			</div>
+		</div>
+	</mat-dialog-content>
+</div>
+
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-primary" [disabled]="checkStatus() || remark.trim() == ''" *ngIf="!btnStatus"
+		(click)="yes()">Submit</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Submitting..</button>
+</div>

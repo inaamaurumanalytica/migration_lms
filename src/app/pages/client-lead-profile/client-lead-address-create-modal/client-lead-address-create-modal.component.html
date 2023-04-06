@@ -1,0 +1,46 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center">
+		<h3>
+			CREATE ADDRESS
+		</h3>
+		<i class="material-icons close-modal" (click)="close()">
+			clear
+		</i>
+	</div>
+	<!-- <span style="font-size: 12px;color: #b7b7b7;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span> -->
+	<mat-dialog-content>
+		<form [formGroup]="addressForm">
+			<div class="form-group" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px"
+				style="margin-bottom: 10px;">
+				<mat-select class="form-input" placeholder="Select Residential Category *"
+					formControlName="address_category">
+					<mat-option value="Home">Home</mat-option>
+					<mat-option value="Term">Term</mat-option>
+					<mat-option value="Correspondence">Correspondence</mat-option>
+				</mat-select>
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-input" name="subject" id="subject" placeholder="Address *"
+					formControlName="line">
+			</div>
+			<div class="form-group" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+				<input type="text" class="form-input" name="city" id="city" placeholder="City *" formControlName="city">
+				<input type="text" class="form-input" name="state" id="state" placeholder="State *"
+					formControlName="state">
+			</div>
+			<div class="form-group" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+				<input type="text" class="form-input" name="country" id="country" placeholder="Country *"
+					formControlName="country">
+				<input type="text" class="form-input" name="postal_code" id="postal_code" placeholder="Postal Code *"
+					formControlName="postal_code">
+			</div>
+		</form>
+	</mat-dialog-content>
+</div>
+<div class="user-action-btn"
+	style="bottom: 0px;position: fixed;width: 96%;padding: 10px;border-top: 2px solid #eaeaea;background: #eaeaea;">
+	<button mat-button class="click-btn" *ngIf="!saveStatus" (click)="addAddress()"
+		[disabled]="addressForm.invalid">SAVE</button>
+	<button mat-button class="click-btn" *ngIf="saveStatus" disabled>SAVING...</button>
+	<button mat-button class="close-btn" (click)="close()">CANCEL</button>
+</div>

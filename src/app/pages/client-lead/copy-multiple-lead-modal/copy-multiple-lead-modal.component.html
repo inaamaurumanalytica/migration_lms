@@ -1,0 +1,49 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>COPY LEADS TO PROJECT</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+	<mat-dialog-content class="main-content">
+		<div class="form-group">
+			<label>Project <span style="color: #00C08D">*</span></label>
+			<mat-select class="form-input" placeholder="Select Project" [(ngModel)]="project"
+				(focusout)="onFocusOutEvent($event)">
+				<input (keyup)="onKeyProject($event.target.value)" [(ngModel)]="searchProject" class="form-input"
+					placeholder="Search">
+				<mat-option *ngFor="let project of filteredProjects" [value]="project.id">
+					{{project.name}} - {{project.client_name}}
+				</mat-option>
+				<div class="not-found-data" *ngIf="filteredProjects.length == 0">
+					No Result Found
+				</div>
+			</mat-select>
+		</div>
+		<div class="form-group">
+			<label>Select Criteria</label>
+			<mat-radio-group fxLayout="column" fxLayoutGap="10px">
+				<mat-radio-button value="existing" [checked]="existingCriteria" (change)="changeCriteria(true)">
+					Keep Existing Statuses
+				</mat-radio-button>
+				<mat-radio-button [checked]="!existingCriteria" (change)="changeCriteria(false)">
+					Make it all as new status
+				</mat-radio-button>
+			</mat-radio-group>
+		</div>
+		<div class="form-group" *ngIf="!existingCriteria">
+			<label>Client <span style="color: #00C08D">*</span></label>
+			<mat-select placeholder="Select Project" class="form-input" [(ngModel)]="status">
+				<mat-option value="Fresh">Fresh</mat-option>
+				<mat-option value="Verified">Verified</mat-option>
+			</mat-select>
+		</div>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="assignProject()" [disabled]="project == ''"
+		*ngIf="!btnStatus">Save</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Saving...</button>
+</div>

@@ -1,0 +1,48 @@
+<mat-sidenav-container class="sidenav-container">
+  
+  <mat-sidenav-content>
+
+    <mat-toolbar class="mbv-nav" [ngClass]="sidebarPin ? 'fix-toolbar':''">
+
+      <div class="logo" style="margin-right: 10px;">
+        <img class="img-logo" src="assets/images/logo.png">
+      </div>
+
+      <div class="flex flex-1">
+        <span fxShow fxHide.xs="true" fxHide.md="false" fxHide.lg="false">AUTOMATE LEADS</span>
+        <span fxShow fxHide.xs="false" fxHide.sm="true" fxHide.md="true" fxHide.lg="true">AUTOMATE LEADS</span>
+      </div>
+
+      <div class="flex">
+        <div class="user-name">
+          <span fxShow fxHide.xs="true" fxHide.md="false" fxHide.lg="false" style="color: rgba(0,0,0,.54);">Hi,
+          </span><span class="">{{userInfo.name}}</span>
+        </div>
+        <!-- <img alt="user photo" src="assets/images/sidenav-icon/user-profile.png" class="user-image"
+          [matMenuTriggerFor]="menu" style="cursor: pointer"> -->
+        <img alt="user photo" src="assets/images/sidenav-icon/user-profile.png" class="user-image"
+          [matMenuTriggerFor]="menu" style="cursor: pointer" *ngIf="userInfo.avatar == null || userInfo.avatar == ''">
+        <img alt="user photo" [src]="userInfo.avatar" class="user-image" [matMenuTriggerFor]="menu"
+          style="cursor: pointer" *ngIf="userInfo.avatar != null && userInfo.avatar != ''">
+        <!-- profile dropdown -->
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="showProfile()">
+            <mat-icon>account_circle</mat-icon>
+            Profile
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>power_settings_new</mat-icon>
+            Logout
+          </button>
+          <!-- <a mat-menu-item [routerLink]="['/pricing']">Pricing</a> -->
+        </mat-menu>
+      </div>
+
+    </mat-toolbar>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+<div [ngClass]="sidebarPin ? 'fix-page-container':''">
+  <router-outlet></router-outlet>
+</div>

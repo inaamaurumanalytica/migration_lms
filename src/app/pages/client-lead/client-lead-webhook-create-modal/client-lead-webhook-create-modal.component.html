@@ -1,0 +1,326 @@
+<mat-toolbar class="primary m-0">
+	<mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+		<span class="title dialog-title">SETTINGS</span>
+		<span fxFlex="1 1 auto"></span>
+		<button mat-icon-button (click)="close()" aria-label="Close dialog">
+			<mat-icon>close</mat-icon>
+		</button>
+	</mat-toolbar-row>
+</mat-toolbar>
+<div *ngIf="!showComponentLoader">
+	<div class="modal-content" *ngIf="showWebhookList">
+		<mat-dialog-content class="mat-dialog-container-div">
+			<div fxLayout="column" fxLayoutGap="16px">
+				<div fxLayout="row" fxLayoutAlign="end center">
+					<button mat-button class="btn btn-primary rule mat-elevation-z0" tabindex="-1"
+						(click)="openCreateWebhook()">
+						<mat-icon>add_circle</mat-icon> create webhook
+					</button>
+					<button mat-button class="btn btn-primary rule mat-elevation-z0" tabindex="-1"
+						(click)="copyWebhook()">
+						<mat-icon>add_circle</mat-icon> copy other webhook
+					</button>
+				</div>
+				<h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+					*ngIf="webhooks.length == 0">No Webhook Found</h1>
+				<mat-card class="users-list" fxLayoutAlign="space-between center" *ngFor="let webhook of webhooks">
+					<div fxFlex="1 0 80%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+						<div class="user-info" fxFlex="1 1 20%" style="cursor: pointer;">
+							<p class="user-title">Name</p>
+							<label class="user-label" style="margin-right:5px;">{{webhook.name}}</label>
+						</div>
+						<div class="contact">
+							<p class="title">Method</p>
+							<span class="status-check">{{webhook.method}}</span>
+						</div>
+						<div class="create-date">
+							<p class="title">URL</p>
+							<span class="status-check">{{webhook.url}}</span>
+						</div>
+						<div class="status">
+							<p class="title">Status</p>
+							<mat-slide-toggle [(ngModel)]="webhook.active" (change)="makeActive(webhook , $event)">
+							</mat-slide-toggle>
+						</div>
+					</div>
+					<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+						<div class="action-icon">
+							<mat-icon (click)="editWebhook(webhook)">edit</mat-icon>
+						</div>
+						<div class="action-icon">
+							<mat-icon (click)="deleteWebhook(webhook)">delete</mat-icon>
+						</div>
+					</div>
+				</mat-card>
+			</div>
+		</mat-dialog-content>
+	</div>
+	<div *ngIf="showCreateWebhook" class="modal-content">
+		<div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom: 2rem;">
+			<h3>
+				CREATE WEBHOOK
+			</h3>
+			<button mat-icon-button tabindex="-1" (click)="cancelCreateWebhook()">
+				<mat-icon>clear</mat-icon>
+			</button>
+		</div>
+		<mat-dialog-content fxLayout="column" fxLayoutGap="16px">
+			<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+				<div class="form-group" fxFlex="25%">
+					<input type="text" class="form-input" [(ngModel)]="name" name="name" id="name" placeholder="Name *">
+				</div>
+				<div class="form-group" fxFlex="50%">
+					<input type="text" class="form-input" name="phone" id="phone" [(ngModel)]="url"
+						placeholder="*Remote Url">
+				</div>
+				<div class="form-group" fxFlex="21%">
+					<mat-select placeholder="Select Remote" class="form-input" [(ngModel)]="remote">
+						<mat-option value="GET">GET</mat-option>
+						<mat-option value="POST">POST</mat-option>
+					</mat-select>
+				</div>
+			</div>
+			<div class="rl-section" fxLayout="column" fxLayoutGap="16px">
+				<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="padding: 0 2rem;">
+					<h5>ARGS</h5>
+				</div>
+				<div style="overflow-y: auto;">
+					<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" style="padding: 0 20px;"
+						*ngFor="let field of fieldArray; let i = index">
+						<div class="form-group" fxFlex="46%">
+							<input type="text" class="form-input" required [(ngModel)]="field.key" name="{{field.key}}"
+								placeholder="Key">
+						</div>
+						<div class="form-group" fxFlex="46%">
+							<mat-select placeholder="Select Value" class="form-input" [(ngModel)]="field.value">
+
+								<mat-option value="">Select Value</mat-option>
+								<mat-option value="id">&#123;field:id&#125;</mat-option>
+								<mat-option value="name">&#123;field:name&#125;</mat-option>
+								<mat-option value="email">&#123;field:email&#125;</mat-option>
+								<mat-option value="phone">&#123;field:phone&#125;</mat-option>
+								<mat-option value="vendor_remark">&#123;field:vendor_remark&#125;</mat-option>
+								<mat-option value="source">&#123;field:source&#125;</mat-option>
+								<mat-option value="utm_source">&#123;field:utm_source&#125;</mat-option>
+								<mat-option value="utm_medium">&#123;field:utm_medium&#125;</mat-option>
+								<mat-option value="utm_campaign">&#123;field:utm_campaign&#125;</mat-option>
+								<mat-option value="utm_term">&#123;field:utm_term&#125;</mat-option>
+								<mat-option value="utm_content">&#123;field:utm_content&#125;</mat-option>
+								<mat-option value="vendor_appointment_date">&#123;field:vendor_appointment_date&#125;</mat-option>
+								<mat-option value="preferred_time_slot">&#123;field:preferred_time_slot&#125;</mat-option>								
+								<mat-option value="extra">&#123;field:extra&#125;</mat-option>
+
+							</mat-select>
+						</div>
+						<div class="form-group" fxFlex="8%" fxLayoutAlign="space-between center">
+							<span>
+								<mat-icon style="color: #00C08D;" (click)="addnewrow()">add_circle</mat-icon>
+							</span>
+							<span (click)="deleteFieldValue(i)" *ngIf="i > 0">
+								<mat-icon>clear</mat-icon>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="toggle-web" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="30px">
+				<mat-slide-toggle [checked]="useDefault" (change)="toggle($event)">STATIC ARGS</mat-slide-toggle>
+				<mat-slide-toggle [checked]="useDefault2" (change)="toggle2($event)">HEADERS</mat-slide-toggle>
+				<mat-slide-toggle [checked]="useDefault1" (change)="toggle1($event)">ENCODE ARGS AS A JSON STRING
+				</mat-slide-toggle>
+			</div>
+			<div class="rl-section" fxLayout="column" fxLayoutGap="16px" *ngIf="useDefault">
+				<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="padding: 0 2rem;">
+					<h5>STATIC ARGS</h5>
+				</div>
+				<div style="overflow-y: auto;">
+					<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" style="padding: 0 20px;"
+						*ngFor="let field of fieldStaticArray; let i = index">
+						<div class="form-group" fxFlex="46%">
+							<input type="text" class="form-input" required [(ngModel)]="field.key" name="{{field.key}}"
+								placeholder="Key">
+						</div>
+						<div class="form-group" fxFlex="46%">
+							<input type="text" class="form-input" required [(ngModel)]="field.value"
+								name="{{field.value}}" placeholder="value">
+						</div>
+						<div class="form-group" fxFlex="8%" fxLayoutAlign="space-between center">
+							<span>
+								<mat-icon (click)="addnewstaticrow()" style="color: #00C08D;">add_circle</mat-icon>
+							</span>
+							<span>
+								<mat-icon (click)="deleteStaticFieldValue(i)" *ngIf="i > 0">clear</mat-icon>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="rl-section" fxLayout="column" fxLayoutGap="16px" *ngIf="useDefault2">
+				<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="padding: 0 2rem;">
+					<h5>Headers</h5>
+				</div>
+				<div style="overflow-y: auto;">
+					<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" style="padding: 0 20px;"
+						*ngFor="let field of headers; let i = index">
+						<div class="form-group" fxFlex="46%">
+							<input type="text" class="form-input" required [(ngModel)]="field.key" name="{{field.key}}"
+								placeholder="Key">
+						</div>
+						<div class="form-group" fxFlex="46%">
+							<input type="text" class="form-input" required [(ngModel)]="field.value"
+								name="{{field.value}}" placeholder="value">
+						</div>
+						<div class="form-group" fxFlex="8%" fxLayoutAlign="space-between center">
+							<span>
+								<mat-icon (click)="addHeaders()" style="color: #00C08D;">add_circle</mat-icon>
+							</span>
+							<span>
+								<mat-icon (click)="deleteHeaders(i)" *ngIf="i > 0">clear</mat-icon>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</mat-dialog-content>
+	</div>
+	<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start" *ngIf="showCreateWebhook">
+		<button mat-button class="btn btn-light" (click)="cancelCreateWebhook()">Cancel</button>
+		<button mat-button class="btn btn-primary" (click)="createWebhook()" *ngIf="!btnStatus">Publish</button>
+		<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Publishing...</button>
+	</div>
+	<div *ngIf="showEditWebhook" class="modal-content">
+		<div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom: 2rem;">
+			<h3>
+				EDIT WEBHOOK
+			</h3>
+			<button mat-icon-button tabindex="-1" (click)="cancelCreateWebhook()">
+				<mat-icon>clear</mat-icon>
+			</button>
+		</div>
+		<mat-dialog-content fxLayout="column" fxLayoutGap="16px">
+			<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+				<div class="form-group" fxFlex="25%">
+					<input type="text" class="form-input" [(ngModel)]="name" name="name" id="name" placeholder="Name *">
+				</div>
+				<div class="form-group" fxFlex="50%">
+					<input type="text" class="form-input" name="phone" id="phone" [(ngModel)]="url"
+						placeholder="*Remote Url">
+				</div>
+				<div class="form-group" fxFlex="21%">
+					<mat-select placeholder="Select Remote" class="form-input" [(ngModel)]="remote">
+						<mat-option value="GET">GET</mat-option>
+						<mat-option value="POST">POST</mat-option>
+					</mat-select>
+				</div>
+			</div>
+			<div class="rl-section" fxLayout="column" fxLayoutGap="16px">
+				<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="padding: 0 2rem;">
+					<h5>ARGS</h5>
+				</div>
+				<div style="overflow-y: auto;">
+					<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" style="padding: 0 20px;" *ngFor="let field of fieldArray; let i = index">
+						
+						<div class="form-group" fxFlex="46%">
+							<input type="text" class="form-input" required [(ngModel)]="field.key" name="{{field.key}}" placeholder="Key">
+						</div>
+						
+						<div class="form-group" fxFlex="46%">
+							<mat-select placeholder="Select Value" class="form-input" [(ngModel)]="field.value">
+								<mat-option value="">Select Value</mat-option>
+								<mat-option value="id">&#123;field:id&#125;</mat-option>
+								<mat-option value="name">&#123;field:name&#125;</mat-option>
+								<mat-option value="email">&#123;field:email&#125;</mat-option>
+								<mat-option value="phone">&#123;field:phone&#125;</mat-option>
+								<mat-option value="vendor_remark">&#123;field:vendor_remark&#125;</mat-option>
+								<mat-option value="source">&#123;field:source&#125;</mat-option>
+								<mat-option value="utm_source">&#123;field:utm_source&#125;</mat-option>
+								<mat-option value="utm_medium">&#123;field:utm_medium&#125;</mat-option>
+								<mat-option value="utm_campaign">&#123;field:utm_campaign&#125;</mat-option>
+								<mat-option value="utm_term">&#123;field:utm_term&#125;</mat-option>
+								<mat-option value="utm_content">&#123;field:utm_content&#125;</mat-option>
+								<mat-option value="vendor_appointment_date">&#123;field:vendor_appointment_date&#125;</mat-option>
+								<mat-option value="preferred_time_slot">&#123;field:preferred_time_slot&#125;</mat-option>								
+								<mat-option value="extra">&#123;field:extra&#125;</mat-option>
+							</mat-select>
+						</div>
+						
+						<div class="form-group" fxFlex="8%" fxLayoutAlign="space-between center">
+							<span>
+								<mat-icon style="color: #00C08D;" (click)="addnewrow()">add_circle</mat-icon>
+							</span>
+							<span (click)="deleteFieldValue(i)" *ngIf="i > 0">
+								<mat-icon>clear</mat-icon>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="toggle-web" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="30px">
+				<mat-slide-toggle [checked]="useDefault" (change)="toggle($event)">STATIC ARGS</mat-slide-toggle>
+				<mat-slide-toggle [checked]="useDefault2" (change)="toggle2($event)">HEADERS</mat-slide-toggle>
+				<mat-slide-toggle [checked]="useDefault1" (change)="toggle1($event)">ENCODE ARGS AS A JSON STRING
+				</mat-slide-toggle>
+			</div>
+			<div class="rl-section" fxLayout="column" fxLayoutGap="16px" *ngIf="useDefault">
+				<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="padding: 0 2rem;">
+					<h5>STATIC ARGS</h5>
+				</div>
+				<div style="overflow-y: auto;">
+					<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" style="padding: 0 20px;"
+						*ngFor="let field of fieldStaticArray; let i = index">
+						<div class="form-group" fxFlex="46%">
+							<input type="text" class="form-input" required [(ngModel)]="field.key" name="{{field.key}}"
+								placeholder="Key">
+						</div>
+						<div class="form-group" fxFlex="46%">
+							<input type="text" class="form-input" required [(ngModel)]="field.value"
+								name="{{field.value}}" placeholder="value">
+						</div>
+						<div class="form-group" fxFlex="8%" fxLayoutAlign="space-between center">
+							<span>
+								<mat-icon (click)="addnewstaticrow()" style="color: #00C08D;">add_circle</mat-icon>
+							</span>
+							<span>
+								<mat-icon (click)="deleteStaticFieldValue(i)" *ngIf="i > 0">clear</mat-icon>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="rl-section" fxLayout="column" fxLayoutGap="16px" *ngIf="useDefault2">
+				<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="padding: 0 2rem;">
+					<h5>Headers</h5>
+				</div>
+				<div style="overflow-y: auto;">
+					<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" style="padding: 0 20px;"
+						*ngFor="let field of headers; let i = index">
+						<div class="form-group" fxFlex="46%">
+							<input type="text" class="form-input" required [(ngModel)]="field.key" name="{{field.key}}"
+								placeholder="Key">
+						</div>
+						<div class="form-group" fxFlex="46%">
+							<input type="text" class="form-input" required [(ngModel)]="field.value"
+								name="{{field.value}}" placeholder="value">
+						</div>
+						<div class="form-group" fxFlex="8%" fxLayoutAlign="space-between center">
+							<span>
+								<mat-icon (click)="addHeaders()" style="color: #00C08D;">add_circle</mat-icon>
+							</span>
+							<span>
+								<mat-icon (click)="deleteHeaders(i)" *ngIf="i > 0">clear</mat-icon>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</mat-dialog-content>
+	</div>
+	<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start" *ngIf="showEditWebhook">
+		<button mat-button class="btn btn-light" (click)="cancelEditWebhook()">Cancel</button>
+		<button mat-button class="btn btn-primary" (click)="updateWebhook()" *ngIf="!btnStatus">Update</button>
+		<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Updating...</button>
+	</div>
+</div>
+<div class="dark-overlay dark-overlay-modal" *ngIf="showComponentLoader">
+	<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>

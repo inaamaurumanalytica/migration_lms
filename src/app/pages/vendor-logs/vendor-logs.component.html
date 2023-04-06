@@ -1,0 +1,58 @@
+<!-- <div style="height: 100%;background-color: #ffffff94 !important;" *ngIf="showComponentLoader">
+    <div class="loader" style="position: fixed;top: 50%;left: 50%;">
+        <img src="/assets/images/orange-loader.gif" class="ajax-loader" style="width:50px;">
+    </div>
+</div> -->
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="page-container wrapper" *ngIf="!showComponentLoader">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+        <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+            <div class="logo" fxlayout="row" fxlayoutalign="start center">
+                <span class="logo-text h1 ng-trigger ng-trigger-animate"> Logs </span>
+            </div>
+        </div>
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+            <div class="user-action-btn">
+                <button mat-button class="click-btn" (click)="filter()">
+                    <mat-icon matTooltip="Filter">filter_list</mat-icon>
+                    Filter
+                </button>
+            </div>
+        </div>
+    </div>
+    <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+        *ngIf="logs.audit_logs.length == 0">No Logs Found</h1>
+    <mat-card *ngFor="let log of logs.audit_logs" style="margin-top: 1rem;" [hidden]="logs.audit_logs == 0">
+        <mat-card-content>
+            <div class="vendor-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+                <div class="vendor-info">
+                    <p class="title">User/Source Name</p>
+                    <span class="status-check">{{log.user_name}}</span>
+                </div>
+                <div class="vendor-info">
+                    <p class="title">Type</p>
+                    <span class="status-check"  *ngIf="log.event_type != null">{{log.event_type}}</span>
+                    <span class="status-check" *ngIf="log.event_type == null">{{log.lms_object_type ==
+                        'Mailing'? 'Email': log.lms_object_type}}
+                        {{log.action}}</span>
+                </div>
+                <div class="vendor-info">
+                    <p class="title">Date & Time</p>
+                    <span class="status-check">{{log.created_at | date:'dd/MM/yyyy hh:mm a'}}</span>
+                </div>
+                <div class="vendor-info" *ngIf="userInfo.member_type == 'Vendor' || userInfo.org_admin">
+                    <p class="title">Info</p>
+                    <span class="status-check">
+                        <mat-icon title="Info" (click)="auditInfo(log)" style="cursor:pointer">info</mat-icon>
+                    </span>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-paginator [ngStyle]="{'display':logs.audit_logs.length == 0 ? 'none' : 'block' }" style="margin-top: 1rem;"
+        #paginator [length]="logs.pagination.total_count" [pageIndex]="pageIndex" [pageSize]="pageSize"
+        [pageSizeOptions]="[100, 150]" (page)="getNext($event)">
+    </mat-paginator>
+</div>

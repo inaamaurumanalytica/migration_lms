@@ -1,0 +1,39 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center">
+		<h3>
+			SEND MAIL
+		</h3>
+		<i class="material-icons close-modal" (click)="close()">
+			clear
+		</i>
+	</div>
+	<!-- <span style="font-size: 12px;color: #b7b7b7;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span> -->
+	<mat-dialog-content>
+		<div class="form-group">
+			<input type="text" class="form-input" name="subject" id="subject" placeholder="Email To *"
+				[(ngModel)]="email.to" (keyup)="verifyEmail()" required>
+			<div *ngIf="!emailVerified && email.to != undefined && email.to != ''" style="color:red">
+				Not a valid Email.
+			</div>
+		</div>
+		<div class="form-group" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px"
+			*ngIf="brouchers.length != 0">
+			<mat-select class="form-input" placeholder="Select Files" [(ngModel)]="projectBrouchers" multiple>
+				<mat-option *ngFor="let broucher of brouchers" [value]="broucher">{{broucher.name}}</mat-option>
+			</mat-select>
+		</div>
+		<div class="form-group" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+			<input class="form-input" placeholder="Subject *" [(ngModel)]="email.subject" required>
+		</div>
+		<div>
+			<tinymce [(ngModel)]="email.message" [config]="config"></tinymce>
+		</div>
+	</mat-dialog-content>
+</div>
+<div class="user-action-btn"
+	style="bottom: 0px;position: fixed;width: 96%;padding: 10px;border-top: 2px solid #eaeaea;background: #eaeaea;">
+	<button mat-button class="click-btn" *ngIf="!saveStatus" (click)="sendMail()"
+		[disabled]="emailVerified == false || email.subject == ''">SEND</button>
+	<button mat-button class="click-btn" *ngIf="saveStatus" disabled>SENDING...</button>
+	<button mat-button class="close-btn" (click)="close()">CANCEL</button>
+</div>

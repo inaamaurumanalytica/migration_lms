@@ -1,0 +1,45 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>FILTER BY</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+	<mat-dialog-content class="main-content" class="mat-dialog-container-div">
+		<div class="form-group">
+			<label style="font-weight: 500">Users</label>
+			<mat-select placeholder="Select User" class="form-input" name="name" [(ngModel)]="selectedVendor">
+				<mat-option [value]="user.id" *ngFor="let user of users">{{user.name}}
+				</mat-option>
+			</mat-select>
+		</div>
+		<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start">
+			<label style="font-weight: 500">Created At</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="createdAt" class="date-input transfer-lead" placeholder="Created At"
+				required>
+			</my-date-range-picker>
+		</div>
+		<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start">
+			<label style="font-weight: 500">Modified At</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="modifiedAt" class="date-input transfer-lead" placeholder="Modified At"
+				required>
+			</my-date-range-picker>
+		</div>
+		<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start">
+			<label style="font-weight: 500">Client Modified At</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="lastClientStatusModifiedDate" class="date-input transfer-lead"
+				placeholder="Client Modified At" required>
+			</my-date-range-picker>
+		</div>
+		<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start">
+			<label style="font-weight: 500">Vendor Modified At</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="lastVendorStatusModifiedDate" class="date-input transfer-lead"
+				placeholder="Vendor Modify At" required>
+			</my-date-range-picker>
+		</div>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="clear()">Clear All</button>
+	<button mat-button class="btn btn-primary" (click)="filterLead()">Apply</button>
+</div>

@@ -1,0 +1,159 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>{{bookingData == undefined ? 'CREATE BOOKING' : 'UPDATE BOOKING'
+			}}</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+	<mat-dialog-content class="main-content" class="mat-dialog-container-div">
+		<form [formGroup]="createBookingForm" fxLayout="column" fxLayoutAlign="start">
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+				*ngIf="bookingData == undefined || !leadCreate">
+				<div class="form-group" fxFlex="100">
+					<label>Project <span style="color: #00C08D">*</span></label>
+					<mat-select class="form-input" formControlName="project" placeholder="Select Project">
+						<mat-option [value]="item.id" *ngFor="let item of projects">{{item.name}}</mat-option>
+					</mat-select>
+				</div>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group" fxFlex="100">
+					<label>Name <span style="color: #00C08D">*</span></label>
+					<input type="text" class="form-input" name="name" id="name" placeholder="Name *"
+						formControlName="name" required>
+				</div>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group" fxFlex="100">
+					<label>Phone <span style="color: #00C08D">*</span></label>
+					<input type="number" class="form-input" name="name" id="phone" placeholder="Phone *"
+						formControlName="phone" required>
+				</div>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group" fxFlex="100">
+					<label>Email <span style="color: #00C08D">*</span></label>
+					<input type="text" class="form-input" name="name" id="email" placeholder="Email *"
+						formControlName="email" required>
+				</div>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group" fxFlex="50">
+					<label>Unit <span style="color: #00C08D">*</span></label>
+					<input type="text" class="form-input" name="name" id="unit" placeholder="Unit Name *"
+						formControlName="unit" required>
+				</div>
+				<div class="form-group" fxFlex="50">
+					<label>Unit Price <span style="color: #00C08D">*</span></label>
+					<input type="number" class="form-input" name="name" id="unit_price" placeholder="Unit Price *"
+						formControlName="unitPrice" required>
+				</div>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group" fxFlex="50">
+					<label>Tower <span style="color: #00C08D">*</span></label>
+					<input type="text" class="form-input" name="name" id="tower" placeholder="Tower Name *"
+						formControlName="tower" required>
+				</div>
+				<div class="form-group" fxFlex="50">
+					<label>Floor <span style="color: #00C08D">*</span></label>
+					<input type="number" class="form-input" name="name" id="floor" placeholder="Floor Number *"
+						formControlName="floor" required>
+				</div>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group" fxFlex="50">
+					<label>Booking Date <span style="color: #00C08D">*</span></label>
+					<input type="date" class="form-input" name="date" id="date" placeholder="Booking Date"
+						formControlName="bookingDate" required>
+				</div>
+				<div class="form-group" fxFlex="50">
+					<label>Booking Amount <span style="color: #00C08D">*</span></label>
+					<input type="number" class="form-input" name="name" id="booking_amount"
+						placeholder="Booking Amount *" formControlName="bookingAmount" required>
+				</div>
+			</div>
+
+			<!-- <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group" fxFlex="100">
+					<label>RM Name</label>
+					<input type="text" class="form-input" name="rmName" id="rmName" placeholder="RM Name"
+						formControlName="rmName">
+				</div>
+			</div> -->
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+				*ngIf="bookingData != undefined && !leadCreate">
+				<div class="form-group" fxFlex="100">
+					<label>Status <span style="color: #00C08D">*</span></label>
+					<mat-select class="form-input" formControlName="status" placeholder="Select Status">
+						<mat-option disabled value="Awaiting Approval">Awaiting Approval</mat-option>
+						<mat-option value="Approved">Approved</mat-option>
+						<mat-option value="Rejected">Rejected</mat-option>
+					</mat-select>
+				</div>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+				*ngIf="bookingData != undefined && !leadCreate && createBookingForm.value.status == 'Rejected'">
+				<div class="form-group" fxFlex="100">
+					<label>Rejection Reason <span style="color: #00C08D">*</span></label>
+					<textarea class="form-input" formControlName="rejection_reason" name="reason" id="reason" cols="30"
+						rows="3"></textarea>
+				</div>
+			</div>
+
+			<!-- <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px" *ngIf="userList != null">
+				<div class="form-group" fxFlex="100">
+					<label>Select User <span style="color: #00C08D">*</span></label>
+
+					<mat-select class="form-input" formControlName="user" placeholder="Select User">
+						<ng-container *ngFor="let item of userList">
+							<mat-option *ngIf="item.active" [value]="item.id">{{item.name}}</mat-option>
+						</ng-container>
+					</mat-select>
+				</div>
+			</div> -->
+
+
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+
+				<div class="form-group" fxFlex="50">
+					<label>RM Name</label>
+					<input type="text" class="form-input" name="rmName" id="rmName" placeholder="RM Name"
+						formControlName="rmName">
+				</div>
+
+				<div class="form-group" fxFlex="50" *ngIf="userInfo.member_type == 'Client'">
+					<label>Select User </label>
+					<mat-select class="form-input" formControlName="user" placeholder="Select User">
+						<ng-container *ngFor="let item of userList">
+							<mat-option *ngIf="item.active" [value]="item.id">{{item.name}}</mat-option>
+						</ng-container>
+					</mat-select>			
+				</div>
+
+				<!-- <div class="form-group" fxFlex="50" *ngIf="userList != null">
+					<label>Select User <span style="color: #00C08D">*</span></label>
+					<mat-select class="form-input" formControlName="user" placeholder="Select User">
+						<ng-container *ngFor="let item of userList">
+							<mat-option *ngIf="item.active" [value]="item.id">{{item.name}}</mat-option>
+						</ng-container>
+					</mat-select>			
+				</div> -->
+
+			</div>
+
+		</form>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" *ngIf="bookingData == undefined || leadCreate" (click)="submit()"
+		[disabled]="!createBookingForm.valid">Create</button>
+	<button mat-button class="btn btn-primary" *ngIf="bookingData != undefined && !leadCreate" (click)="updateSubmit()"
+		[disabled]="!createBookingForm.valid">Update</button>
+</div>

@@ -1,0 +1,138 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>EDIT PROJECT</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+	<mat-dialog-content class="main-content" style="font-size: 12px !important;" class="mat-dialog-container-div">
+		<form [formGroup]="editProjectForm">
+			<div class="form-group">
+				<label style="font-weight: 500">Location</label>
+				<input type="text" class="form-input" name="location" id="location" placeholder="Location"
+					formControlName="location">
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" style="margin-bottom: 10px;">
+				<div class="form-group" fxFlex="50">
+					<label style="font-weight: 500">City</label>
+					<input type="text" class="form-input" name="city" id="city" placeholder="City"
+						formControlName="city">
+				</div>
+				<div class="form-group" fxFlex="50">
+					<label style="font-weight: 500">Country</label>
+					<input type="text" class="form-input" name="country" id="country" placeholder="Country"
+						formControlName="country">
+				</div>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" style="margin-bottom: 10px;">
+				<div class="form-group" fxFlex="50">
+					<label style="font-weight: 500">Min Price</label>
+					<input type="number" class="form-input" name="minPrice" id="minPrice" placeholder="Min Price"
+						formControlName="min_price">
+				</div>
+				<div class="form-group" fxFlex="50">
+					<label style="font-weight: 500">Developer</label>
+					<input type="text" class="form-input" name="developer" id="developer" placeholder="Developer"
+						formControlName="developer">
+				</div>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" style="margin-bottom: 10px;">
+				<div class="form-group" fxFlex="50">
+					<label style="font-weight: 500">Compeltion Status</label>
+					<input type="text" class="form-input" name="completion_status" id="completion_status"
+						placeholder="Completion Status" formControlName="completion_status">
+				</div>
+				<div class="form-group" fxFlex="50">
+					<label style="font-weight: 500">RERA Number</label>
+					<input type="text" class="form-input" name="rera_id" id="rera_id" placeholder="RERA Number"
+						formControlName="rera_id" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Offers</label>
+				<input type="text" class="form-input" name="offer" id="offer" placeholder="Offer"
+					formControlName="offers">
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Description</label>
+				<textarea class="form-input" name="Description" id="Description" placeholder="Description"
+					formControlName="description"></textarea>
+			</div>
+		</form>
+		<div>
+			<div class="form-group" style="position: relative;">
+				<label style="font-weight: 500">Amenities</label>
+				<input type="text" class="form-input" (keyup.enter)="addAmenities()" name="amenitie" id="amenitie"
+					placeholder="Amenities" [(ngModel)]="amenitie">
+				<mat-icon class="project-input-icon" (click)="addAmenities()">add_circle</mat-icon>
+			</div>
+			<div class="assign-container" style="margin-bottom: 10px;" *ngIf="amenities.length != 0">
+				<h4>EXISTING AMENITIES</h4>
+				<div class="assign-project-container">
+					<div class="assign-project" *ngFor="let amenitie of amenities">
+						<label class="assign-project-name">{{amenitie}}</label>
+						<label class="cancel-assign-project" (click)="removeAmenities(amenitie)"
+							style="cursor: pointer">x</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" style="position: relative;">
+				<label style="font-weight: 500">Connecting Roads</label>
+				<input type="text" class="form-input" (keyup.enter)="addConnectingRoad()" name="connectingRoad"
+					id="connectingRoad" placeholder="Connecting Roads" [(ngModel)]="connectingRoad">
+				<mat-icon class="project-input-icon" (click)="addConnectingRoad()">add_circle</mat-icon>
+			</div>
+			<div class="assign-container" style="margin-bottom: 10px;" *ngIf="connectingRoads.length != 0">
+				<h4>EXISTING CONNECTING ROADS</h4>
+				<div class="assign-project-container">
+					<div class="assign-project" *ngFor="let connectingRoad of connectingRoads">
+						<label class="assign-project-name">{{connectingRoad}}</label>
+						<label class="cancel-assign-project" (click)="removeConnectingRoad(connectingRoad)"
+							style="cursor: pointer">x</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" style="position: relative;">
+				<label style="font-weight: 500">Wow Factor</label>
+				<input type="text" class="form-input" (keyup.enter)="addWowFactor()" name="wowFactor" id="wowFactor"
+					placeholder="Wow Factor" [(ngModel)]="wowFactor">
+				<mat-icon class="project-input-icon" (click)="addWowFactor()">add_circle</mat-icon>
+			</div>
+			<div class="assign-container" style="margin-bottom: 10px;" *ngIf="wowFactors.length != 0">
+				<h4>EXISTING WOW FACTOR</h4>
+				<div class="assign-project-container">
+					<div class="assign-project" *ngFor="let wowFactor of wowFactors">
+						<label class="assign-project-name">{{wowFactor}}</label>
+						<label class="cancel-assign-project" (click)="removeWowFactor(wowFactor)"
+							style="cursor: pointer">x</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" style="position: relative;">
+				<label for="clientProjectFile" style="cursor: pointer;" class="form-input"> Attachment
+					<mat-icon class="project-attach-file-icon">attach_file</mat-icon>
+				</label>
+				<input id="clientProjectFile" name="clientProjectFile" type="file" accept="application/pdf" multiple
+					(change)="selectFile($event)" hidden>
+			</div>
+			<div class="assign-container" style="margin-bottom: 10px;" *ngIf="files != null && files.length != 0">
+				<h4>ATTACHED FILES</h4>
+				<div class="assign-project-container">
+					<div class="assign-project" *ngFor="let file of files">
+						<label class="assign-project-name">{{file.name}}</label>
+						<label class="cancel-assign-project" (click)="removeFile(file)"
+							style="cursor: pointer">x</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</mat-dialog-content>
+
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="updateProject()" [disabled]="!editProjectForm.valid"
+		*ngIf="!btnStatus">Update</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Updating...</button>
+</div>

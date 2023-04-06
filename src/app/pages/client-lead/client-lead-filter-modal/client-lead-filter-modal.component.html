@@ -1,0 +1,121 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>FILTER BY</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+	<mat-dialog-content class="main-content" class="mat-dialog-container-div">
+		<div class="form-group" *ngIf="isMaster">
+			<label style="font-weight: 500">Projects</label>
+			<mat-select placeholder="Select Project" class="form-input" name="name" [(ngModel)]="selectedProject"
+				(focusout)="onFocusOutEvent($event)">
+				<input (keyup)="onKeyProject($event.target.value)" [(ngModel)]="searchProject" class="form-input"
+					placeholder="Search">
+				<mat-option [value]="project.id" *ngFor="let project of filteredProjects">{{project.name}}
+				</mat-option>
+				<div class="not-found-data" *ngIf="filteredProjects.length == 0">
+					No Result Found
+				</div>
+			</mat-select>
+		</div>
+		<div class="form-group" *ngIf="(userInfo.member_type == 'Vendor' || userInfo.admin) && isMaster">
+			<label style="font-weight: 500">Clients</label>
+			<mat-select placeholder="Select Client" class="form-input" name="name" [(ngModel)]="selectedClient"
+				(focusout)="onFocusOutEvent($event)">
+				<input (keyup)="onKeyClient($event.target.value)" [(ngModel)]="searchClient" class="form-input"
+					placeholder="Search">
+				<mat-option [value]="client.id" *ngFor="let client of filteredClients">{{client.name}}
+				</mat-option>
+				<div class="not-found-data" *ngIf="filteredClients.length == 0">
+					No Result Found
+				</div>
+			</mat-select>
+		</div>
+		<div class="form-group" *ngIf="userInfo.member_type == 'Vendor' && !isMaster">
+			<label style="font-weight: 500">Users</label>
+			<mat-select placeholder="Select Assigned User" class="form-input" name="name"
+				[(ngModel)]="filterByVendorUser">
+				<mat-option [value]="user.id" *ngFor="let user of users">{{user.name}}
+				</mat-option>
+			</mat-select>
+		</div>
+		<div class="form-group" *ngIf="userInfo.member_type == 'Client' && !isMaster">
+			<label style="font-weight: 500">Users</label>
+			<mat-select placeholder="Select Assigned User" class="form-input" name="name"
+				[(ngModel)]="filterByClientUser">
+				<mat-option [value]="user.id" *ngFor="let user of users">{{user.name}}
+				</mat-option>
+			</mat-select>
+		</div>
+		<div class="form-group" *ngIf="userInfo.member_type == 'Client' || userInfo.admin">
+			<label style="font-weight: 500">Vendors</label>
+			<mat-select placeholder="Select Vendor" class="form-input" name="name" [(ngModel)]="selectedVendor">
+				<mat-option [value]="vendor.id" *ngFor="let vendor of vendors">{{vendor.name}}
+				</mat-option>
+			</mat-select>
+		</div>
+		<div class="form-group">
+			<label style="font-weight: 500">Color</label>
+			<mat-select placeholder="Select Color" class="form-input" name="name" [(ngModel)]="selectedColor">
+				<mat-option [value]="color.id" class="color-option" *ngFor="let color of colors">
+					<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+						<span class="bck-lead" [ngStyle]="selectColor(color)"></span>
+						<span>{{color.quality}}</span>
+					</div>
+				</mat-option>
+			</mat-select>
+		</div>
+		<div class="form-group">
+			<label style="font-weight: 500">Status</label>
+			<mat-select class="form-input" placeholder="Filter By Status" multiple [(ngModel)]="selectStatus">
+				<mat-option value="Fresh" *ngIf="userInfo.member_type != 'Client'">Fresh</mat-option>
+				<mat-option value="Verified">Verified</mat-option>
+				<mat-option value="Appointment Proposed">Appointment Proposed</mat-option>
+				<mat-option value="Interested">Interested</mat-option>
+				<mat-option value="V Not Interested" *ngIf="userInfo.member_type != 'Client'">V Not
+					Interested</mat-option>
+				<mat-option value="V Not Responding" *ngIf="userInfo.member_type != 'Client'">V Not
+					Responding</mat-option>
+				<mat-option value="V Not Available" *ngIf="userInfo.member_type != 'Client'">V Not
+					Available
+				</mat-option>
+				<mat-option value="Not Interested">Not
+					Interested</mat-option>
+				<mat-option value="Not Responding">Not
+					Responding</mat-option>
+				<mat-option value="Not Available">Not Available
+				</mat-option>
+				<mat-option value="Contacted">Contacted</mat-option>
+				<mat-option value="Follow Up">Follow Up</mat-option>
+				<mat-option value="Callback" *ngIf="userInfo.member_type != 'Client'">Callback
+				</mat-option>
+				<mat-option value="Wrong Number" *ngIf="userInfo.member_type != 'Client'">Wrong Number
+				</mat-option>
+				<mat-option value="Closed/Won">Closed/Won</mat-option>
+				<mat-option value="Site Visit">Site Visit</mat-option>
+			</mat-select>
+		</div>
+		<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start"
+			*ngIf="userInfo.member_type == 'Vendor'">
+			<label style="font-weight: 500">Created At</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="createdAt" class="date-input transfer-lead" placeholder="Created At" required></my-date-range-picker>
+		</div>
+		<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start">
+			<label style="font-weight: 500">Client Modified At</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="lastClientStatusModifiedDate" class="date-input transfer-lead"
+				placeholder="Client Modified At" required>
+			</my-date-range-picker>
+		</div>
+		<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start">
+			<label style="font-weight: 500">Vendor Modified At</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="lastVendorStatusModifiedDate" class="date-input transfer-lead"
+				placeholder="Vendor Modify At" required>
+			</my-date-range-picker>
+		</div>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="clear()">Clear All</button>
+	<button mat-button class="btn btn-primary" (click)="filterLead()">Apply</button>
+</div>

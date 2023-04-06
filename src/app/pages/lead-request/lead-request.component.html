@@ -1,0 +1,472 @@
+<!-- <div class="dark-overlay" *ngIf="showComponentLoader">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div> -->
+
+<div id="leadGenerate" class="page-container wrapper">
+
+  <div class="lr-header text-center">
+    <h1 class="lr-title">Our Lead Generation Process Flow</h1>
+    <p class="lr-subtitle">Stay abreast of our organized workflow and track the progress of the campaign in real-time
+    </p>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <figure class="item">
+        <img src="/assets/images/flow.png" width="70%" height="auto" />
+      </figure>
+    </div>
+  </div>
+
+  <div class="lead-request" fxLayout="column" fxLayoutGap="20px">
+
+    <form [formGroup]="create">
+
+      <!-- create -->
+      <mat-card id="create" class="create-lead-card">
+
+        <mat-card-title class="card-title">Create</mat-card-title>
+
+        <mat-card-content>
+
+
+
+          <div style="margin:0 0 20px 0px; display: none;">
+            <input type="text" class="form-input" formControlName="id" readonly>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx" style="margin:0 0 20px 0px;">
+              <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="30px">
+
+                <mat-radio-group formControlName="leadType">
+                  <mat-radio-button value="1">Project</mat-radio-button>
+                  <!-- <mat-radio-button value="2">Property</mat-radio-button> -->
+                </mat-radio-group>
+
+              </div>
+            </div>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px">
+
+            <div *ngIf="options.length" class="form-group" fxFlex="25">
+
+              <label>Select Builder <span style="color: #00C08D">*</span></label>
+
+              <!-- <mat-select class="form-input" formControlName="builder" (selectionChange)="getBuilderValue($event.value)">
+              <mat-option value="">Select</mat-option>
+              <mat-option [value]="builderItem.key" *ngFor="let builderItem of allBuilder | keyvalue">{{builderItem.key}}</mat-option>
+            </mat-select> -->
+
+              <input type="text" class="form-input auto-complate" placeholder="Select Builder" aria-label="Number"
+                matInput formControlName="builder" [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="getBuilderValue($event)">
+                <mat-option *ngFor="let builderOption of filteredOptions | async" [value]="builderOption">
+                  {{builderOption}}
+                </mat-option>
+              </mat-autocomplete>
+
+              <div *ngIf="isSubmit && fCreate.builder.errors" class="validation-error">
+                <div *ngIf="fCreate.builder.errors.required">Select Builder</div>
+              </div>
+            </div>
+
+            <div class="form-group" fxFlex="25">
+
+              <label>Select Project <span style="color: #00C08D">*</span></label>
+
+              <!-- <mat-select class="form-input" formControlName="project">
+              <mat-option value="">Select</mat-option>
+              <mat-option [value]="projectItem" *ngFor="let projectItem of allProject">{{projectItem}}</mat-option>
+            </mat-select> -->
+
+              <input type="text" class="form-input auto-complate" placeholder="Select Project" aria-label="Number"
+                matInput formControlName="project" [matAutocomplete]="auto2">
+              <mat-autocomplete #auto2="matAutocomplete">
+                <mat-option *ngFor="let projectOption of filteredOptions2 | async" [value]="projectOption">
+                  {{projectOption}}
+                </mat-option>
+              </mat-autocomplete>
+
+              <div *ngIf="isSubmit && fCreate.project.errors" class="validation-error">
+                <div *ngIf="fCreate.project.errors.required">Select Project</div>
+              </div>
+
+            </div>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+      <!-- address -->
+      <mat-card class="create-lead-card">
+
+        <mat-card-title class="card-title">Address <span style="color: #00C08D">*</span></mat-card-title>
+
+        <mat-card-content>
+
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+
+            <div class="form-group" fxFlex="75">
+              <input type="text" class="form-input" formControlName="mapCont" #loc placeholder="Address *">
+              <div *ngIf="mapError" class="validation-error">Enter Address</div>
+              <div *ngIf="isSubmit && fCreate.mapCont.errors" class="validation-error">
+                <div *ngIf="fCreate.mapCont.errors.required">Enter Address</div>
+
+              </div>
+            </div>
+
+            <div class="form-group" fxFlex="25">
+              <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="20px">
+                <button type="button" (click)="locateAddressOnMap(loc.value)" mat-button class="btn btn-primary">Locate
+                  on Map</button>
+                <button type="button" (click)="resetLoc()" mat-button class="btn btn-light">Clear All</button>
+              </div>
+            </div>
+          </div>
+
+
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxFlex="100">
+              <div #mapContainer id="map"></div>
+              <!-- <h5>Address: {{address}}</h5> -->
+            </div>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+      <!-- property details -->
+      <mat-card class="create-lead-card">
+
+        <mat-card-title class="card-title">Property Details</mat-card-title>
+
+        <mat-card-content>
+
+          <div fxLayout="row" fxLayoutAlign="space-between top" fxLayoutGap="20px">
+
+            <div fxflex="25" fxFlex.gt-xs="1 1 25%" class="form-group">
+              <label>Project Type <span style="color: #00C08D">*</span></label>
+              <mat-select class="form-input" formControlName="propertyType" placeholder="Select">
+                <mat-option value="">Select</mat-option>
+                <mat-option value="Residential">Residential</mat-option>
+                <mat-option value="Commerical">Commerical</mat-option>
+              </mat-select>
+              <div *ngIf="isSubmit && fCreate.propertyType.errors" class="validation-error">
+                <div *ngIf="fCreate.propertyType.errors.required">Select Project Type</div>
+              </div>
+            </div>
+
+            <div fxflex="25" fxFlex.gt-xs="1 1 25%" class="form-group">
+              <label>Inventory Type <span style="color: #00C08D">*</span></label>
+              <mat-select class="form-input" formControlName="industryType" multiple placeholder="Select">
+                <!-- <mat-option [disabled]="true">Select</mat-option> -->
+                <mat-option value="1 BHK" selected>1 BHK</mat-option>
+                <mat-option value="2 BHK">2 BHK</mat-option>
+                <mat-option value="3 BHK">3 BHK</mat-option>
+                <mat-option value="4 BHK">4 BHK</mat-option>
+                <mat-option value="5 BHK">5 BHK</mat-option>
+                <mat-option value="Penthouse">Penthouse</mat-option>
+                <mat-option value="Plot">Plot</mat-option>
+                <mat-option value="Villa">Villa</mat-option>
+              </mat-select>
+              <div *ngIf="isSubmit && fCreate.industryType.errors" class="validation-error">
+                <div *ngIf="fCreate.industryType.errors.required">Select Inventory Type</div>
+              </div>
+            </div>
+
+            <div fxflex="25" fxFlex.gt-xs="1 1 25%" class="form-group">
+              <label>Price </label>
+
+              <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px">
+
+                <div fxflex="50" fxFlex.gt-xs="1 1 50%" class="form-group">
+                  <mat-select (selectionChange)="minBudget($event.value)" class="form-input" formControlName="priceMin"
+                    placeholder="Select">
+                    <mat-option value="">Min</mat-option>
+                    <mat-option *ngFor="let item of minBudgetValue" [value]="item.value">{{item.name}}</mat-option>
+                  </mat-select>
+                  <div *ngIf="isSubmit && fCreate.priceMin.errors" class="validation-error">
+                    <div *ngIf="fCreate.priceMin.errors.required">Select Min Price</div>
+                  </div>
+                </div>
+
+                <div fxflex="50" fxFlex.gt-xs="1 1 50%" class="form-group">
+                  <mat-select (selectionChange)="maxBudget($event.value)" class="form-input" formControlName="priceMax"
+                    placeholder="Select">
+                    <mat-option value="">Max</mat-option>
+                    <mat-option *ngFor="let item of maxBudgetValue" [value]="item.value">{{item.name}}</mat-option>
+                  </mat-select>
+                  <div *ngIf="isSubmit && fCreate.priceMax.errors" class="validation-error">
+                    <div *ngIf="fCreate.priceMax.errors.required">Select Max Price</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- <div fxflex="25" fxFlex.gt-xs="1 1 25%" class="form-group">
+            <label>Price </label>
+            <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px">
+              <input type="number" class="form-input" formControlName="priceMin" placeholder="Min">
+              <input type="number" class="form-input" formControlName="priceMax" placeholder="Max">
+            </div>
+          </div> -->
+
+            <div fxflex="25" fxFlex.gt-xs="1 1 25%" class="form-group">
+              <label style="display: block;">Possession Year <span style="color: #00C08D">*</span></label>
+              <div style="position: relative;">
+                <input class="form-input" matInput [matDatepicker]="picker" formControlName="possassionYear"
+                  placeholder="Choose Possession Year">
+                <div style="position: absolute; right: 0px; top: -3px;">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </div>
+              </div>
+              <div *ngIf="isSubmit && fCreate.possassionYear.errors" class="validation-error">
+                <div *ngIf="fCreate.possassionYear.errors.required">Select Possession Year</div>
+              </div>
+            </div>
+            <div fxflex="25" fxFlex.gt-xs="1 1 25%" class="form-group">
+              <label style="display:block">RERA Number <span style="color: #00C08D">*</span></label>
+              <input type="text" class="form-input" matInput formControlName="rera_id" placeholder="RERA Number" id="rera_id">
+            </div>
+
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+      <!-- additional information -->
+      <mat-card id="addInfo" class="create-lead-card">
+
+        <mat-card-title class="card-title">Additional Information</mat-card-title>
+
+        <mat-card-content>
+
+          <div fxLayout="row" fxLayoutAlign="space-start top" fxLayoutGap="20px">
+
+            <div fxflex="25" fxFlex.gt-xs="1 1 25%" class="form-group">
+              <label> Campaign Duration </label>
+              <mat-select class="form-input" formControlName="campaignDuration" placeholder="Select">
+                <!-- <mat-option value="">Select</mat-option> -->
+                <mat-option *ngFor="let item of campaignDuration" [value]="item.value">{{item.name}}</mat-option>
+              </mat-select>
+              <!-- <div *ngIf="isSubmit && fCreate.campaignDuration.errors" class="validation-error">
+                <div *ngIf="fCreate.campaignDuration.errors.required">Select Campaign Duration</div>
+              </div> -->
+            </div>
+
+            <div fxflex="25" fxFlex.gt-xs="1 1 25%" class="form-group">
+              <label>Leads Required </label>
+              <input type="number" class="form-input" formControlName="numberOfLeads" placeholder="No. of Leads">
+              <!-- <div *ngIf="isSubmit && fCreate.numberOfLeads.errors" class="validation-error">
+                <div *ngIf="fCreate.numberOfLeads.errors.required">Enter No. of Leads</div>
+              </div> -->
+            </div>
+
+          </div>
+
+          <!-- <div fxLayout="row" fxLayoutAlign="space-start top" fxLayoutGap="20px">
+
+            <div fxflex="25" fxFlex.gt-xs="1 1 25%" class="form-group">
+             <p>Estimated CPQL - ****</p>
+            </div>
+
+            <div fxflex="25" fxFlex.gt-xs="1 1 25%" class="form-group">
+              <p>Total Budget (Excluding Tax) - ****</p>
+             </div>
+            
+          </div> -->
+
+          <!-- <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxflex="25" fxFlex.gt-xs="1 1 25%" class="form-group">
+              <label>Existing Buyer Persona</label>
+              <input type="text" #chipInput (keyup.enter)="enterChip(chipInput.value)" formControlName="persona"
+                class="form-input" placeholder="Existing Buyer Persona">
+            </div>
+          </div> -->
+
+          <div *ngIf="chipArr.length" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+            <div fxflex="100" class="form-group">
+              <div class="chip">
+                <ul>
+                  <li *ngFor="let chipItem of chipArr; let i=index">
+                    <span>{{chipItem}}</span>
+                    <a (click)="chipDel(i)">x</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="space-start center" fxLayoutGap="20px">
+
+            <div class="form-group">
+              <p style="margin-top: 0;">Buyer Persona</p>
+              <label for="uploadbuyerPersona" class="attach-file">Upload Buyer Persona <span
+                  class="material-icons attach-icon">attach_file</span></label>
+              <input id="uploadbuyerPersona" type="file" (change)="attachmentBP($event)" #file
+                formControlName="uploadbuyerPersona" class="d-none form-input">
+              <p *ngIf="isCSV" class="validation-error" style="margin-top: 0;">Only CSV are supported !!</p>
+            </div>
+
+            <div class="form-group">
+              <p style="margin:10px 0 0 0px;">&nbsp;</p>
+              <p *ngIf="attachNameBP" style="margin: 0px; padding:10px 10px; border: 1px solid #00C08D;">{{attachNameBP}}
+              </p>
+            </div>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="space-start center" fxLayoutGap="20px">
+            <div class="form-group">
+              <p style="margin: 0;"><a href="javascript:void(0)" (click)="onSave()" class="cursor-pointer"
+                  style="display: flex; align-items: center;">
+                  <span class="material-icons">file_download</span>
+                  <span>Download Sample CSV</span>
+                </a></p>
+            </div>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Delivery Mode -->
+      <mat-card id="addInfo" class="create-lead-card">
+
+        <mat-card-title class="card-title">Delivery Mode</mat-card-title>
+
+        <mat-card-content>
+          <!-- <div fxlayout="row" fxFlexFill fxLayoutGap="20px">      
+                  <div style="margin: 0;">1</div>
+                  <div style="margin: 0;">2</div>
+                  <div style="margin: 0;">3</div>
+                  <div style="margin: 0;">4</div>
+                  <div style="margin: 0;">5</div>
+                  <div style="margin: 0;">6</div>
+                  <div style="margin: 0;">7</div>
+                </div>       -->
+
+          <div class="content" fxLayout="row" fxFlexFill fxLayoutGap="20px">
+
+            <div fxFlex>
+              <div class="dm-container">                
+                <input id="AUTOMATE LEADS" class="radio-custom" type="radio" name="deliveryMode" value="Automate Leads" formControlName="deliveryMode">
+                <label for="AUTOMATE LEADS">
+                  <figure><img src="assets/images/dm-icon/caeer-socially.png" alt=""></figure>
+                  <span>Automate Leads</span>
+                </label>                
+              </div>
+            </div>
+
+            <div fxFlex>
+              <div class="dm-container">
+                <input id="salesForce" class="radio-custom" type="radio" name="deliveryMode" value="Sales Force" formControlName="deliveryMode">
+                <label for="salesForce">
+                  <figure><img src="assets/images/dm-icon/salesforce.png" alt=""></figure>
+                  <span>Salesforce</span>
+                </label>                
+              </div>
+            </div>
+
+            <div fxFlex>
+              <div class="dm-container">
+                <input id="sellDo" class="radio-custom" type="radio" name="deliveryMode" value="Sell Do" formControlName="deliveryMode">
+                <label for="sellDo">
+                  <figure><img src="assets/images/dm-icon/sell-do.png" alt=""></figure>
+                  <span>Sell Do</span>
+                </label>                
+              </div>
+            </div>
+
+            <div fxFlex>
+              <div class="dm-container">
+                <input id="paramamntra" class="radio-custom" type="radio" name="deliveryMode" value="Paramamntra" formControlName="deliveryMode">
+                <label for="paramamntra">
+                  <figure><img src="assets/images/dm-icon/paramantra.png" alt=""></figure>
+                  <span>Paramantra</span>
+                </label>                
+              </div>
+            </div>
+
+            <div fxFlex>
+              <div class="dm-container">
+                <input id="anarockCRM" class="radio-custom" type="radio" name="deliveryMode" value="Anarock CRM" formControlName="deliveryMode">
+                <label for="anarockCRM">
+                  <figure><img src="assets/images/dm-icon/anarock.png" alt=""></figure>
+                  <span>Anarock CRM</span>
+                </label>                
+              </div>
+            </div>
+
+            <div fxFlex>
+              <div class="dm-container">
+                <input id="googleSheet" class="radio-custom" type="radio" name="deliveryMode" value="Google Sheet" formControlName="deliveryMode">
+                <label for="googleSheet">
+                  <figure><img src="assets/images/dm-icon/google-sheet.png" alt=""></figure>
+                  <span>Google Sheet</span>
+                </label>                
+              </div>
+            </div>
+
+            <div fxFlex>
+              <div class="dm-container">
+                <input id="other" class="radio-custom" type="radio" name="deliveryMode" value="Other" formControlName="deliveryMode">
+                <label for="other">
+                  <figure><img src="assets/images/dm-icon/others-color-icon.png" alt=""></figure>
+                  <span>Other</span></label>                
+              </div>
+            </div>
+
+          </div>
+
+        </mat-card-content>
+
+      </mat-card>
+
+      <!-- Media Assets -->
+      <mat-card id="addInfo" class="create-lead-card">
+        <mat-card-title class="card-title">Media Assets</mat-card-title>
+        <mat-card-content>
+
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxflex="25" fxFlex.gt-xs="1 1 25%" class="form-group">
+              <label for="attachFile" class="attach-file">Upload brochures, creatives etc <span
+                  class="material-icons attach-icon">attach_file</span>
+              </label>
+              <input id="attachFile" type="file" (change)="attachment($event)" #file formControlName="attachment"
+                multiple class="d-none form-input">
+            </div>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxflex="100" class="form-group">
+              <ul id="attachPicContainer">
+                <ng-template [ngIf]="attachName.length">
+                  <li *ngFor="let item of attachName; let i=index">
+                    <p>{{item}}</p>
+                    <span class="" (click)="deletePic(i)" class="deleteAttachFile material-icons">clear</span>
+                  </li>
+                </ng-template>
+              </ul>
+            </div>
+          </div>
+
+
+        </mat-card-content>
+      </mat-card>
+
+      <div class="form-group">
+        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+          <button type="button" (click)="submit()" mat-button class="btn btn-primary">Submit</button>
+          <button type="button" mat-button class="btn btn-light">Cancel</button>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+
+  <div *ngIf="isContactModal" id="messageModal">
+    <p class="lr-subtitle">Our Sales Team will Contact you Shortly</p>
+  </div>
+
+</div>

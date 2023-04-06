@@ -1,0 +1,309 @@
+<div class="page-container wrapper" *ngIf="!showComponentLoader">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+		<div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+			<div class="logo" fxlayout="row" fxlayoutalign="start center">
+				<span class="logo-text h1 ng-trigger ng-trigger-animate"> EDIT LEAD REPORT </span>
+			</div>
+		</div>
+	</div>
+	<mat-card class="report-card">
+		<div class="report-type-section mb-40">
+			<div style="margin: 15px 2px 30px;font-size: 18px;">
+				Basic
+			</div>
+			<div>
+
+				<div>
+					<mat-form-field id="name" class="example-container" style="width: 50%;">
+						<mat-label>Name</mat-label>
+						<input matInput placeholder="Name *" [(ngModel)]="report.name">
+					</mat-form-field>
+					<span style="display: block;color: red;" class="error" *ngIf="fillName">Please fill
+						name</span>
+				</div>
+				<div>
+					<mat-form-field id="subject" style="width: 50%;">
+						<mat-label>Subject</mat-label>
+						<textarea matInput placeholder="Enter Subject" rows="3"
+							[(ngModel)]="report.subject_line"></textarea>
+					</mat-form-field>
+					<span style="display: block;color: red;" class="error" *ngIf="fillSubject">Please fill
+						Subject</span>
+				</div>
+				<div>
+					<mat-form-field id="reportFormatType" style="width: 50%;">
+						<mat-label>Report Type</mat-label>
+						<mat-select placeholder="Select Range Type" [(ngModel)]="reportFormatType">
+							<mat-option value="csv">CSV</mat-option>
+							<mat-option value="xlsx">Excel</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+			</div>
+		</div>
+		<mat-divider></mat-divider>
+		<div class="report-type-section mb-40">
+			<div class="pt-40" style="margin: 15px 2px 30px;font-size: 18px;">
+				Base Type
+			</div>
+			<div>
+				<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+					<div class="report-type" [ngClass]="!selectedBase ? 'active-report' : ''"
+						(click)="checkBase('project')" style="width: 150px;text-align: center;">
+						<span style="font-size: 14px;font-weight: 600;">PROJECT</span>
+					</div>
+					<div class="report-type" [ngClass]="selectedBase ? 'active-report' : ''"
+						(click)="checkBase('client')" style="width: 150px;text-align: center;">
+						<span style="font-size: 14px;font-weight: 600;">CLIENT</span>
+					</div>
+				</div>
+				<div class="pt-40" style="text-align: center;" id="baseType">
+					<mat-form-field appearance="fill" *ngIf="!selectedBase" style="width: 50%;">
+						<mat-label>Select Project</mat-label>
+						<mat-select multiple [(ngModel)]="report.base_ids">
+							<input (keyup)="onKeyProject($event.target.value)" [(ngModel)]="baseSearchInput"
+								style="height: 30px;width: 98%;padding: 0px 12px;" placeholder="Search">
+							<mat-option *ngFor="let project of filteredProjects" [value]="project.id">
+								{{project.name}} - {{project.client_name}}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<mat-form-field appearance="fill" *ngIf="selectedBase" style="width: 50%;">
+						<mat-label>Select Client</mat-label>
+						<mat-select multiple [(ngModel)]="report.base_ids">
+							<input (keyup)="onKeyClient($event.target.value)" [(ngModel)]="baseSearchInput"
+								style="height: 30px;width: 98%;padding: 0px 12px;" placeholder="Search">
+							<mat-option *ngFor="let client of filteredClients" [value]="client.id">
+								{{client.name}}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<span style="display: block;color: red;" class="error" *ngIf="fillBaseIds">Please Select
+						Atleast one</span>
+				</div>
+			</div>
+		</div>
+		<mat-divider></mat-divider>
+		<div class="detail-report-type-section mb-40">
+			<div class="pt-40" style="margin: 24px 0px;font-size: 18px;">
+				Detailed Report Content
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+				<div>
+					<label style="font-size: 13px;">CHANNELS & SERVICES</label>
+					<br>
+					<span style="font-size: 11px;">Select the channels you would like to include.</span>
+				</div>
+				<div fxLayoutGap="20px">
+					<button class="detail-btn"
+						(click)="report.email_include = false; report.phone_include = false">None</button>
+					<button class="detail-btn"
+						(click)="report.email_include = true; report.phone_include = true">All</button>
+				</div>
+			</div>
+			<div class="mt-20">
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px">
+					<div class="detail-content-type" [ngClass]="report.email_include ? 'active-report': ''"
+						(click)="report.email_include = !report.email_include" fxLayout="row"
+						fxLayoutAlign="space-between start" fxLayoutGap="20px">
+						<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+							<mat-icon>email</mat-icon>
+						</div>
+						<span style="margin-top: 5px !important; ">EMAIL</span>
+						<div>
+							<mat-icon [ngStyle]="{'color': report.email_include ? '#00C08D': '' }">check_circle
+							</mat-icon>
+						</div>
+					</div>
+					<div class="detail-content-type" [ngClass]="report.phone_include ? 'active-report': ''"
+						(click)="report.phone_include = !report.phone_include" fxLayout="row"
+						fxLayoutAlign="space-between start">
+						<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+							<mat-icon>call</mat-icon>
+						</div>
+						<span style="margin-top: 5px;">PHONE</span>
+						<div>
+							<mat-icon [ngStyle]="{'color': report.phone_include ? '#00C08D': '' }">check_circle
+							</mat-icon>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<mat-divider></mat-divider>
+		<div class="recurrence-section mb-40">
+			<div class="pt-40" style="margin: 24px 0px;font-size: 18px;">
+				<!-- Recurrence and Date Range -->
+				Report Type
+			</div>
+			<div>
+				<mat-radio-group [(ngModel)]="reportType">
+					<mat-radio-button value="ONETIME" (change)="changeReportType('ONETIME')">One Time Report
+					</mat-radio-button>
+					<mat-radio-button value="RECURRING" (change)="changeReportType('RECURRING')">Recurring
+						Report
+					</mat-radio-button>
+				</mat-radio-group>
+			</div>
+			<div class="mt-20" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px"
+				*ngIf="reportType =='RECURRING'">
+				<div>
+					<mat-form-field id="frequency">
+						<mat-label>Frequency</mat-label>
+						<mat-select placeholder="Select Frequency" [(ngModel)]="frequency">
+							<mat-option value="DAILY">Daily</mat-option>
+							<mat-option value="WEEKLY">Weekly</mat-option>
+							<mat-option value="MONTHLY">Monthly</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<span style="display: block;color: red;" class="error" *ngIf="fillFrequency">Please Select
+						Frequnecy</span>
+				</div>
+				<div>
+					<mat-form-field id="rangeNo">
+						<mat-label>Range Value</mat-label>
+						<mat-select placeholder="Select Range Value" [(ngModel)]="rangeNo">
+							<mat-option value="1">1</mat-option>
+							<mat-option value="2">2</mat-option>
+							<mat-option value="3">3</mat-option>
+							<mat-option value="4">4</mat-option>
+							<mat-option value="5">5</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<span style="display: block;color: red;" class="error" *ngIf="fillRangeNo">Please Select
+						Range Value</span>
+				</div>
+				<div>
+					<mat-form-field id="rangeType">
+						<mat-label>Range Type</mat-label>
+						<mat-select placeholder="Select Range Type" [(ngModel)]="rangeType">
+							<mat-option value="HOUR">Hour</mat-option>
+							<mat-option value="DAY">Day</mat-option>
+							<mat-option value="WEEK">Week</mat-option>
+							<mat-option value="MONTH">Month</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<span style="display: block;color: red;" class="error" *ngIf="fillRangeType">Please Select
+						Range Type</span>
+				</div>
+				<div>
+					<mat-form-field id="sendTime">
+						<input matInput placeholder="Set Schedule Time" aria-label="24hr format"
+							[ngxTimepicker]="fullTime" [format]="24" [(ngModel)]="sendTime">
+						<ngx-material-timepicker #fullTime></ngx-material-timepicker>
+					</mat-form-field>
+					<span style="display: block;color: red;" class="error" *ngIf="fillSendTime">Please Select
+						Send Time</span>
+				</div>
+			</div>
+			<div class="mt-20" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px"
+				*ngIf="reportType=='ONETIME'">
+				<div>
+					<mat-form-field id="startDate">
+						<mat-label>Start Date</mat-label>
+						<input matInput [matDatepicker]="picker" [(ngModel)]="oneTimeStartDate">
+						<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+						<mat-datepicker #picker></mat-datepicker>
+					</mat-form-field>
+					<span style="display: block;color: red;" class="error" *ngIf="fillStartDate">Please fill
+						Start
+						Date</span>
+				</div>
+				<div>
+
+					<mat-form-field id="endDate">
+						<mat-label>End Date</mat-label>
+						<input matInput [matDatepicker]="picker1" [(ngModel)]="oneTimeEndDate">
+						<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+						<mat-datepicker #picker1></mat-datepicker>
+					</mat-form-field>
+					<span style="display: block;color: red;" class="error" *ngIf="fillEndDate">Please fill End
+						Date</span>
+				</div>
+				<div>
+					<mat-form-field>
+						<mat-label>Send Type</mat-label>
+						<mat-select placeholder="Select Send Type" [(ngModel)]="sendType">
+							<mat-option value="INSTANT">Instant</mat-option>
+							<mat-option value="SCHEDULED">Scheduled</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+				<div>
+					<mat-form-field id="sendTime" *ngIf="sendType == 'SCHEDULED'">
+						<input matInput placeholder="Set Schedule Time" aria-label="24hr format"
+							[ngxTimepicker]="fullTime" [format]="24" [(ngModel)]="sendTime">
+						<ngx-material-timepicker #fullTime></ngx-material-timepicker>
+					</mat-form-field>
+					<span style="display: block;color: red;" class="error" *ngIf="fillSendTime">Please fill Send
+						Time</span>
+				</div>
+			</div>
+		</div>
+		<mat-divider></mat-divider>
+		<div class="filter-section mb-40">
+			<div class="pt-40" style="margin: 24px 0px;font-size: 18px;">
+				Filters
+			</div>
+			<span style="display: block;color: red;" class="error" *ngIf="fillFilterStatus">Please Select At
+				Least One Status
+			</span>
+			<div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="gappx">
+				<div fxFlex="33%" *ngFor="let item of leadStatuses">
+					<mat-checkbox class="example-margin" (change)="checkStatus(item, $event)" [checked]="item.selected">
+						{{item.name}}
+					</mat-checkbox>
+				</div>
+			</div>
+		</div>
+		<mat-divider></mat-divider>
+		<div class="options-section mb-40">
+			<div class="pt-40" style="margin: 24px 0px;font-size: 18px;">
+				Options
+			</div>
+			<div>
+				<div>
+					<h5>Status</h5>
+
+					<mat-radio-group [(ngModel)]="statusType">
+						<mat-radio-button value="ACTIVE">Active
+						</mat-radio-button>
+						<mat-radio-button value="STOPPED">Stopped
+						</mat-radio-button>
+					</mat-radio-group>
+				</div>
+				<div>
+					<h5>Recipients</h5>
+					<div>
+						<mat-form-field class="example-chip-list" style="width: 100%;">
+							<mat-chip-list #chipList aria-label="Email selection">
+								<mat-chip *ngFor="let email of emails" [selectable]="selectable" [removable]="removable"
+									(removed)="remove(email)">
+									{{email}}
+									<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+								</mat-chip>
+								<input placeholder="Add Recipients Emails..." [(ngModel)]="email"
+									[matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+									(matChipInputTokenEnd)="add($event)">
+							</mat-chip-list>
+						</mat-form-field>
+						<span style="display: block;color: red;" class="error" *ngIf="fillEmails">Please
+							Enter Email</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</mat-card>
+</div>
+<footer>
+	<div class="footer-view" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="20px">
+		<div>
+			<button mat-button class="report-cancel-btn" (click)="cancel()">CANCEL</button>
+		</div>
+		<div>
+			<button mat-button class="report-submit-btn" *ngIf="!btnStatus" (click)="createReport()">UPDATE
+				REPORT</button>
+			<button mat-button class="report-submit-btn" *ngIf="btnStatus" disabled>UPDATE REPORT</button>
+		</div>
+	</div>
+</footer>

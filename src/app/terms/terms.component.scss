@@ -1,0 +1,182 @@
+.landing {
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.87);
+  line-height: 1.5;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+#home-header > .container {
+  height: auto;
+}
+
+.landing .container {
+  max-width: 1170px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.home-intro-section {
+  background: url("src/assets/images/home.jpg") center center/cover no-repeat;
+  padding: 180px 0 40px;
+  color: #fff;
+  overflow: hidden;
+}
+
+.home-intro-title {
+  margin: 0 0 24px;
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 52px;
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.22);
+}
+
+.home-intro-desc {
+  margin: 0 0 40px;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 32px;
+}
+
+.intro-list {
+  margin: 0 0 40px;
+}
+
+.intro-product {
+  position: relative;
+  // top: 100px;
+  left: 60px;
+}
+
+.mat-card-image:first-child {
+  margin-top: -16px;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.mat-card-image {
+  width: calc(100% + 32px);
+  margin: 0 -16px 16px -16px;
+}
+
+.home-section,
+.section-padding {
+  padding: 80px 0;
+}
+
+.landing .section-header h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+.plan-pricing.mat-card {
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12) !important;
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+.plan-pricing.mat-card {
+  background: #fff;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.mat-bg-primary {
+  background: #00C08D !important;
+  color: #fff !important;
+  // font-size: 1rem;
+}
+
+.mat-card.p-0 .mat-card-title .card-title-text {
+  padding: 1rem 1.5rem;
+}
+
+.text-sm {
+  font-size: 0.813rem;
+}
+
+.login-btn.mat-button {
+  background: #00C08D;
+  color: #fff;
+  border-radius: 20px;
+  padding: 0 30px;
+}
+
+.footer-home {
+  background-color: #212121;
+  color: #fff !important;
+}
+
+.mat-card > :last-child:not(.mat-card-footer) {
+  margin-bottom: 0;
+}
+
+.mat-card.p-0 .mat-card-content {
+  padding: 0 1.5rem 1.5rem;
+}
+
+.landing .h1,
+.landing h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: inherit;
+}
+
+.mat-list-base {
+  padding-top: 4px;
+  display: block;
+}
+
+.mat-list-base.mat-list-item {
+  display: flex;
+  justify-content: center;
+  height: 25px;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.light-gray {
+  background: rgba(0, 0, 0, 0.024);
+}
+
+.mat-list-base .mat-list-item {
+  font-size: 14px !important;
+}
+.mt-3 {
+  margin-top: 2rem;
+}
+
+h3 {
+  margin: 0px;
+  text-transform: uppercase;
+}
+.no-list-icon {
+  list-style-type: none;
+  text-align: justify;
+  line-height: 1.5rem;
+  margin-top: 1rem;
+}
+
+.square {
+  text-align: justify;
+  line-height: 1.5rem;
+  margin-top: 1rem;
+}
+ul {
+  padding: 0rem 1rem 0rem 1rem;
+}
+ul.square {
+  list-style-type: square;
+}

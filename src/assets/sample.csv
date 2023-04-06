@@ -1,0 +1,4 @@
+name,source,email,phone,budget,vendor_remark,lead_status,lead_state,score
+Vishal,mailer,vs9390@vs.com,9999999999,10L-30L,this is fresh lead,Verified,Fresh,1
+Vishal,mailer,vs9390@vs.com,9999999999,10L-30L,this is fresh lead,Callback,Fresh,2
+Vishal,mailer,vs9390@vs.com,9999999999,10L-30L,this is fresh lead,Vishal,Fresh,20

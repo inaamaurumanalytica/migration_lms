@@ -1,0 +1,310 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>INSIGHTS</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+
+	<mat-dialog-content class="main-content" style="font-size: 12px !important;" class="mat-dialog-container-div">
+		<div fxLayout="row" fxLayoutAlign="space-between center">
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+				<h3 style="color: #00C08D;">Total Count - {{totalCount}} </h3>
+				<div>
+					<a class="organge-button"
+						href="https://leads.aurumanalytica.in/#/appSocial/search?locations={{project?.city}}&company=indigo,spicejet&property={{project?.name}}&sp=0&qualifications=aviation,aeronautics&autoSearch=true"
+						target="_blank">
+						<span class="material-icons analyse-icon">insights</span> Analyse Data</a>
+				</div>
+
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div>
+					<h3>Filter</h3>
+				</div>
+				<div style="width: 200px;">
+					<mat-select class="form-input" placeholder="Select Status" multiple [(ngModel)]="filterByStatus">
+						<mat-option value="Fresh" *ngIf="userInfo.member_type != 'Client'">Fresh</mat-option>
+						<mat-option value="Verified">Verified</mat-option>
+						<mat-option value="Appointment Proposed">Appointment Proposed</mat-option>
+						<mat-option value="Interested" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Interested
+							{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}</mat-option>
+						<mat-option value="V Not Interested" *ngIf="userInfo.member_type != 'Client'">V Not
+							Interested
+						</mat-option>
+						<mat-option value="V Not Responding" *ngIf="userInfo.member_type != 'Client'">V Not
+							Responding
+						</mat-option>
+						<mat-option value="V Not Available" *ngIf="userInfo.member_type != 'Client'">V Not Available
+						</mat-option>
+						<mat-option value="Not Interested"
+							[disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Not
+							Interested {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+						</mat-option>
+						<mat-option value="Not Responding"
+							[disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Not
+							Responding {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+						</mat-option>
+						<mat-option value="Not Available"
+							[disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Not
+							Available
+							{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+						</mat-option>
+						<mat-option value="Contacted" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Contacted
+							{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+						</mat-option>
+						<mat-option value="Follow Up" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Follow Up
+							{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}</mat-option>
+						<mat-option value="Callback" *ngIf="userInfo.member_type != 'Client'">Callback</mat-option>
+						<mat-option value="Wrong Number" *ngIf="userInfo.member_type != 'Client'">Wrong Number
+						</mat-option>
+						<mat-option value="Closed/Won" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Closed/Won
+							{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}</mat-option>
+						<mat-option value="Site Visit" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+							Site
+							Visit
+							{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}</mat-option>
+					</mat-select>
+				</div>
+				<div style="width: 200px;">
+					<mat-select placeholder="Select Score" [(ngModel)]="score" class="form-input">
+						<mat-option value="1">1</mat-option>
+						<mat-option value="2">2</mat-option>
+						<mat-option value="3">3</mat-option>
+						<mat-option value="4">4</mat-option>
+						<mat-option value="5">5</mat-option>
+						<mat-option value="6">6</mat-option>
+						<mat-option value="7">7</mat-option>
+						<mat-option value="8">8</mat-option>
+						<mat-option value="9">9</mat-option>
+						<mat-option value="10">10</mat-option>
+						<mat-option value="11">11</mat-option>
+						<mat-option value="12">12</mat-option>
+						<mat-option value="13">13</mat-option>
+						<mat-option value="14">14</mat-option>
+						<mat-option value="15">15</mat-option>
+						<mat-option value="16">16</mat-option>
+						<mat-option value="17">17</mat-option>
+						<mat-option value="18">18</mat-option>
+						<mat-option value="19">19</mat-option>
+						<mat-option value="20">20</mat-option>
+					</mat-select>
+				</div>
+				<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start"
+			*ngIf="userInfo.member_type == 'Vendor'" style="width:250px;">
+			<label style="font-weight: 500; visibility: hidden;">Created At</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="createdAt" class="date-input transfer-lead" placeholder="Created At" required></my-date-range-picker>
+		</div>
+				<button mat-button class="click-btn btn-primary" (click)="getUTMStatus()">Apply</button>
+				<button mat-button class="click-btn" style="border: 1px solid #ebebeb;" (click)="reset()">
+					<mat-icon style="color: #898787;font-weight: 600;">refresh</mat-icon>
+				</button>
+			</div>
+		</div>
+		<mat-accordion>
+			<mat-expansion-panel class="stats-mat-expansion-panel" expanded>
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						<label class="stats-panel-title">Source</label>
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<div fxLayout="row warp" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<div style="width: 100%;" *ngIf="utmSource.length == 0">
+						<h2 style="color: #BF9724;text-align: center;"> No Source Found </h2>
+					</div>
+					<mat-card *ngFor="let item of utmSource" fxLayout="row" fxLayoutAlign="space-between start"
+						fxFlex="32%" fxFlexFill class="project-card">
+
+						<div fxFlex="50" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Source</span>
+							<span class="stats-value">{{item?.type}}</span>
+						</div>
+
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Count</span>
+							<span class="stats-value">{{item?.count}}</span>
+						</div>
+
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Percentage</span>
+							<span class="stats-value">{{item?.percentage}}%</span>
+						</div>
+					</mat-card>
+				</div>
+			</mat-expansion-panel>
+			<mat-expansion-panel class="stats-mat-expansion-panel">
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						<label class="stats-panel-title">Score</label>
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<div fxLayout="row warp" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<div style="width: 100%;" *ngIf="utmScore.length == 0">
+						<h2 style="color: #BF9724;text-align: center;"> No Score Found </h2>
+					</div>
+					<mat-card *ngFor="let item of utmScore" fxLayout="row" fxLayoutAlign="space-between start"
+						fxFlex="32%" fxFlexFill class="project-card">
+						<div fxFlex="50" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Source</span>
+							<span class="stats-value">{{item?.type}}</span>
+						</div>
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Count</span>
+							<span class="stats-value">{{item?.count}}</span>
+						</div>
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Percentage</span>
+							<span class="stats-value">{{item?.percentage}}%</span>
+						</div>
+					</mat-card>
+				</div>
+			</mat-expansion-panel>
+			<mat-expansion-panel class="stats-mat-expansion-panel">
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						<label class="stats-panel-title">Targeting</label>
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<div fxLayout="row warp" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<div style="width: 100%;" *ngIf="content.length == 0">
+						<h2 style="color: #BF9724; text-align: center;"> No Target Found </h2>
+					</div>
+					<mat-card *ngFor="let item of content" fxLayout="row" fxLayoutAlign="space-between start"
+						fxFlex="32%" fxFlexFill class="project-card">
+						<div fxFlex="50" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Content</span>
+							<span class="stats-value">{{item?.type}}</span>
+						</div>
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Count</span>
+							<span class="stats-value">{{item?.count}}</span>
+						</div>
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Percentage</span>
+							<span class="stats-value">{{item?.percentage}}%</span>
+						</div>
+					</mat-card>
+				</div>
+			</mat-expansion-panel>
+			<mat-expansion-panel class="stats-mat-expansion-panel">
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						<label class="stats-panel-title">Spending Potential</label>
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<div fxLayout="row warp" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<div style="width: 100%;" *ngIf="term.length == 0">
+						<h2 style="color: #BF9724;text-align: center;"> No Spending Potential Found </h2>
+					</div>
+					<mat-card *ngFor="let item of term" fxLayout="row" fxLayoutAlign="space-between start" fxFlex="32%"
+						fxFlexFill class="project-card">
+						<div fxFlex="50" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Term</span>
+							<span class="stats-value">{{item?.type}}</span>
+						</div>
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Count</span>
+							<span class="stats-value">{{item?.count}}</span>
+						</div>
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Percentage</span>
+							<span class="stats-value">{{item?.percentage}}%</span>
+						</div>
+					</mat-card>
+				</div>
+			</mat-expansion-panel>
+			<mat-expansion-panel class="stats-mat-expansion-panel">
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						<label class="stats-panel-title">UTM Soruce</label>
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<div fxLayout="row warp" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<div style="width: 100%;" *ngIf="source.length == 0">
+						<h2 style="color: #BF9724;text-align: center;"> No UTM Source Found </h2>
+					</div>
+					<mat-card *ngFor="let item of source" fxLayout="row" fxLayoutAlign="space-between start"
+						fxFlex="32%" fxFlexFill class="project-card">
+						<div fxFlex="50" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Source</span>
+							<span class="stats-value">{{item?.type}}</span>
+						</div>
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Count</span>
+							<span class="stats-value">{{item?.count}}</span>
+						</div>
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Percentage</span>
+							<span class="stats-value">{{item?.percentage}}%</span>
+						</div>
+					</mat-card>
+				</div>
+			</mat-expansion-panel>
+			<mat-expansion-panel class="stats-mat-expansion-panel">
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						<label class="stats-panel-title">UTM Medium</label>
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<div fxLayout="row warp" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<div style="width: 100%;" *ngIf="medium.length == 0">
+						<h2 style="color: #BF9724;text-align: center;"> No UTM Medium Found </h2>
+					</div>
+					<mat-card *ngFor="let item of medium" fxLayout="row" fxLayoutAlign="space-between start"
+						fxFlex="32%" fxFlexFill class="project-card">
+						<div fxFlex="50" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Source</span>
+							<span class="stats-value">{{item?.type}}</span>
+						</div>
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Count</span>
+							<span class="stats-value">{{item?.count}}</span>
+						</div>
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Percentage</span>
+							<span class="stats-value">{{item?.percentage}}%</span>
+						</div>
+					</mat-card>
+				</div>
+			</mat-expansion-panel>
+			<mat-expansion-panel class="stats-mat-expansion-panel">
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						<label class="stats-panel-title">UTM Campaign</label>
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<div fxLayout="row warp" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<div style="width: 100%;" *ngIf="campaign.length == 0">
+						<h2 style="color: #BF9724;text-align: center;"> No Campaign Found </h2>
+					</div>
+					<mat-card *ngFor="let item of campaign" fxLayout="row" fxLayoutAlign="space-between start"
+						fxFlex="32%" fxFlexFill class="project-card">
+						<div fxFlex="50" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Campaign</span>
+							<span class="stats-value">{{item?.type}}</span>
+						</div>
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Count</span>
+							<span class="stats-value">{{item?.count}}</span>
+						</div>
+						<div fxFlex="24" fxLayout="column" fxLayoutAlign="space-between start">
+							<span class="stats-title">Percentage</span>
+							<span class="stats-value">{{item?.percentage}}%</span>
+						</div>
+					</mat-card>
+				</div>
+			</mat-expansion-panel>
+
+
+		</mat-accordion>
+
+	</mat-dialog-content>
+</div>

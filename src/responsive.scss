@@ -1,0 +1,13 @@
+@media screen and (max-width: 599px) {
+    .login-page {
+        padding: 24px;
+    }
+
+    .login-page .login-card.mat-card {
+        max-width: 100%;
+    }
+
+    .mat-toolbar.mbv-nav.mat-toolbar-single-row {
+        padding: 0;
+    }
+}

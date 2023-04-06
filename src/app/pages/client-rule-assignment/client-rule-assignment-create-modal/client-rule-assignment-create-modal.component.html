@@ -1,0 +1,35 @@
+<div class="modal-content">
+	<i class="material-icons close-modal" style="float: right;cursor: pointer;margin-top: 20px;" (click)="close()">
+		clear
+	</i>
+	<h3>
+		CREATE ASSIGNMENT RULE
+	</h3>
+	<mat-dialog-content class="mat-dialog-container-div">
+		<form [formGroup]="createRuleForm">
+			<div class="form-group">
+				<label for="">Name <span style="color: #00C08D">*</span></label>
+				<input type="text" class="form-input" formControlName="name" name="name" id="name" placeholder="Name *">
+			</div>
+			<div class="form-group">
+				<label for="">Project <span style="color: #00C08D">*</span></label>
+				<mat-select placeholder="Select Project" class="form-input" (focusout)="onFocusOutEvent($event)"
+					formControlName="project">
+					<input (keyup)="onKeyProject($event.target.value)" formControlName="searchProject"
+						class="form-input" placeholder="Search">
+					<mat-option [value]="project.id" *ngFor="let project of filteredProjects">{{project.name}}
+					</mat-option>
+					<div class="not-found-data" *ngIf="filteredProjects.length == 0">
+						No Result Found
+					</div>
+				</mat-select>
+			</div>
+		</form>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="save()" [disabled]="!createRuleForm.valid"
+		*ngIf="!btnStatus">Save</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Saving...</button>
+</div>

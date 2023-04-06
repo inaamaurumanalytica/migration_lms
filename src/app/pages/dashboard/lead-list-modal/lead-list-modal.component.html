@@ -1,0 +1,64 @@
+<mat-toolbar class="primary m-0">
+	<mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+		<span class="dialog-title">LEAD LIST - {{data.status}}</span>
+		<span fxFlex="1 1 auto"></span>
+		<button mat-icon-button (click)="close()" aria-label="Close dialog">
+			<mat-icon>close</mat-icon>
+		</button>
+	</mat-toolbar-row>
+</mat-toolbar>
+<div class="modal-content">
+	<mat-dialog-content class="main-content" id="mat-dailog-lead" *ngIf="!showComponentLoader">
+		<h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+			*ngIf="lead.leads.length == 0">No Lead Found</h1>
+		<mat-card *ngFor="let lead of lead.leads" style="margin-top: 1rem;">
+			<mat-card-content>
+				<div class="users-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<div class="user-info" fxFlex="1 1 20%">
+						<p class="user-title">{{lead.name}}</p>
+					</div>
+					<div class="status">
+						<p class="title">Phone</p>
+						<span class="status-check">{{lead.phone}}</span>
+					</div>
+					<div class="status">
+						<p class="title">Lead Score</p>
+						<span class="status-check">{{lead.score}}</span>
+					</div>
+					<div class="assign-project">
+						<p class="title">Assign To</p>
+						<span class="status-check">{{lead.client_assignee_user}}</span>
+					</div>
+					<div class="assign-project">
+						<p class="title">Vendor Remark</p>
+						<span class="status-check">{{lead.vendor_remark}}</span>
+					</div>
+					<div class="assign-project">
+						<p class="title">Client Remark</p>
+						<span class="status-check">{{lead.client_remark}}</span>
+					</div>
+					<div class="create-date">
+						<p class="title">Created At</p>
+						<span class="status-check">{{lead.created_at | date : 'dd/MM/yyyy'}}</span>
+					</div>
+					<div class="create-date">
+						<p class="title">Updated At</p>
+						<span class="status-check">{{lead.updated_at | date : 'dd/MM/yyyy'}}</span>
+					</div>
+				</div>
+			</mat-card-content>
+		</mat-card>
+
+	</mat-dialog-content>
+</div>
+
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<mat-paginator [ngStyle]="{'display':lead.leads.length == 0 ? 'none' : 'block' }" #paginator
+		[length]="lead.pagination.total_count" [pageIndex]="pageIndex" [pageSize]="pageSize"
+		[pageSizeOptions]="[100, 150]" (page)="getNext($event)">
+	</mat-paginator>
+</div>
+
+<div class="dark-overlay" *ngIf="showComponentLoader">
+	<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>

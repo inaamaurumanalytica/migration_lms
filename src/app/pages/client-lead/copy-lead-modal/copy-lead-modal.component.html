@@ -1,0 +1,54 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>COPY LEAD</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+	<mat-dialog-content class="main-content">
+		<form [formGroup]="copyLeadForm">
+			<div class="form-group">
+				<label style="font-weight: 500">Name <span style="color: #00C08D">*</span></label>
+				<input type="text" class="form-input" name="name" id="name" placeholder="Name" formControlName="name"
+					[attr.disabled]="true" required>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Email <span style="color: #00C08D">*</span></label>
+				<input type="text" class="form-input" name="email" id="email" placeholder="Email" [attr.disabled]="true"
+					formControlName="email" required>
+			</div>
+			<div class="form-group">
+				<label>Client <span style="color: #00C08D">*</span></label>
+				<mat-select class="form-input" (selectionChange)="changeByClient()" placeholder="Select Client"
+					formControlName="clientId" (focusout)="onFocusOutEvent($event)">
+					<input (keyup)="onKeyClient($event.target.value)" formControlName="searchClient" class="form-input"
+						placeholder="Search">
+					<mat-option [value]="client.id" *ngFor="let client of filteredClients">{{client.name}}</mat-option>
+					<div class="not-found-data" *ngIf="filteredClients.length == 0">
+						No Result Found
+					</div>
+				</mat-select>
+			</div>
+			<div class="form-group">
+				<label>Project <span style="color: #00C08D">*</span></label>
+				<mat-select class="form-input" placeholder="Select Project" formControlName="projectId"
+					(focusout)="onFocusOutEvent($event)">
+					<input (keyup)="onKeyProject($event.target.value)" formControlName="searchProject"
+						class="form-input" placeholder="Search">
+					<mat-option [value]="project.id" *ngFor="let project of filteredProjectsByClient">{{project.name}}
+					</mat-option>
+					<div class="not-found-data" *ngIf="filteredProjectsByClient.length == 0">
+						No Result Found
+					</div>
+				</mat-select>
+			</div>
+		</form>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="save()" [disabled]="!copyLeadForm.valid"
+		*ngIf="!btnStatus">Save</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Saving...</button>
+</div>

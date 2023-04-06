@@ -1,0 +1,43 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>AUDIT LOG - <span *ngIf="dataSource.event_type != null">{{dataSource.event_type}}</span>
+			<span *ngIf="dataSource.event_type == null">{{dataSource.lms_object_type == 'Mailing'? 'Email':
+				dataSource.lms_object_type}}
+				{{dataSource.action}}</span>
+		</h3>
+		<button mat-icon-button tabindex="-1" matTooltip="Close" (click)="close()">
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+	<!-- <span style="font-size: 12px;color: #b7b7b7;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span> -->
+	<mat-dialog-content class="mat-dialog-container-div">
+
+		<h1 class="not-found" *ngIf="dataSource.details != undefined && (dataSource.details | json) == '{}'">No Details
+			Found</h1>
+		<table *ngIf="dataSource.details != undefined && (dataSource.details | json) != '{}'">
+			<tr>
+				<th class="log-detail-field">Field</th>
+				<th class="log-detail-value"
+					*ngIf="dataSource.action != 'Created' && dataSource.action != 'Exported' && dataSource.action != 'Downloaded'">
+					Old Value</th>
+				<th
+					*ngIf="dataSource.action != 'Created' && dataSource.action != 'Exported' && dataSource.action != 'Downloaded'">
+					New Value</th>
+				<th
+					*ngIf="dataSource.action == 'Created' || dataSource.action == 'Exported' || dataSource.action == 'Downloaded'">
+					Value</th>
+			</tr>
+			<tr *ngFor="let key of Object.keys(dataSource.details)">
+				<td class="log-detail-field">{{key | json}}</td>
+				<td class="log-detail-field" *ngIf="dataSource.details[key].length == undefined">
+					{{dataSource.details[key] | json}}</td>
+				<td class="log-detail-value"
+					*ngIf="dataSource.details[key].length != undefined && dataSource.details[key].length != 0 && dataSource.action != 'Created'">
+					{{dataSource.details[key][0] | json}}</td>
+				<td class="log-detail-value"
+					*ngIf="dataSource.details[key].length != undefined && dataSource.details[key].length != 0">
+					{{dataSource.details[key][1] | json}}</td>
+			</tr>
+		</table>
+	</mat-dialog-content>
+</div>

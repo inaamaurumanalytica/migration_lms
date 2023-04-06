@@ -1,0 +1,248 @@
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="divider" style="background-color: #102348;height: 65px;margin-left: -10px;"></div>
+<div class="page-container">
+    <div class="dashboard-wrapper" style="margin-top: -3%;margin-bottom: 1%;">
+        <mat-card class="dashboard-card" fxLayout="column">
+            <mat-card-header style="margin-bottom: 10px;">
+                <mat-card-title> Overview
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="center center"
+                    style="border-right: 1px solid #7674748f; cursor: pointer;" (click)="routeTo('project')">
+                    <div class="dashboard-circle-img project-bg">
+                        <img src="assets/images/projects.png" width="35px" height="35px">
+                    </div>
+                    <div>
+                        <h2 class="dash-h2">{{vendorStats.total_projects | number}}</h2>
+                        <h5 class="dash-h5">PROJECTS</h5>
+                    </div>
+                </div>
+                <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="center center"
+                    style="border-right: 1px solid #7674748f;cursor: pointer;" *ngIf="userInfo.admin"
+                    (click)="routeTo('vendor')">
+                    <div class="dashboard-circle-img user-bg">
+                        <img src="assets/images/leads.png" width="35px" height="35px">
+                    </div>
+                    <div>
+                        <h2 class="dash-h2">{{vendorStats.total_vendor | number}}</h2>
+                        <h5 class="dash-h5">VENDORS</h5>
+                    </div>
+                </div>
+                <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="center center"
+                    style="border-right: 1px solid #7674748f;cursor: pointer;" (click)="routeTo('client')">
+                    <div class="dashboard-circle-img lead-bg">
+                        <img src="assets/images/clients.png" width="35px" height="35px">
+                    </div>
+                    <div>
+                        <h2 class="dash-h2">{{vendorStats.total_client | number}}</h2>
+                        <h5 class="dash-h5">CLIENTS</h5>
+                    </div>
+                </div>
+
+                <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="center center"
+                    style="border-right: 1px solid #7674748f;cursor: pointer;" (click)="routeTo('user')">
+                    <div class="dashboard-circle-img user-bg">
+                        <img src="assets/images/user.png" width="35px" height="35px">
+                    </div>
+                    <div>
+                        <h2 class="dash-h2">{{vendorStats.total_user | number}}</h2>
+                        <h5 class="dash-h5">USERS</h5>
+                    </div>
+                </div>
+
+                <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="center center"
+                style="border-right: 1px solid #7674748f;cursor: pointer;">
+                <div class="dashboard-circle-img fresh-lead-bg">
+                    <img src="assets/images/fresh_leads.png" width="35px" height="35px">
+                </div>
+                <div>
+                    <h2 class="dash-h2">{{clientLead?.lead_count}}</h2>
+                    <h5 class="dash-h5">FRESH LEADS</h5>
+                </div>
+            </div>
+
+                <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="center center" (click)="routeTo('lead')"
+                    style="cursor: pointer;">
+                    <div class="dashboard-circle-img exp-bg">
+                        <img src="assets/images/leads.png" width="35px" height="35px">
+                    </div>
+                    <div>
+                        <h2 class="dash-h2">{{vendorStats.total_leads | number}}</h2>
+                        <h5 class="dash-h5">LEADS</h5>
+                    </div>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+<!-- changes made -->
+    <div *ngIf="userInfo.org_admin || role == 'SalesAdmin' ">
+        <mat-card>
+            <mat-card-content>
+                <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                    <div class="form-group" style="width: 25%;">
+                        <label  for="">Client</label>
+                        <mat-select class="form-input" placeholder="Select Client" [(ngModel)]="selectedClient"
+                            (selectionChange)="selectClient()">
+                            <input (keydown)="onKeyClient($event)" [(ngModel)]="searchValue" 
+                                style="height: 30px;width: 90%;border: none;padding: 0px 12px;" placeholder="Search">
+                            <mat-option [value]="client" *ngFor="let client of filteredClients">{{client.name}}
+                            </mat-option>
+                        </mat-select>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="20px">
+                        <div class="user-action-btn" *ngIf="showFilter">
+                            <button mat-button class="click-btn" (click)="filter()">
+                                <mat-icon matTooltip="Filter">filter_list</mat-icon>
+                                filter
+                            </button>
+                        </div>
+                        <div class="user-action-btn" style="margin-top: 22px;" *ngIf="dataSource.length != 0">
+                            <button mat-button class="click-btn" (click)="exportToExcel()">
+                                <mat-icon matTooltip="Export">cloud_download</mat-icon>
+                                export
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div *ngIf="dataSource.length != 0">
+        <mat-card id="clientAnalyticsTable" *ngFor="let element of dataSource" style="margin: 15px 0px;">
+            <mat-card-content>
+                <div fxLayout="column" fxLayoutGap="20px">
+                    <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx" style="width: 100%;">
+                        <h2 (click)="routeToProjectLeads(element.projectId,'', 0)" style="cursor: pointer;">
+                            Project : {{element.project}}
+                        </h2>
+                        <div>
+                            <h3>
+                                <span style="font-weight: 500;">Total - </span>
+                                <span style="color: #00C08D;font-weight: 600;">{{element['total']}}</span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="20px">
+                        <mat-card class="project-card" (click)="routeToProjectLeads(element.projectId,'Fresh', element.Fresh)">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">Fresh</span>
+                                <span class="project-number">{{element.Fresh}}</span>
+                            </div>
+                        </mat-card>
+                        <mat-card class="project-card" (click)="routeToProjectLeads(element.projectId,'Verified', element.Verified)">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">Verified</span>
+                                <span class="project-number">{{element.Verified}}</span>
+                            </div>
+                        </mat-card>
+                        <mat-card class="project-card" (click)="routeToProjectLeads(element.projectId,'Interested', element.Interested)">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">Interested</span>
+                                <span class="project-number">{{element.Interested}}</span>
+                            </div>
+                        </mat-card>
+                        <mat-card class="project-card"
+                            (click)="routeToProjectLeads(element.projectId,'V Not Interested', element['V Not Interested'])">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">V Not Interested</span>
+                                <span class="project-number">{{element['V Not Interested']}}</span>
+                            </div>
+                        </mat-card>
+                        <mat-card class="project-card"
+                            (click)="routeToProjectLeads(element.projectId,'V Not Responding', element['V Not Responding'])">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">V Not Responding</span>
+                                <span class="project-number">{{element['V Not Responding']}}</span>
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="20px">
+                        <mat-card class="project-card"
+                            (click)="routeToProjectLeads(element.projectId,'V Not Available', element['V Not Available'])">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">V Not Available</span>
+                                <span class="project-number">{{element['V Not Available']}}</span>
+                            </div>
+                        </mat-card>
+                        <mat-card class="project-card"
+                            (click)="routeToProjectLeads(element.projectId,'Not Interested', element['Not Interested'])">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">Not Interested</span>
+                                <span class="project-number">{{element['Not Interested']}}</span>
+                            </div>
+                        </mat-card>
+                        <mat-card class="project-card"
+                            (click)="routeToProjectLeads(element.projectId,'Not Responding', element['Not Responding'])">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">Not Responding</span>
+                                <span class="project-number">{{element['Not Responding']}}</span>
+                            </div>
+                        </mat-card>
+                        <mat-card class="project-card"
+                            (click)="routeToProjectLeads(element.projectId,'Not Available', element['Not Available'])">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">Not Available</span>
+                                <span class="project-number">{{element['Not Available']}}</span>
+                            </div>
+                        </mat-card>
+                        <mat-card class="project-card" (click)="routeToProjectLeads(element.projectId,'Contacted', element.Contacted)">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">Contacted</span>
+                                <span class="project-number">{{element.Contacted}}</span>
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="20px">
+                        <mat-card class="project-card" (click)="routeToProjectLeads(element.projectId,'Follow Up', element['Follow Up'])">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">Follow Up</span>
+                                <span class="project-number">{{element['Follow Up']}}</span>
+                            </div>
+                        </mat-card>
+                        <mat-card class="project-card" (click)="routeToProjectLeads(element.projectId,'Callback', element.Callback)">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">Callback</span>
+                                <span class="project-number">{{element.Callback}}</span>
+                            </div>
+                        </mat-card>
+                        <mat-card class="project-card"
+                            (click)="routeToProjectLeads(element.projectId,'Wrong Number', element['Wrong Number'])">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">Wrong Number</span>
+                                <span class="project-number">{{element['Wrong Number']}}</span>
+                            </div>
+                        </mat-card>
+                        <mat-card class="project-card"
+                            (click)="routeToProjectLeads(element.projectId,'Closed/Won', element['Closed/Won'])">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">Closed/Won</span>
+                                <span class="project-number">{{element['Closed/Won']}}</span>
+                            </div>
+                        </mat-card>
+                        <mat-card class="project-card"
+                            (click)="routeToProjectLeads(element.projectId,'Site Visit', element['Site Visit'])">
+                            <div fxLayoutAlign="space-between start">
+                                <span class="project-title">Site Visit</span>
+                                <span class="project-number">{{element['Site Visit']}}</span>
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="20px">
+
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card style="min-height: 200px;margin: 15px 0px;" *ngIf="dataSource.length == 0 && notFound">
+            <h2 style="text-align: center;margin-top: 4em;">
+                <div>Sorry, We couldn’t find any data of client <b style="color: #00C08D;">"{{selectedClient.name}}"</b>
+                </div>
+            </h2>
+        </mat-card>
+    </div>
+</div>

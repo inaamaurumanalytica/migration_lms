@@ -1,0 +1,12 @@
+<i class="material-icons close-modal" style="float: right;cursor: pointer;" (click)="close()">
+	clear
+</i>
+
+
+<h2>Are you sure you want send data to Marketing Intelligence Platform?</h2>
+
+<mat-dialog-actions fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">No</button>
+	<button mat-button class="btn btn-primary" (click)="submit()" *ngIf="!btnStatus">Yes</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Sending...</button>
+</mat-dialog-actions>

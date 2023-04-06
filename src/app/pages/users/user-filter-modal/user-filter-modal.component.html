@@ -1,0 +1,40 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>FILTER BY</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+	<mat-dialog-content class="main-content" class="mat-dialog-container-div">
+		<div class="form-group" *ngIf="userInfo.admin">
+			<label style="font-weight: 500">Member Type</label>
+			<mat-select placeholder="Select User Type" class="form-input" name="name" [(ngModel)]="memberType">
+				<mat-option value="client">Client</mat-option>
+				<mat-option value="vendor">Vendor</mat-option>
+			</mat-select>
+		</div>
+		<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start">
+			<label style="font-weight: 500">Created At</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="createdAt" class="date-input transfer-lead" placeholder="Created At"
+				required>
+			</my-date-range-picker>
+		</div>
+		<div class="form-group form-group-1" *ngIf="userInfo.admin">
+			<mat-checkbox [(ngModel)]="orgAdmin">Org Admin</mat-checkbox>
+		</div>
+		<div class="form-group form-group-1">
+			<mat-checkbox [(ngModel)]="email_verified">Email Verified</mat-checkbox>
+		</div>
+		<div class="form-group form-group-1">
+			<mat-checkbox [(ngModel)]="active">Active</mat-checkbox>
+		</div>
+		<div class="form-group form-group-1">
+			<mat-checkbox [(ngModel)]="phone_verified">Phone Verified</mat-checkbox>
+		</div>
+
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="clear()">Clear All</button>
+	<button mat-button class="btn btn-primary" (click)="filterLead()">Apply</button>
+</div>

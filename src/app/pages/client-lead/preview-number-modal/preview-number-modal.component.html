@@ -1,0 +1,35 @@
+<i class="material-icons close-modal" style="float: right;cursor: pointer;" (click)="close()">
+	clear
+</i>
+<h2>
+	Preview
+</h2>
+<div>
+	<p style="font-size: 14px;">
+		Please check Contact Number and click 'Confirm' to redirect to Web Whatsapp Or you can edit this number
+	</p>
+
+	<form [formGroup]="form">
+		<div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+			<mat-form-field class="example-full-width" style="width:300px">
+				<input matInput type="number" placeholder="Contact No." formControlName="contactNumber">
+			</mat-form-field>
+
+			<div style="font-size: 12px;
+			color: red;">
+				<span *ngIf="form.controls.contactNumber?.errors?.required">Please enter Contact Number</span>
+			</div>
+		</div>
+	</form>
+
+	<p style="color: #ff0000bf;
+    font-size: 12px;
+    letter-spacing: 0.5px;"><b style="color: black;">Note:</b> Please add Country code, if it is not added in you
+		number e.g. 91XXXXXXXXXX or
+		+91XXXXXXXXXX.
+	</p>
+</div>
+
+<mat-dialog-actions>
+	<button class="mat-raised-button mat-primary" [disabled]="!form.valid" (click)="confirm()">Confirm</button>
+</mat-dialog-actions>

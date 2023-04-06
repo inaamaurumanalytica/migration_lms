@@ -1,0 +1,193 @@
+.table-header {
+    background-color: #5c6bc0;
+    color: white;
+    padding: 0 5px;
+}
+
+.table-component-holder {
+    border: 1px solid #327ebd;
+    background-color: white;
+}
+
+.example-container {
+    display: flex !important;
+    flex-direction: column;
+}
+
+.example-container>* {
+    width: 100%;
+}
+
+
+.user-action-btn .click-btn {
+    background: #00C08D;
+    color: #fff;
+    border-radius: 12px;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-right: 20px;
+    float: right;
+    width: 100px;
+    border: 1px solid #00C08D;
+}
+
+.user-action-btn .close-btn {
+    background: #ebebeb;
+    color: #c3c3c3;
+    border-radius: 12px;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-right: 15px;
+    float: right;
+    width: 100px;
+    border: 1px solid #c3c3c3;
+}
+
+.remarks {
+    background: #ecebeb;
+    padding: 10px;
+    border-radius: 4px;
+    color: #444;
+    font-size: 0.75rem;
+    line-height: 16px;
+}
+
+.btn-primary:disabled {
+    background: #74CDB7 !important;
+    cursor: not-allowed !important;
+}
+
+.main-content.remark {
+    position: relative;
+    height: 100vh;
+}
+
+.remark-container {
+    max-height: 45vh;
+    margin-bottom: 1rem;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+.form-group.text-area {
+    position: fixed;
+    width: 360px;
+    bottom: 5rem;
+}
+
+.remark-container .remark-date {
+    margin-left: 10px;
+    font-size: 0.725rem;
+    color: #e48e27;
+    font-weight: 400;
+}
+
+/* Timeline */
+
+#content p {
+    font-weight: 400;
+    font-size: 0.75rem;
+    word-break: break-all;
+}
+
+a:hover {
+    color: white;
+    background: #004ffc;
+    border-bottom: 0.35em solid black;
+}
+
+#content {
+    margin-top: 0px;
+    text-align: center;
+    height: calc(100% - 200px);
+    overflow-y: auto;
+    padding: 2px 30px !important;
+}
+
+.timeline {
+    border-left: 2px solid #00C08D;
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #444;
+    // font-family: "Chivo", sans-serif;
+    margin: 20px 0px 20px 110px;
+    letter-spacing: 0.5px;
+    position: relative;
+    line-height: 1.4em;
+    font-size: 1.03em;
+    padding: 20px 5px 20px 20px;
+    list-style: none;
+    text-align: left;
+    font-weight: 100;
+    max-width: 65%;
+    background: #f7f7f7;
+}
+
+.timeline h2,
+.timeline h3 {
+    letter-spacing: 1px;
+    font-weight: 400;
+    font-size: 0.75rem;
+    color: #00C08D;
+}
+
+.timeline .event {
+    // border-bottom: 1px dashed #444 !important;
+    // padding-bottom: 25px !important;
+    margin-bottom: 40px !important;
+    position: relative;
+}
+
+.timeline .event:last-of-type {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border: none;
+}
+
+.timeline .event:before,
+.timeline .event:after {
+    position: absolute;
+    display: block;
+    top: 0;
+}
+
+.timeline-time {
+    position: absolute;
+    left: -110px;
+    text-align: right;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+// .timeline .event .r-date {
+//     left: -125.5px;
+//     color: #000;
+//     text-align: right;
+//     font-weight: 100;
+//     font-size: 0.9em;
+//     min-width: 95px;
+// }
+.date-time {
+    font-size: .75rem;
+    font-weight: 400;
+}
+
+.timeline .event:after {
+    box-shadow: 0 0 0 2px #00C08D;
+    left: -24.85px;
+    background: #fff;
+    border-radius: 50%;
+    height: 8px;
+    width: 8px;
+    content: "";
+    top: 5px;
+}
+
+.chip-anaylyze-data {
+    border: 1px solid #00C08D;
+    background: white;
+    font-size: 12px;
+    font-weight: 300;
+}

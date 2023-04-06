@@ -1,0 +1,13 @@
+<i class="material-icons close-modal" style="float: right;cursor: pointer;" (click)="close()">
+	clear
+</i>
+
+
+<h2>Are you sure you want to make the project "{{dataSource.name}}" as Dead?</h2>
+
+<p><b>Note :</b> Once the project is dead, It will never be Live again.</p>
+
+<mat-dialog-actions>
+	<button class="mat-raised-button" (click)="close()">No</button>
+	<button class="mat-raised-button mat-primary" (click)="yes()">Yes</button>
+</mat-dialog-actions>

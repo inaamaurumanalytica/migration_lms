@@ -1,0 +1,36 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>CONFIRM</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+	<mat-dialog-content class="mat-dialog-container-div">
+		<div *ngIf="userInfo.member_type != 'Client'">
+			<h3 style="color: #BF9724; margin-top:2em;">This Lead Status was last updated by Client. Are you sure you
+				want to update this Lead status?
+			</h3>
+		</div>
+		<div *ngIf="userInfo.member_type == 'Client'">
+			<h3 style="color: #BF9724; margin-top:1em;"> Are you sure you want to update this Lead status </h3>
+			<form>
+				<div class="form-group">
+					<label for="">Client Remark <span style="color: #00C08D">*</span></label>
+					<textarea name="remark" id="remark" [(ngModel)]="clientRemark"></textarea>
+				</div>
+			</form>
+			<div>
+				<p style="color:red"> <b>Note :</b> Client remark is mandatory when lead status is {{data.lead_status}}
+				</p>
+			</div>
+		</div>
+	</mat-dialog-content>
+</div>
+
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">No</button>
+	<button mat-button class="btn btn-primary" *ngIf="userInfo.member_type != 'Client'" (click)="yes()">Yes</button>
+	<button mat-button class="btn btn-primary" *ngIf="userInfo.member_type == 'Client'" [disabled]="clientRemark == ''"
+		(click)="yes()">Yes</button>
+</div>

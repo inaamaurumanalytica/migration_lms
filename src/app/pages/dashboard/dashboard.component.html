@@ -1,0 +1,175 @@
+<div class="divider" style="background-color: #102348;height: 65px;margin-left: -10px;"></div>
+<div class="page-container">
+    <div class="dashboard-wrapper" style="margin-top: -3%;margin-bottom: 1%;">
+        <mat-card class="dashboard-card" fxLayout="column">
+            <mat-card-header style="margin-bottom: 10px;">
+                <mat-card-title> Overview
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="center center"
+                    style="border-right: 1px solid #7674748f;" (click)="routeTo('User')">
+                    <div class="dashboard-circle-img user-bg">
+                        <img src="assets/images/user.png" width="35px" height="35px">
+                    </div>
+                    <div>
+                        <h2 class="dash-h2">{{stats.total_user}}</h2>
+                        <h5 class="dash-h5">USERS</h5>
+                    </div>
+                </div>
+                <div *ngIf="userInfo.member_type != 'Client'"
+                fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="center center" (click)="routeTo('Vendor')"
+                    style="border-right: 1px solid #7674748f;">
+                    <div class="dashboard-circle-img vendor-bg">
+                        <img src="assets/images/clients.png" width="35px" height="35px">
+                    </div>
+                    <div>
+                        <h2 class="dash-h2">{{stats.total_vendor}}</h2>
+                        <h5 class="dash-h5">VENDORS</h5>
+                    </div>
+                </div>
+                <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="center center" (click)="routeTo('Project')"
+                    style="border-right: 1px solid #7674748f;">
+                    <div class="dashboard-circle-img project-bg">
+                        <img src="assets/images/projects.png" width="35px" height="35px">
+                    </div>
+                    <div>
+                        <h2 class="dash-h2">{{stats.total_projects}}</h2>
+                        <h5 class="dash-h5">PROJECTS</h5>
+                    </div>
+                </div>
+                <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="center center" style="border-right: 1px solid #7674748f;">
+                <div class="dashboard-circle-img fresh-lead-bg">
+                    <img src="assets/images/fresh_leads.png" width="35px" height="35px">
+                </div>
+                <div>
+                    <h2 class="dash-h2">{{clientLead?.lead_count}}</h2>
+                    <h5 class="dash-h5">FRESH LEADS</h5>
+                </div>
+            </div>
+                <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="center center"
+                    style="border-right: 1px solid #7674748f;">
+                    <div class="dashboard-circle-img lead-bg">
+                        <img src="assets/images/leads.png" width="35px" height="35px">
+                    </div>
+                    <div>
+                        <h2 class="dash-h2">{{stats.total_leads}}</h2>
+                        <h5 class="dash-h5">LEADS</h5>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="dashboard-wrapper" style="margin-bottom: 10px;">
+        <mat-card fxLayout="column">
+            <div class="top-users" fxLayout="row" fxLayoutAlign="space-between center">
+                <div>
+                    <mat-card-title> Filter
+                    </mat-card-title>
+                </div>
+                <div fxLayout="row" fxLayoutGap="5px">
+                    <span class="dashboard-form">
+                        <mat-select class="form-input" placeholder="Project" [(ngModel)]="selectProject"
+                            (selectionChange)="filterByFilters()">
+                            <mat-option [value]="project.id" *ngFor="let project of projects">{{project.name}}
+                            </mat-option>
+                        </mat-select>
+                    </span>
+                    <span class="dashboard-form">
+                        <mat-select class="form-input" placeholder="Lead Score" [(ngModel)]="selectLeadScore"
+                            (selectionChange)="filterByFilters()">
+                            <mat-option value="1">1</mat-option>
+                            <mat-option value="2">2</mat-option>
+                            <mat-option value="3">3</mat-option>
+                            <mat-option value="4">4</mat-option>
+                            <mat-option value="5">5</mat-option>
+                            <mat-option value="6">6</mat-option>
+                            <mat-option value="7">7</mat-option>
+                            <mat-option value="8">8</mat-option>
+                            <mat-option value="9">9</mat-option>
+                            <mat-option value="10">10</mat-option>
+                            <mat-option value="11">11</mat-option>
+                            <mat-option value="12">12</mat-option>
+                            <mat-option value="13">13</mat-option>
+                            <mat-option value="14">14</mat-option>
+                            <mat-option value="16">15</mat-option>
+                            <mat-option value="16">16</mat-option>
+                            <mat-option value="17">17</mat-option>
+                            <mat-option value="18">18</mat-option>
+                            <mat-option value="19">19</mat-option>
+                            <mat-option value="20">20</mat-option>
+                        </mat-select>
+                    </span>
+                    <span>
+                        <my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="selectCreatedAt"
+                            (dateRangeChanged)="onCreatedAtDateRange($event)" placeholder="Created At"
+                            class="my-date-picker">
+                        </my-date-range-picker>
+                    </span>
+                    <span>
+                        <my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="selectUpdatedAt"
+                            (dateRangeChanged)="onUpdatedAtDateRange($event)" placeholder="Updated At"
+                            class="my-date-picker">
+                        </my-date-range-picker>
+                    </span>
+                    <span>
+                        <button mat-button class="click-btn" (click)="reset()">
+                            reset
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+    <div class="dashboard-wrapper">
+        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px" style="margin-bottom: 10px;">
+            <mat-card class="lead-status-stats" fxFlex="66%" style="width: 100%;">
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+                    <mat-card-title> Leads Assigned To Users </mat-card-title>
+                </div>
+                <mat-card-content>
+                    <div class="no-lead-text-found" style="margin-top: 115px;" *ngIf="!showUserStats">
+                        No data to display
+                    </div>
+                    <highcharts-chart class="highchart-column" (click)="clickElement($event)" *ngIf="showUserStats"
+                        [Highcharts]="highcharts" [options]="userStatsColumn">
+                    </highcharts-chart>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="lead-status-stats" fxFlex="33%" fxLayout="column">
+                <div class="top-users" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div>
+                        <mat-card-title *ngIf="!showPieChart"> Lead Status
+                        </mat-card-title>
+                        <mat-card-title *ngIf="showPieChart"> {{selectedUser}} Stats
+                        </mat-card-title>
+                    </div>
+                </div>
+                <mat-card-content>
+                    <div *ngIf="!showPieChart">
+                        <div class="bbb no-lead-text-found" style="margin-top: 115px;" *ngIf="!showLeadStatus">No data
+                            to
+                            display
+                        </div>
+                        <highcharts-chart *ngIf="showLeadStatus" (click)="onPointSelect($event)"
+                            [Highcharts]="highcharts" [options]="leadStatusChart" class="highchart-pie">
+                        </highcharts-chart>
+                    </div>
+                    <div *ngIf="showPieChart">
+                        <div class="aaa no-lead-text-found" style="margin-top: 115px;" *ngIf="!showUserStatus">No data
+                            to
+                            display
+                        </div>
+                        <highcharts-chart *ngIf="showUserStatus" [Highcharts]="highcharts" [options]="leadStatusChart"
+                            class="highchart-pie">
+                        </highcharts-chart>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>
+
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>

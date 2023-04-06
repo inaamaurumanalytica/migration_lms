@@ -1,0 +1,64 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>FILTER BY</h3>
+		<button mat-icon-button tabindex="-1" matTooltip="Close" (click)="close()">
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+	<!-- <span style="font-size: 12px;color: #b7b7b7;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span> -->
+	<mat-dialog-content>
+		<div class="form-group">
+			<label style="font-weight: 500">User</label>
+			<mat-select placeholder="Select User" class="form-input" name="user" [(ngModel)]="selectUser">
+				<mat-option value="">Select User</mat-option>
+				<mat-option [value]="user.id" *ngFor="let user of users">{{user.name}}
+				</mat-option>
+			</mat-select>
+		</div>
+		<div class="form-group">
+			<label style="font-weight: 500">Action</label>
+			<mat-select placeholder="Select Action" class="form-input" [(ngModel)]="selectAction"
+				(selectionChange)="changeByAction()">
+				<mat-option value="">Select Action</mat-option>
+				<mat-option value="Created">Created</mat-option>
+				<mat-option value="Updated">Updated</mat-option>
+				<mat-option value="Deleted">Deleted</mat-option>
+				<mat-option value="Enabled">Enabled</mat-option>
+				<mat-option value="Disabled">Disabled</mat-option>
+				<mat-option value="Exported">Exported</mat-option>
+			</mat-select>
+		</div>
+		<div class="form-group">
+			<label style="font-weight: 500">Object Type</label>
+			<mat-select *ngIf="!hideProject" placeholder="Select Object Type" class="form-input"
+				[(ngModel)]="selectType">
+				<mat-option value="">Select Object Type</mat-option>
+				<mat-option value="Lead" *ngIf="!hideObjectType">Lead</mat-option>
+				<mat-option value="Note">Note</mat-option>
+				<mat-option value="Address">Address</mat-option>
+				<mat-option value="Task">Task</mat-option>
+				<mat-option value="Mailing" *ngIf="!mailing">Email</mat-option>
+				<mat-option value="LeadAttachment" *ngIf="!hideLeadAttachment">LeadAttachment</mat-option>
+				<mat-option value="Profile" *ngIf="!hideProfile">Profile</mat-option>
+				<mat-option value="Project" *ngIf="!showProject">Project</mat-option>
+			</mat-select>
+			<mat-select *ngIf="hideProject" class="form-input" placeholder="Select Object Type"
+				[(ngModel)]="selectType">
+				<mat-option value="">Select Object Type</mat-option>
+				<mat-option value="Project">Project</mat-option>
+			</mat-select>
+		</div>
+		<div class="form-group" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
+			<label style="font-weight: 500">Created At</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="createdDate" class="date-input" placeholder="Created At" required>
+			</my-date-range-picker>
+		</div>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-primary mat-button" (click)="save()"
+	
+		[disabled]="selectUser == '' && selectAction == '' && createdDate == '' && selectType == ''">APPLY</button>
+	<button mat-button class="btn btn-light mat-button" (click)="clear()">CLEAR ALL</button>
+
+</div>

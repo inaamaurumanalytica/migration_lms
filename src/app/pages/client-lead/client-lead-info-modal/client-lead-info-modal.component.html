@@ -1,0 +1,253 @@
+<mat-toolbar class="primary m-0">
+	<mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+		<span class="title dialog-title">LEAD INFO</span>
+		<span fxFlex="1 1 auto"></span>
+		<button mat-icon-button (click)="close()" aria-label="Close dialog">
+			<mat-icon>close</mat-icon>
+		</button>
+	</mat-toolbar-row>
+</mat-toolbar>
+
+<div class="modal-content">
+	<mat-dialog-content *ngIf="!showComponentLoader" class="main-content" class="mat-dialog-container-div">
+		<mat-tab-group mat-align-tabs="center" class="lead-info">
+			<mat-tab label="Basic Info">
+				<form class="basic-form">
+					<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+						<div class="form-group">
+							<label>Name</label>
+							<input type="text" class="form-input" name="firstName" [(ngModel)]="lead.name"
+								placeholder="Name" readonly>
+						</div>
+						<div class="form-group">
+							<label>Email</label>
+							<input type="text" class="form-input" name="email" [(ngModel)]="lead.email"
+								placeholder="Email" readonly>
+						</div>
+					</div>
+					<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+						<div class="form-group">
+							<label>Phone</label>
+							<input type="text" class="form-input" name="phone" [(ngModel)]="lead.phone"
+								placeholder="Phone" readonly>
+						</div>
+						<div class="form-group">
+							<label>Budget</label>
+							<input type="text" class="form-input" name="budget" [(ngModel)]="lead.budget"
+								placeholder="Budget" readonly>
+						</div>
+					</div>
+					<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+						<div class="form-group">
+							<label>Lead Status</label>
+							<input type="text" class="form-input" name="lead-status" [(ngModel)]="lead.lead_status"
+								placeholder="Lead Status" readonly>
+						</div>
+						<div class="form-group" *ngIf="userInfo.admin || (userInfo.member_type == 'Vendor' && userInfo.role != 'SalesAdmin')">
+							<label>Lead States</label>
+							<input type="text" class="form-input" name="lead-state" [(ngModel)]="lead.lead_state"
+								placeholder="Lead States" readonly>
+						</div>
+						</div>
+						<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px" *ngIf="userInfo.member_type != 'Client'">
+						<div class="form-group">
+							<label>Client</label>
+							<input type="text" class="form-input" name="client" [(ngModel)]="lead.client.name"
+								placeholder="Client" readonly>
+						</div>
+					</div>
+					<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px" *ngIf="userInfo.member_type != 'Client'">
+						<div class="form-group">
+							<label>Vendor</label>
+							<input type="text" class="form-input" name="vendor" [(ngModel)]="lead.vendor.name"
+								placeholder="Vendor" readonly>
+						</div>
+						<div class="form-group"
+						*ngIf="userInfo.member_type != 'Client'"
+						>
+							<label>User</label>
+							<input type="text" class="form-input" name="user" [(ngModel)]="lead.user.name"
+								placeholder="User" readonly>
+						</div>
+					</div>
+					<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px" 
+					*ngIf="userInfo.member_type != 'Client' ">
+						<div class="form-group">
+							<label>Project</label>
+							<input type="text" class="form-input" name="project" [(ngModel)]="projectName"
+								placeholder="Project" readonly>
+						</div>
+						<div class="form-group"
+						*ngIf="userInfo.member_type != 'Client'"
+						>
+							<label>Last Modified By</label>
+							<input type="text" class="form-input" name="modified"
+								[(ngModel)]="lead.last_modified_by_name" placeholder="Last Modified By" readonly>
+						</div>
+					</div>
+					<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+						<div class="form-group">
+							<label>Appoitment Date and Time </label>
+							<input type="text" class="form-input" name="appoitment date time" [value]="(lead.vendor_appointment_date)?(lead.vendor_appointment_date | date:'dd-MM-yyyy HH:mm a'):'NA'"
+								placeholder="Appoitment Date and Time" readonly>
+						</div>
+					</div>
+				</form>
+			</mat-tab>
+
+			<mat-tab label="Extra Info" *ngIf="lead.extra != null && userInfo.member_type =='Vendor'">
+				<table>
+					<tr>
+						<th class="log-detail-field">Key</th>
+						<th class="log-detail-value">Value</th>
+					</tr>
+					<tr *ngFor="let key of Object.keys(lead.extra)" style="width:400px">
+						<td class="log-detail-field">{{key}}</td>
+						<td class="log-detail-value">{{lead.extra[key] | json}}</td>
+					</tr>
+				</table>
+			</mat-tab>
+
+			<!-- <mat-tab label="Ip Info" *ngIf="lead.ip_info != null && userInfo.member_type =='Vendor'">
+				<table>
+					<tr>
+						<th class="log-detail-field">Key</th>
+						<th class="log-detail-value">Value</th>
+					</tr>
+					<tr *ngFor="let key of Object.keys(lead.ip_info)">
+						<td class="log-detail-field">{{key}}</td>
+						<td class="log-detail-value">{{lead.ip_info[key] | json}}</td>
+					</tr>
+				</table>
+			</mat-tab> -->
+
+			<mat-tab label="Webhook Logs" *ngIf="webHookLog != null && userInfo.member_type =='Vendor'">
+				<table>
+					<tr>
+						<th class="log-detail-field">logs</th>
+					</tr>
+					<tr>
+						<td class="log-detail-field"><pre>{{webHookLog | json}}</pre></td>
+					</tr>
+				</table>
+			</mat-tab>
+
+			<mat-tab label="Form Data" *ngIf="lead.form_data != null">
+				<table>
+					<tr>
+						<th class="log-detail-field">Key</th>
+						<th class="log-detail-value">Value</th>
+					</tr>
+					<tr *ngFor="let key of Object.keys(lead.form_data)">
+						<td class="log-detail-field">{{key}}</td>
+						<td class="log-detail-value" class="form-data-link" (click)="link($event)"
+							(mouseover)="over($event)">{{lead.form_data[key] | json}}</td>
+					</tr>
+				</table>
+			</mat-tab>
+
+			<mat-tab label="IP & UTM Info" *ngIf="userInfo.admin || (userInfo.member_type =='Vendor' && userInfo.org_admin)">
+
+				<table *ngIf="lead.ip_info != null && userInfo.member_type =='Vendor'">
+					<tr>
+						<th class="log-detail-field">Key</th>
+						<th class="log-detail-value">Value</th>
+					</tr>
+					<tr *ngFor="let key of Object.keys(lead.ip_info)">
+						<td class="log-detail-field">{{key}}</td>
+						<td class="log-detail-value">{{lead.ip_info[key] | json}}</td>
+					</tr>
+				</table>
+
+				<table>					
+					<tr style="width:400px">
+						<td class="log-detail-field">UTM Source</td>
+						<td class="log-detail-value">{{lead.utm_source}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">UTM Medium</td>
+						<td class="log-detail-value">{{lead.utm_medium}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">UTM Campaign</td>
+						<td class="log-detail-value">{{lead.utm_campaign}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">UTM Content</td>
+						<td class="log-detail-value">{{lead.utm_content}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">UTM Term</td>
+						<td class="log-detail-value">{{lead.utm_term}}</td>
+					</tr>
+					
+				</table>
+			</mat-tab>
+
+			<mat-tab label="Campaign Info" *ngIf="userInfo.admin || (userInfo.member_type =='Vendor' && userInfo.org_admin)">
+				<table>					
+					<tr style="width:400px">
+						<td class="log-detail-field">fb_ad_id</td>
+						<td class="log-detail-value">{{lead.fb_ad_id}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">fb_ad_name</td>
+						<td class="log-detail-value">{{lead.fb_ad_name}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">fb_adset_id</td>
+						<td class="log-detail-value">{{lead.fb_adset_id}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">fb_adset_name</td>
+						<td class="log-detail-value">{{lead.fb_adset_name}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">fb_campaign_id</td>
+						<td class="log-detail-value">{{lead.fb_campaign_id}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">fb_campaign_name</td>
+						<td class="log-detail-value">{{lead.fb_campaign_name}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">google_ad_id</td>
+						<td class="log-detail-value">{{lead.google_ad_id}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">google_ad_name</td>
+						<td class="log-detail-value">{{lead.google_ad_name}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">google_adgroup_id</td>
+						<td class="log-detail-value">{{lead.google_adgroup_id}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">google_adgroup_name</td>
+						<td class="log-detail-value">{{lead.google_adgroup_name}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">google_campaign_id</td>
+						<td class="log-detail-value">{{lead.google_campaign_id}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">google_campaign_name</td>
+						<td class="log-detail-value">{{lead.google_campaign_name}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">google_keyword_id</td>
+						<td class="log-detail-value">{{lead.google_keyword_id}}</td>
+					</tr>
+					<tr style="width:400px">
+						<td class="log-detail-field">google_keyword_name</td>
+						<td class="log-detail-value">{{lead.google_keyword_name}}</td>
+					</tr>
+				</table>
+			</mat-tab>
+		</mat-tab-group>
+
+	</mat-dialog-content>
+</div>
+<div class="dark-overlay" *ngIf="showComponentLoader">
+	<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>

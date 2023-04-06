@@ -1,0 +1,122 @@
+<div class="page-container wrapper" *ngIf="!showComponentLoader">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+        <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+            <div class="logo" fxlayout="row" fxlayoutalign="start center">
+                <span class="logo-text h1 ng-trigger ng-trigger-animate"> CALLS REPORT </span>
+            </div>
+        </div>
+    </div>
+
+
+    <mat-card class="example-card" *ngIf="!showAllReports && reportAvailable">
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+            <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px">
+                <div>
+                    <mat-select class="form-input" placeholder="Select User" [(ngModel)]="selectedUser"
+                        style="width: 200px;">
+                        <mat-option value="">Select User</mat-option>
+                        <mat-option [value]="user.id" *ngFor="let user of userList">{{user.name}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+
+                <my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="filterTimelineCreateDate"
+                    placeholder="Filter By Date" required>
+                </my-date-range-picker>
+                <button button="submit" mat-raised-button style="background-color: #00C08D;color: white;"
+                    (click)="filterTimelineApply()">Apply</button>
+            </div>
+            <div fxLayoutAlign="end end" fxLayoutGap="30px">
+                <button button="submit" mat-raised-button *ngIf="reportData.length != 0"
+                    (click)="downloadCSV()">Download Report</button>
+                <mat-icon matTooltip="Close" style="cursor: pointer;" (click)="quit()">cancel</mat-icon>
+            </div>
+        </div>
+    </mat-card>
+    <mat-card class="example-card" *ngIf="showAllReports && reportAvailable">
+        <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="20px">
+            <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px">
+                <my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="filterTimelineAllCreateDate"
+                    placeholder="Filter By Date" required>
+                </my-date-range-picker>
+                <button button="submit" mat-raised-button style="background-color: #00C08D;color: white;"
+                    (click)="filterTimelineApplyAll()">Apply</button>
+            </div>
+            <div fxLayoutAlign="end end" fxLayoutGap="30px">
+                <button button="submit" *ngIf="reportData.length != 0" mat-raised-button
+                    (click)="downloadCSV()">Download Report</button>
+                <mat-icon matTooltip="Close" style="cursor: pointer;" (click)="quit()">cancel</mat-icon>
+            </div>
+        </div>
+    </mat-card>
+    <mat-card fxLayout="row" fxLayoutAlign="center space-evenly" fxLayoutGap="30px" style="padding: 20px;"
+        *ngIf="!reportAvailable">
+        <mat-card class="call-report-select">
+            <h4>All Reports</h4>
+
+            <div class="form-group" fxLayout="column" fxLayoutGap="5px">
+                <label for="">Date Range</label>
+                <my-date-range-picker class="date-input" style="width: 100%;" [options]="myDateRangePickerOptions"
+                    [(ngModel)]="filterTimelineAllCreateDate" placeholder="Date Range" required>
+                </my-date-range-picker>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px" style="margin-top: 40px;">
+                <button mat-button class="btn btn-primary" (click)="filterTimelineApplyAll()"
+                    [disabled]="filterTimelineAllCreateDate == undefined || filterTimelineAllCreateDate == ''">Apply</button>
+                <button mat-button class="btn btn-light" (click)="clearfilterTimelineAll()">Reset</button>
+            </div>
+        </mat-card>
+        <mat-card class="call-report-select">
+            <h4>User specific Reports</h4>
+
+            <div class="form-group" style="width: 100%;">
+                <label for="">Users</label>
+                <mat-select class="form-input" placeholder="Select User" [(ngModel)]="selectedUser">
+                    <mat-option value="">Select User</mat-option>
+                    <mat-option [value]="user.id" *ngFor="let user of userList">{{user.name}}
+                    </mat-option>
+                </mat-select>
+            </div>
+
+            <div class="form-group" fxLayout="column" fxLayoutGap="5px">
+                <label for="">Date Range</label>
+                <my-date-range-picker class="date-input" [options]="myDateRangePickerOptions"
+                    [(ngModel)]="filterTimelineCreateDate" placeholder="Date Range" required>
+                </my-date-range-picker>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px" style="margin-top: 20px;">
+                <button mat-button class="btn btn-primary" (click)="filterTimelineApply()"
+                    [disabled]="filterTimelineCreateDate == undefined || filterTimelineCreateDate == '' || selectedUser == ''">Apply</button>
+                <button mat-button class="btn btn-light" (click)="clearfilterTimeline()">Reset</button>
+            </div>
+        </mat-card>
+    </mat-card>
+
+
+
+    <h1 *ngIf="reportData.length == 0 && reportAvailable" style="color: #BF9724;text-align: center;">
+        No Report Found
+    </h1>
+    <mat-card style="padding: 0px; margin-top: 20px;">
+        <table class="report-table" *ngIf="reportData.length != 0">
+            <tr class="report-table-header-row">
+                <th class="report-table-header" *ngFor="let item of displayColumns">{{item}}</th>
+            </tr>
+            <tr class="report-table-row" *ngFor="let report of reportData">
+                <td class="report-table-content" *ngFor="let item of report">
+                    {{checkeDate(item) ? item : item | date :'dd/MM/yyyy'}}</td>
+            </tr>
+        </table>
+    </mat-card>
+</div>
+
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="dark-overlay" *ngIf="showComponentLoader1">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <div
+        style="position: absolute;float: left;top: 60%;left: 52%;transform: translate(-50%, -50%);font-size: 20px;color: white;">
+        Please Wait ...
+    </div>
+</div>

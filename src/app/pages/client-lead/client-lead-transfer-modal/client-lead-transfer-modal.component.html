@@ -1,0 +1,160 @@
+<div class="dark-overlay" *ngIf="showSkeleton">
+	<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 2rem;">
+		<h3>
+			Transfer Lead
+		</h3>
+		<button mat-icon-button tabindex="-1" (click)="close()">
+			<mat-icon>clear</mat-icon>
+		</button>
+	</div>
+	<mat-dialog-content fxLayout="column" *ngIf="showAutoSetting && !showSubmit" fxLayoutGap="20px"
+		class="mat-dialog-container-div">
+		<div [formGroup]="firstFormGroup" fxLayout="column" fxLayoutAlign="start start">
+			<div class="form-group" *ngIf="sourceUsers.length == 0">
+				<!-- <label style="font-weight: 500">Status</label> -->
+				<mat-select class="form-input" placeholder="Source Assigned Users" formControlName="sourceUser">
+					<mat-option>No Source User Found</mat-option>
+				</mat-select>
+			</div>
+			<div class="form-group" *ngIf="sourceUsers.length != 0">
+				<label for="">Source Assigned Users</label>
+				<mat-select class="form-input" placeholder="Source Assigned Users" (selectionChange)="filterUser()"
+					formControlName="sourceUser">
+					<mat-option *ngIf="sourceUsers.length == 0">No Source User Found</mat-option>
+					<mat-option [value]="user" *ngFor="let user of sourceUsers">{{user.name}}</mat-option>
+				</mat-select>
+			</div>
+			<div class="form-group" *ngIf="filteredUsers.length == 0">
+				<label for="">Assigned Users</label>
+				<mat-select class="form-input" placeholder="Assigned Users" formControlName="assignedUser">
+					<mat-option>No Active User Found</mat-option>
+				</mat-select>
+			</div>
+			<div class="form-group" *ngIf="filteredUsers.length != 0">
+				<label for="">Assigned Users</label>
+				<mat-select class="form-input" placeholder="Assigned Users" (selectionChange)="filterByUser()"
+					formControlName="assignedUser" multiple>
+					<mat-option *ngIf="filteredUsers.length == 0">No Active User Found</mat-option>
+					<mat-select-trigger *ngIf="selectedUsers.length != 0">
+						{{selectedUsers ? selectedUsers[0].name : ''}}
+						<span *ngIf="selectedUsers.length > 1" class="example-additional-selection">
+							(+{{selectedUsers.length - 1}}
+							{{selectedUsers.length === 2 ? 'other' : 'others'}})
+						</span>
+					</mat-select-trigger>
+					<mat-option [value]="user" *ngFor="let user of filteredUsers">{{user.name}}</mat-option>
+				</mat-select>
+			</div>
+		</div>
+		<div style="margin-top: -20px;padding: 10px;" *ngIf="(userCount | json) != '{}'">
+			<b>Lead Count : </b> <span><b>{{userCount.name}}</b> has <b>{{userCount.count}}</b>
+				leads</span>
+		</div>
+		<div fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="10px"
+			*ngIf="userCount.count > 0 && selectedUsers.length != 0">
+			<div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+				<mat-radio-group [(ngModel)]="selectedRadio">
+					<mat-radio-button value="All" (change)="chooseFilter($event)">All</mat-radio-button>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<mat-radio-button value="custom" (change)="chooseFilter($event)">Custom Filters
+					</mat-radio-button>
+				</mat-radio-group>
+			</div>
+			<div>
+				<input type="number" class="form-input" placeholder="Enter Limit" [(ngModel)]="limit" type="number"
+					min="0">
+			</div>
+		</div>
+		<form *ngIf="showFilter">
+			<div fxLayout="column" fxLayoutAlign="start start">
+				<div class="form-group">
+					<label for="">Score</label>
+					<mat-select class="form-input" placeholder="Select Score" [(ngModel)]="score" name="score" multiple>
+						<mat-option value="1">1</mat-option>
+						<mat-option value="2">2</mat-option>
+						<mat-option value="3">3</mat-option>
+						<mat-option value="4">4</mat-option>
+						<mat-option value="5">5</mat-option>
+						<mat-option value="6">6</mat-option>
+						<mat-option value="7">7</mat-option>
+						<mat-option value="8">8</mat-option>
+						<mat-option value="9">9</mat-option>
+						<mat-option value="10">10</mat-option>
+						<mat-option value="11">11</mat-option>
+						<mat-option value="12">12</mat-option>
+						<mat-option value="13">13</mat-option>
+						<mat-option value="14">14</mat-option>
+						<mat-option value="15">15</mat-option>
+						<mat-option value="16">16</mat-option>
+						<mat-option value="17">17</mat-option>
+						<mat-option value="18">18</mat-option>
+						<mat-option value="19">19</mat-option>
+						<mat-option value="20">20</mat-option>
+					</mat-select>
+				</div>
+				<div class="form-group">
+					<label for="">Lead Status</label>
+					<mat-select class="form-input" placeholder="Select Lead Status" [(ngModel)]="lead_status"
+						name="lead_status" multiple>
+						<mat-option value="Fresh" *ngIf="userInfo.member_type != 'Client'">Fresh</mat-option>
+						<mat-option value="Verified">Verified</mat-option>
+						<mat-option value="Appointment Proposed">Appointment Proposed</mat-option>
+						<mat-option value="Interested">Interested</mat-option>
+						<mat-option value="V Not Interested" *ngIf="userInfo.member_type != 'Client'">V Not Interested
+						</mat-option>
+						<mat-option value="V Not Responding" *ngIf="userInfo.member_type != 'Client'">V Not Responding
+						</mat-option>
+						<mat-option value="V Not Available" *ngIf="userInfo.member_type != 'Client'">V Not Available
+						</mat-option>
+						<mat-option value="Not Interested">Not
+							Interested</mat-option>
+						<mat-option value="Not Responding">Not
+							Responding</mat-option>
+						<mat-option value="Not Available">Not Available</mat-option>
+						<mat-option value="Contacted">Contacted</mat-option>
+						<mat-option value="Follow Up">Follow Up</mat-option>
+						<mat-option value="Callback" *ngIf="userInfo.member_type != 'Client'">Callback</mat-option>
+						<mat-option value="Wrong Number" *ngIf="userInfo.member_type != 'Client'">Wrong Number
+						</mat-option>
+						<mat-option value="Closed/Won">Closed/Won</mat-option>
+						<mat-option value="Site Visit">Site Visit</mat-option>
+					</mat-select>
+				</div>
+			</div>
+			<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start">
+				<label for="">Created At</label>
+				<my-date-range-picker [options]="myDateRangePickerOptions" class="date-input transfer-lead" name="created_at"
+					(dateRangeChanged)="onCreateDateRangeChanged($event)" placeholder="Created At Range" required>
+				</my-date-range-picker>
+			</div>
+			<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start">
+				<label for="">Vendor Modified At</label>
+				<my-date-range-picker [options]="myDateRangePickerOptions" class="date-input transfer-lead" name="last_modified_by_vendor"
+					(dateRangeChanged)="onLastVendorRange($event)" placeholder="Last Client Modified Range" required>
+				</my-date-range-picker>
+			</div>
+			<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start" style="margin-bottom: 50px;">
+				<label for="">Client Modified At</label>
+				<my-date-range-picker [options]="myDateRangePickerOptions" class="date-input transfer-lead" name="last_modified_by_client"
+					(dateRangeChanged)="onLastClientRange($event)" placeholder="Last Client Modified Range" required>
+				</my-date-range-picker>
+			</div>
+		</form>
+	</mat-dialog-content>
+	<mat-dialog-content fxLayout="column" *ngIf="showAutoSetting && showSubmit" fxLayoutGap="20px">
+		<h2>
+			Are you sure you want to submit?
+		</h2>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="nextPage()"
+		[disabled]="userCount.count == undefined || userCount.count == 0 || firstFormGroup.value.assignedUser.length == 0"
+		*ngIf="!showSubmit">Apply</button>
+	<button mat-button class="btn btn-primary" *ngIf="showSubmit && !btnStatus" (click)="submit()">Submit</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="showSubmit && btnStatus">Submiting...</button>
+</div>

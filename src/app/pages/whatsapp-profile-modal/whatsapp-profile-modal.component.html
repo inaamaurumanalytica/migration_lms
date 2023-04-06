@@ -1,0 +1,40 @@
+<i class="material-icons" style="float: right;cursor: pointer;" (click)="close()">
+	clear
+</i>
+
+<h2>
+	{{profile == null ? 'Create': 'Edit'}} Whatsapp Profile
+</h2>
+
+<mat-dialog-content [formGroup]="userForm">
+	<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+		<mat-form-field class="example-container">
+			<input matInput placeholder="Name" formControlName="name" required>
+		</mat-form-field>
+		<mat-form-field class="example-container">
+			<input matInput placeholder="Budget" formControlName="budget" required>
+		</mat-form-field>
+	</div>
+	<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+		<mat-form-field class="example-container">
+			<input matInput placeholder="Location" formControlName="location" required>
+		</mat-form-field>
+		<mat-form-field class="example-container">
+			<input matInput placeholder="Possession" formControlName="possession">
+		</mat-form-field>
+	</div>
+	<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+		<mat-form-field class="example-container">
+			<input matInput placeholder="Inventory" formControlName="inventory">
+		</mat-form-field>
+	</div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+	<button class="mat-raised-button" (click)="close()">Close</button>
+	<button class="mat-raised-button mat-primary" *ngIf="!btnStatus" [disabled]="!userForm.valid"
+		(click)="save()">{{profile == null ?
+		'Create' : 'Update'}}</button>
+	<button class="mat-raised-button mat-primary" *ngIf="btnStatus" disabled>{{profile == null ? 'Creating...' :
+		'Updating...'}}</button>
+</mat-dialog-actions>

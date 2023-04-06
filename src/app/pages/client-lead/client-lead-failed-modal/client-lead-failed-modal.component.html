@@ -1,0 +1,50 @@
+<mat-toolbar class="primary m-0">
+	<mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+		<span class="title dialog-title">Unsaved Leads when Bluk Upload</span>
+		<span fxFlex="1 1 auto"></span>
+		<button mat-icon-button (click)="close()" aria-label="Close dialog">
+			<mat-icon>close</mat-icon>
+		</button>
+	</mat-toolbar-row>
+</mat-toolbar>
+<div class="modal-content">
+	<mat-dialog-content fxLayout="column" fxLayoutGap="16px" class="mat-dialog-container-div">
+		<mat-card *ngFor="let project of dataSource" style="margin-top: 1rem;">
+			<mat-card-content>
+				<div class="users-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+					<div class="create-date">
+						<p class="title">Name</p>
+						<span class="status-check">{{project.name}}</span>
+					</div>
+					<div class="create-date">
+						<p class="title">Email</p>
+						<span class="status-check">{{project.email}}</span>
+					</div>
+					<div class="create-date">
+						<p class="title">Score</p>
+						<span class="status-check">{{project.score}}</span>
+					</div>
+					<div class="create-date">
+						<p class="title">Lead Type</p>
+						<span class="status-check">{{project.lead_type}}</span>
+					</div>
+					<div class="create-date">
+						<p class="title">Source</p>
+						<span class="status-check">{{project.source}}</span>
+					</div>
+					<div class="create-date">
+						<p class="title">Lead Status</p>
+						<span class="status-check">{{project.lead_status}}</span>
+					</div>
+					<div class="create-date">
+						<p class="title">error</p>
+						<span class="status-check" style="color: red;">{{project.error}}</span>
+					</div>
+				</div>
+			</mat-card-content>
+		</mat-card>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+</div>

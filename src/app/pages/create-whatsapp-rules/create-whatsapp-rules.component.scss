@@ -1,0 +1,92 @@
+.center {
+    display: block;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .center .logo {
+    width: 128px;
+    margin: 0 auto;
+  }
+
+  .image {
+    display: block;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 46%;
+    transform: translateY(-50%);}
+
+.image img {
+display: block;
+    position: absolute;
+    top: 44%;
+    left: 1%;
+    transform: translateY(-50%);
+}
+
+.spin {
+position: relative;
+display: inline-block;
+width: 80px;
+height: 80px;
+border: 2px solid #34495e;
+border-radius: 100%;
+animation: spin 0.75s infinite linear;
+}
+
+.spin::before,
+.spin::after {
+left: -2px;
+top: -2px;
+display: none;
+position: absolute;
+content: '';
+width: inherit;
+height: inherit;
+border: inherit;
+border-radius: inherit;
+}
+
+@keyframes spin {
+from {
+  transform: rotate(0deg);
+}
+to {
+  transform: rotate(360deg);
+}
+}
+
+.spinner,
+.spinner::before,
+.spinner::after {
+display: inline-block;
+border-color: transparent;
+border-top-color: #102348;
+animation-duration: 1.2s;
+}
+
+.spinner::before {
+transform: rotate(120deg);
+}
+
+.spinner::after {
+transform: rotate(240deg);
+}
+
+@media (max-width:768px) {
+.image {
+    display: block;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    transform: translateY(-50%);}
+.image img {
+  position: absolute;
+  top: 42% !important;
+  left: 4% !important;
+}
+}

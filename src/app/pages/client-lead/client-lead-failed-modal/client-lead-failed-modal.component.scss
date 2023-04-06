@@ -1,0 +1,245 @@
+.table-header {
+  background-color: #5c6bc0;
+  color: white;
+  padding: 0 5px;
+}
+.table-component-holder {
+  border: 1px solid #327ebd;
+  background-color: white;
+}
+
+.example-container {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.example-container > * {
+  width: 100%;
+}
+
+.form-group {
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.form-input {
+  width: 100%;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  font-size: 12px;
+  font-weight: 500;
+  color: #222;
+}
+
+.user-action-btn .click-btn {
+  background: #00C08D;
+  color: #fff;
+  border-radius: 12px;
+  text-transform: uppercase;
+  font-size: 12px;
+  margin-right: 20px;
+  float: right;
+  width: 100px;
+  border: 1px solid #00C08D;
+}
+.user-action-btn .click-btn:hover {
+  background: #BF9724;
+}
+
+.user-action-btn .close-btn {
+  background: #ebebeb;
+  color: #c3c3c3;
+  border-radius: 12px;
+  text-transform: uppercase;
+  font-size: 12px;
+  margin-right: 15px;
+  float: right;
+  width: 100px;
+  border: 1px solid #c3c3c3;
+}
+
+.basic-form .form-group {
+  width: 100%;
+}
+
+.primary {
+  background-color: #00C08D;
+  color: #fff;
+}
+
+table {
+  border: 1px solid #e3e3e3;
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  margin: 30px;
+}
+
+td,
+th {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.not-found {
+  text-align: center;
+  margin-top: 3em;
+  color: #BF9724;
+}
+.log-detail-field {
+  font-weight: 600;
+}
+.log-detail-value {
+  word-wrap: break-word;
+}
+
+/********************** users-list *******************/
+.users-list .user-info {
+  border-right: 1px solid #cccccc;
+  min-height: 50px;
+  margin-right: 25px !important;
+  padding-right: 15px;
+}
+
+.user-info .user-label {
+  margin-left: 5px;
+  display: inline-block;
+  padding: 0.2em 1em;
+  font-size: 100%;
+  text-align: center;
+  border-radius: 10em;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  color: #fff;
+  background-color: #00C08D;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+/********* New CSS  *********/
+.users-list .user-info,
+.users-list .contact,
+.users-list .user-status,
+.users-list .assign-project,
+.users-list .create-date {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.75rem;
+  flex: 0.2 0 1%;
+}
+
+.users-list .admin-status,
+.users-list .system-admin,
+.users-list .status {
+  flex: 1 1 1%;
+  font-size: 0.75rem;
+}
+
+.title {
+  font-size: 0.7rem;
+  color: gray;
+  margin-top: 0;
+}
+
+.user-info .user-title {
+  color: #444;
+  font-weight: 500;
+  font-size: 14px;
+  margin-top: 0;
+  text-transform: capitalize;
+}
+
+.users-list .user-status .mat-icon {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+  line-height: 16px !important;
+  margin-right: 8px;
+}
+
+.click-btn .mat-icon {
+  font-size: 19px !important;
+  width: 19px !important;
+  height: 19px !important;
+  min-width: 19px !important;
+  min-height: 19px !important;
+  line-height: 19px !important;
+  color: #ffffff;
+}
+
+.loading-card {
+  display: inline-block;
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+  vertical-align: top;
+  width: 100%;
+  padding: 16px;
+  border-radius: 5px;
+}
+
+.box-placeholder .text {
+  display: inline-block;
+  background-color: #444;
+  height: 12px;
+  border-radius: 3px;
+  margin: 0 0 0 10px;
+  min-width: 150px;
+  opacity: 0.1;
+  animation: fading 1.5s infinite;
+}
+
+.box-placeholder .d-flex {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.box-placeholder span.text.category {
+  height: 14px;
+  min-width: 80px;
+  margin-right: 5px;
+}
+
+.box-placeholder .text.line {
+  width: 220px;
+  height: 18px;
+}
+
+.box-placeholder h4.text {
+  height: 16px;
+  margin: 3px 0;
+  opacity: 0.2;
+}
+
+.user-action .mat-icon {
+  font-size: 18px;
+  border-left: 1px solid lightgray;
+  padding-left: 10px;
+  color: #989797;
+}
+
+@keyframes fading {
+  0% {
+    opacity: 0.1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
+}

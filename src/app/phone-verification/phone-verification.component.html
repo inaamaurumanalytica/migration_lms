@@ -1,0 +1,60 @@
+<div class="login-page" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx">
+    <div class=" mat-elevation-z4" style="display: -webkit-inline-box;" *ngIf="showVerify">
+        <mat-card class="login-card">
+            <mat-card-title style="font-size: 15px;font-weight: 600;text-align: center;">
+                <h2 class="page-title">Enter your Mobile Number to verify</h2>
+            </mat-card-title>
+            <mat-card-content>
+                <form [formGroup]="numberForm">
+                    <div>
+                        <div class="form-group" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+                            <input type="number" id="phone" class="form-input"
+                                placeholder="Enter your number 10 digit no." formControlName="phone" required="">
+                            <div *ngIf="numberForm.controls['phone'].hasError('pattern')" class="help is-danger"
+                                style="color:red">
+                                Not a valid number
+                            </div>
+                        </div>
+                    </div>
+                    <button mat-button class="login-btn mb-2" *ngIf="!btnStatus" (click)="sendOtp()"
+                        [disabled]="!numberForm.valid">Next</button>
+                    <button mat-button class="login-btn mb-2" *ngIf="btnStatus" disabled>Next</button>
+                </form>
+                <div class="mb-2" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="gappx">
+                    <div class="loginlink"><a href="javascript:void(0)" (click)="logout()">Log
+                            Out</a></div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class=" mat-elevation-z4" style="display: -webkit-inline-box;" *ngIf="showOTP">
+        <mat-card class="login-card">
+            <mat-card-title style="font-size: 25px;font-weight: 500;text-align: center;">Enter code that was send to
+            </mat-card-title>
+            <div style="text-align: center;">
+                <h2 style="color: #00C08D;font-weight: 600;"> {{selectedNumber}} </h2>
+            </div>
+            <mat-card-content>
+                <form [formGroup]="otpForm">
+                    <div>
+                        <div class="form-group" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+                            <input type="text" id="otp" class="form-input" placeholder="Please enter OTP"
+                                formControlName="otp" required="">
+                        </div>
+                    </div>
+                    <button mat-button class="login-btn mb-2" *ngIf="!btnStatus" (click)="submit()"
+                        [disabled]="!otpForm.valid">Submit</button>
+                    <button mat-button class="login-btn mb-2" *ngIf="btnStatus" disabled>Submiting...</button>
+                </form>
+                <div class="mb-2" fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="gappx">
+                    <div class="loginlink">
+                        <a *ngIf="showCounter">{{countDown | async | formatTime}}</a>
+                        <a href="javascript:void(0)" *ngIf="!showCounter" (click)="resendOtp()">Resend
+                            OTP</a>
+                    </div>
+                    <div class="loginlink"><a href="javascript:void(0)" (click)="logout()">Log Out</a></div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

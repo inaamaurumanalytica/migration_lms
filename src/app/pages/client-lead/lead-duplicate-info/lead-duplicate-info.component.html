@@ -1,0 +1,74 @@
+<mat-toolbar class="primary m-0">
+	<mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+		<span class="title dialog-title">DUPLICATE LEADS</span>
+		<span fxFlex="1 1 auto"></span>
+		<button mat-icon-button (click)="close()" aria-label="Close dialog">
+			<mat-icon>close</mat-icon>
+		</button>
+	</mat-toolbar-row>
+</mat-toolbar>
+<mat-dialog-content style="min-height: 95vh;">
+	<mat-tab-group fxFlexFill style="background: white;" class="duplicate-tabs">
+		<mat-tab label="Current Client Lead" *ngIf="clientDuplicatedInfo.length != 0">
+			<div class="mat-padding">
+				<mat-card *ngFor="let lead of clientDuplicatedInfo" style="margin-top: 1rem;">
+					<mat-card-content>
+						<div class="users-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+							<div class="create-date">
+								<p class="title">Project Name</p>
+								<span class="status-check">{{lead.project}}</span>
+							</div>
+							<div class="create-date">
+								<p class="title">Client Name</p>
+								<span class="status-check">{{lead.client}}</span>
+							</div>
+							<div class="create-date">
+								<p class="title">Status</p>
+								<span class="status-check">{{lead.status}}</span>
+							</div>
+							<div class="create-date">
+								<p class="title">Vendor</p>
+								<span class="status-check">{{lead.vendor}}</span>
+							</div>
+							<div class="create-date">
+								<p class="title">Created At</p>
+								<span class="status-check">{{lead.created_at | date : 'dd/MM/yyyy'}}</span>
+							</div>
+						</div>
+					</mat-card-content>
+				</mat-card>
+			</div>
+		</mat-tab>
+		<mat-tab label="System Lead">
+			<div class="mat-padding">
+				<mat-card *ngFor="let lead of systemDuplicatedInfo" style="margin-top: 1rem;">
+					<mat-card-content>
+						<div class="users-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+							<div class="create-date">
+								<p class="title">Project Name</p>
+								<span class="status-check">{{lead.project}}</span>
+							</div>
+							<div class="create-date">
+								<p class="title">Client Name</p>
+								<span class="status-check">{{lead.client}}</span>
+							</div>
+							<div class="create-date">
+								<p class="title">Status</p>
+								<span class="status-check">{{lead.status}}</span>
+							</div>
+							<div class="create-date">
+								<p class="title">Vendor</p>
+								<span class="status-check">{{lead.vendor}}</span>
+							</div>
+							<div class="create-date">
+								<p class="title">Created At</p>
+								<span class="status-check">{{lead.created_at | date : 'dd/MM/yyyy'}}</span>
+							</div>
+						</div>
+					</mat-card-content>
+				</mat-card>
+			</div>
+		</mat-tab>
+
+	</mat-tab-group>
+</mat-dialog-content>

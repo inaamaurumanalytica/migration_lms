@@ -1,0 +1,44 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>FILTER BY</h3>
+		<button mat-icon-button tabindex="-1" matTooltip="Close" (click)="close()">
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+	<!-- <span style="font-size: 12px;color: #b7b7b7;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span> -->
+	<mat-dialog-content>
+		<div class="form-group">
+			<label style="font-weight: 500">User</label>
+			<mat-select placeholder="Select User" class="form-input" name="user" [(ngModel)]="selectUser">
+				<mat-option value="">Select User</mat-option>
+				<mat-option [value]="user.id" *ngFor="let user of users">{{user.name}}
+				</mat-option>
+			</mat-select>
+		</div>
+		<div class="form-group">
+			<label style="font-weight: 500">Project</label>
+			<mat-select placeholder="Select Project" class="form-input" name="project" [(ngModel)]="selectProject"
+				(focusout)="onFocusOutEvent($event)">
+				<input (keyup)="onKeyProject($event.target.value)" [(ngModel)]="searchProject" class="form-input"
+					placeholder="Search">
+				<mat-option value="">Select Project</mat-option>
+				<mat-option [value]="project.id" *ngFor="let project of filteredProjects">{{project.name}}
+				</mat-option>
+				<div class="not-found-data" *ngIf="filteredProjects.length == 0">
+					No Result Found
+				</div>
+			</mat-select>
+		</div>
+		<div class="form-group" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
+			<label style="font-weight: 500">Created At</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="createdDate" class="date-input" placeholder="Created At" required>
+			</my-date-range-picker>
+		</div>
+	</mat-dialog-content>
+</div>
+<div class="user-action-btn"
+	style="bottom: 0px;position: fixed;width: 93%;padding: 10px;border-top: 2px solid #eaeaea;background: #eaeaea;">
+	<button mat-button class="click-btn" (click)="save()"
+		[disabled]="selectUser == '' && selectProject == '' && createdDate == ''">APPLY</button>
+	<button mat-button class="close-btn" (click)="clear()">CLEAR ALL</button>
+</div>

@@ -1,0 +1,135 @@
+.btn-primary:disabled{
+    background: #74CDB7 !important;
+    cursor: not-allowed !important;
+}
+
+.mat-card{
+    padding: 0px 0px 0px 0px;
+    box-shadow: none;
+    width: 95%;
+}
+
+.mb-0{
+    margin-bottom: 0px !important;
+}
+
+.cs-color{
+    color: #00C08D;
+}
+
+
+label{
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.project-input-icon {
+    position: absolute;
+    right: 2%;
+    bottom: 6px;
+    color: #00C08D;
+    cursor: pointer;
+}
+
+.project-attach-file-icon {
+    position: absolute;
+    right: 2%;
+    bottom: 8px;
+    color: #00C08D;
+    cursor: pointer;
+    transform: rotate(50deg);
+}
+
+.assign-container{
+    padding: 20px;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+}
+
+.assign-project{
+    padding: 10px;
+    margin-bottom: 5px;
+    background: #e6e6e6;
+    border-radius: 2px;
+}
+
+.assign-project-name{
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.cancel-assign-project {
+    float: right;
+}
+
+.assign-project-container::-webkit-scrollbar-track {
+    background: rgb(0, 0, 0);
+    border: 4px solid transparent;
+    background-clip: content-box; // this is important
+}
+
+/* Handle */
+.assign-project-container::-webkit-scrollbar-thumb {
+    background: rgb(255, 25, 255);
+    border: 1px solid rgb(0, 0, 0);
+}
+
+.assign-project-container {
+    max-height: 250px !important;
+    overflow-y: auto;
+}
+
+.rotate-icon {
+    transform: rotate(90deg) !important;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.delete-icon {
+    background: red;
+    color: white;
+    border-radius: 1em;
+    padding: 0px;
+    position: absolute;
+    right: -40px;
+    top: 4px;
+    line-height: 8px;
+    -webkit-transition: 0.6s ease-out;
+    -moz-transition:  0.6s ease-out;
+    transition:  0.6s ease-out;
+}
+
+.delete-icon:hover{
+    -webkit-transform: rotateZ(360deg);
+    -moz-transform: rotateZ(360deg);
+    transform: rotateZ(360deg);
+}
+
+.add-icon {
+    background: red;
+    color: white;
+    border-radius: 1em;
+    padding: 0px;
+    position: absolute;
+    right: -40px;
+    top: 4px;
+    line-height: 24px;
+    -webkit-transition: 0.6s ease-out;
+    -moz-transition:  0.6s ease-out;
+    transition:  0.6s ease-out;
+}
+.add-icon:hover{
+    -webkit-transform: rotateZ(360deg);
+    -moz-transform: rotateZ(360deg);
+    transform: rotateZ(360deg);
+}
+
+.project-status-dialog{
+    max-height: 79vh !important;
+}
+
+.mb-10{
+    margin-bottom: 10px !important;
+}

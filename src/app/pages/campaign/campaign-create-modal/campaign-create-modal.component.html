@@ -1,0 +1,166 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>CREATE CAMPAIGN</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+	<mat-dialog-content class="main-content" *ngIf="!showNextForm">
+		<form [formGroup]="campaignForm">
+			<div class="form-group">
+				<label style="font-weight: 500">Name <span style="color: #00C08D">*</span></label>
+				<input type="text" class="form-input" name="name" id="name" placeholder="Name" formControlName="name"
+					required>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Clients <span style="color: #00C08D">*</span></label>
+				<mat-select placeholder="Select Client" class="form-input" formControlName="client"
+					(selectionChange)="changeByClient()" required (focusout)="onFocusOutEvent($event)">
+					<input (keyup)="onKeyClient($event.target.value)" formControlName="searchClient" class="form-input"
+						placeholder="Search">
+					<mat-option [value]="client" *ngFor="let client of filteredClients">{{client.name}}</mat-option>
+					<div class="not-found-data" *ngIf="filteredClients.length == 0">
+						No Result Found
+					</div>
+				</mat-select>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Projects <span style="color: #00C08D">*</span></label>
+				<mat-select class="form-input" placeholder="Select Project" formControlName="project" required
+					(selectionChange)="changeByproject()" (focusout)="onFocusOutEvent($event)">
+					<input (keyup)="onKeyProject($event.target.value)" formControlName="searchProject"
+						class="form-input" placeholder="Search">
+					<mat-option [value]="project" *ngFor="let project of filteredProjectsByClient">{{project.name}}
+					</mat-option>
+					<div class="not-found-data" *ngIf="filteredProjectsByClient.length == 0">
+						No Result Found
+					</div>
+				</mat-select>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Link <span style="color: #00C08D">*</span></label>
+				<input type="text" class="form-input" name="linl" id="linl" placeholder="Enter Link"
+					formControlName="link" required>
+				<div *ngIf="campaignForm.controls['link'].hasError('pattern')" class="help is-danger" style="color:red">
+					Not a valid pattern
+				</div>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="20px" style="margin-bottom: 10px;">
+				<div>
+					<label style="font-weight: 500">Shorten Link</label>
+					<input type="text" readonly class="form-input" name="shortenLink" id="shortenLink"
+						placeholder="Shorten Link" formControlName="shortenLink">
+				</div>
+				<div>
+					<button mat-button class="btn btn-primary shortenBtn" *ngIf="!saveLink"
+						[disabled]="campaignForm.controls['link'].hasError('pattern')" (click)="shortenUrl()">Shorten
+						Link</button>
+					<button mat-button class="btn btn-primary shortenBtn" disabled *ngIf="saveLink">Shorten
+						Link...</button>
+				</div>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Sender Id <span style="color: #00C08D">*</span></label>
+				<input type="text" class="form-input" name="senderId" id="senderId" placeholder="Enter Sender Id"
+					formControlName="senderId" required>
+				<div style="font-size: 12px;margin: 5px 0px;color:#BF9724 !important;">
+					Note : Please
+					ask Sender
+					ID from your administrator
+				</div>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Message <span style="color: #00C08D">*</span></label>
+				<textarea class="form-input" placeholder="Enter Message" formControlName="message" required></textarea>
+			</div>
+		</form>
+	</mat-dialog-content>
+
+	<mat-dialog-content class="main-content" *ngIf="showNextForm">
+		<form [formGroup]="leadStatusForm">
+			<div class="form-group">
+				<label style="font-weight: 500">Lead Status <span style="color: #00C08D">*</span></label>
+				<mat-select placeholder="Select Lead Statuses" class="form-input" formControlName="leadStatuses"
+					required multiple>
+					<!-- <mat-select-trigger>
+						{{leadStatusForm.value.leadStatuses ? leadStatusForm.value.leadStatuses[0] : ''}}
+						<span *ngIf="leadStatusForm.value.leadStatuses?.length > 1"
+							class="example-additional-selection">
+							(+{{leadStatusForm.value.leadStatuses.length - 1}}
+							{{leadStatusForm.value.leadStatuses.length === 2 ? 'other' :
+							'others'}})
+						</span>
+					</mat-select-trigger> -->
+					<mat-option value="Fresh">Fresh</mat-option>
+					<mat-option value="Verified">Verified</mat-option>
+					<mat-option value="Appointment Proposed">Appointment Proposed</mat-option>
+					<mat-option value="Interested">Interested</mat-option>
+					<mat-option value="V Not Interested">V Not Interested</mat-option>
+					<mat-option value="V Not Responding">V Not Responding</mat-option>
+					<mat-option value="V Not Available">V Not Available</mat-option>
+					<mat-option value="Not Interested">Not Interested</mat-option>
+					<mat-option value="Not Responding">Not Responding</mat-option>
+					<mat-option value="Not Available">Not Available</mat-option>
+					<mat-option value="Contacted">Contacted</mat-option>
+					<mat-option value="Follow Up">Follow Up</mat-option>
+					<mat-option value="Callback">Callback</mat-option>
+					<mat-option value="Wrong Number">Wrong Number</mat-option>
+					<mat-option value="Closed/Won">Closed/Won</mat-option>
+					<mat-option value="Site Visit">Site Visit</mat-option>
+				</mat-select>
+			</div>
+			<div class="form-group">
+				<mat-checkbox style="margin-right: 20px;" formControlName="sendToAll" (click)="sendAll()">Send To
+					All</mat-checkbox>
+				<mat-checkbox formControlName="showSchedule" (click)="setSchedule()">Set
+					Schedule Time</mat-checkbox>
+			</div>
+			<div class="form-group" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="20px" style="margin-bottom: 10px;"
+				*ngIf="!leadStatusForm.value.sendToAll">
+				<div>
+					<label style="font-weight: 500">Start Date <span style="color: #00C08D">*</span></label>
+					<input type="date" class="form-input" name="startDate" [max]="leadStatusForm.value.endDate"
+						id="startDate" placeholder="Start Date" formControlName="startDate">
+				</div>
+				<div>
+					<label style="font-weight: 500">End Date <span style="color: #00C08D">*</span></label>
+					<input type="date" class="form-input" [min]="leadStatusForm.value.startDate" name="endDate"
+						id="endDate" placeholder="End Date" formControlName="endDate">
+				</div>
+			</div>
+
+			<div class="form-group" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="20px" style="margin-bottom: 10px;"
+				*ngIf="leadStatusForm.value.showSchedule">
+				<div>
+					<label style="font-weight: 500">Set Schedule Date <span style="color: #00C08D">*</span></label>
+					<input type="date" class="form-input" name="scheduleDate" id="scheduleDate"
+						placeholder="Schedule Date" formControlName="scheduleDate">
+				</div>
+				<div>
+					<label style="font-weight: 500">Set Schedule Time <span style="color: #00C08D">*</span></label>
+					<input type="time" class="form-input" name="scheduleTime" id="scheduleTime"
+						placeholder="Schedule Time" formControlName="scheduleTime">
+				</div>
+			</div>
+			<div style="font-size: 12px;color:#BF9724 !important;position: absolute;bottom: 85px;">Note : Please click
+				"Check Audience" button first
+				after
+				filling then form to check the Total Leads count based on date you have selected
+			</div>
+		</form>
+	</mat-dialog-content>
+
+
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-primary" *ngIf="!showNextForm" (click)="next()"
+		[disabled]="!campaignForm.valid">Next</button>
+	<button mat-button class="btn btn-light" *ngIf="showNextForm" (click)="next()">Back</button>
+
+	<button mat-button class="btn btn-primary" *ngIf="showNextForm && !btnStatus" (click)="createCampaign()"
+		[disabled]="!leadStatusForm.valid">Create Campaign</button>
+	<button mat-button class="btn btn-primary" *ngIf="showNextForm && btnStatus" disabled>Create Campaign</button>
+	<button mat-button class="btn btn-primary" *ngIf="showNextForm && !btnStatus" (click)="checkAudience()"
+		[disabled]="!leadStatusForm.valid">Check Audience</button>
+	<button mat-button class="btn btn-primary" *ngIf="showNextForm && btnStatus" disabled>Check Audience</button>
+</div>

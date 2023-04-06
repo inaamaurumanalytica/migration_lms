@@ -1,0 +1,892 @@
+<div class="dark-overlay" *ngIf="showComponentLoader">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div class="dark-overlay" *ngIf="statusSpinner">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div class="page-container wrapper" *ngIf="!showComponentLoader" style="margin-bottom: 50px;">
+
+  <div fxLayout="row" fxLayoutAlign="space-around center" fxlayoutgap="30px">
+    <div fxFlex class="card-p" style="margin: 10px 0 20px 0px;">
+      <div class="logo" fxlayout="row" fxlayoutalign="start center">
+        <span class="logo-text h1 ng-trigger ng-trigger-animate"> Audience Recommendation System</span>
+      </div>
+    </div>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="30px">
+
+    <div fxFlex class="card-p">
+
+      <mat-card style="padding:0px 0px 20px 0px; margin: 0 0 20px 0;">
+        <mat-card-content>
+
+          <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+            <div fxFlex class="left">
+              <h2 class="heading">
+                <!-- <span class="material-icons h-icon">business</span>  -->
+                <span class="h-icon"><img src="assets/images/insight-icon/airport.png" alt=""></span>
+                <span>{{project?.name}}</span>
+              </h2>
+            </div>
+
+            <div fxFlex class="right">
+              <a class="organge-button"
+                href="https://leads.aurumanalytica.in/#/appSocial/search?locations={{project?.city}}&company=indigo,spicejet&property={{project?.name}}&sp=0&qualifications=aviation,aeronautics&autoSearch=true"
+                target="_blank">
+                <span class="material-icons analyse-icon">insights</span> Analyse Data</a>
+            </div>
+
+          </div>
+
+          <div id="insightAirport" fxLayout="row" fxLayoutAlign="space-around center" fxlayoutgap="10px">
+
+            <div class="plane">
+              <span class="material-icons" style="transform: rotate(45deg);">airplanemode_active</span>
+            </div>
+
+            <div class="airport-line">
+              <img src="assets/images/insight-icon/dotted-line.png" alt="">
+            </div>
+
+            <div class="airport-location">
+              <span class="material-icons pin">place</span>
+              <p style="margin: 0; display: block;">{{airportData?.entries[0]?.distance_in_km | number:'1.0-2'}} KM</p>
+            </div>
+
+
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card style="padding:0px 0px 20px 0px; margin: 0 0 20px 0;">
+        <mat-card-content>
+
+          <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+            <div fxFlex class="left">
+              <h2 class="heading">
+                <!-- <span class="material-icons h-icon">medical_services</span>  -->
+                <span class="h-icon"><img src="assets/images/insight-icon/medical.png" alt=""></span> Doctors
+              </h2>
+              <p class="sub-heading">Likelihood To Run Campaign</p>
+            </div>
+
+            <div fxFlex class="right">
+              <a class="organge-button"
+                href="https://leads.aurumanalytica.in/#/appSocial/search?locations={{project?.city}}&company=hospital,dentist&property={{project?.name}}&sp=0&qualifications=mbbs,surgery&autoSearch=true"
+                target="_blank">
+                <span class="material-icons analyse-icon">insights</span> Analyse Data</a>
+            </div>
+
+          </div>
+
+          <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+            <div fxFlex>
+              <div class="progress-bar-container">
+                <div class="progress-top"
+                  [style.width]="pharmaGroupData?.percentile > 100 ? '100%' : pharmaGroupData?.percentile + '%' "
+                  [style.background]="getColorForPercentage(pharmaGroupData?.percentile/100)">
+                  {{pharmaGroupData?.percentile > 100 ? 100 : pharmaGroupData?.percentile | number: '1.0-2'}}%</div>
+                <div class="progress-bottom"></div>
+              </div>
+            </div>
+
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card style="padding:0px 0px 20px 0px; margin: 0 0 20px 0;">
+        <mat-card-content>
+
+          <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+            <div fxFlex class="left">
+              <h2 class="heading">
+                <!-- <span class="material-icons h-icon">person</span>  -->
+                <span class="h-icon"><img src="assets/images/insight-icon/lawyer.png" alt=""></span> Lawyers
+              </h2>
+              <p class="sub-heading">Likelihood To Run Campaign</p>
+            </div>
+
+            <div fxFlex class="right">
+              <a class="organge-button"
+                href="https://leads.aurumanalytica.in/#/appSocial/search?locations={{project?.city}}&company=high%20court&property={{project?.name}}&sp=0&qualifications=llb,llm,law&autoSearch=true"
+                target="_blank">
+                <span class="material-icons analyse-icon">insights</span> Analyse Data</a>
+            </div>
+
+          </div>
+
+          <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+            <div fxFlex>
+              <div class="progress-bar-container">
+                <div class="progress-top"
+                  [style.width]="legalData?.percentile > 100 ? '100%' : legalData?.percentile + '%' "
+                  [style.background]="getColorForPercentage(legalData?.percentile/100)">{{legalData?.percentile > 100 ?
+                  100 : legalData?.percentile |
+                  number:
+                  '1.0-2'}}%</div>
+                <div class="progress-bottom"></div>
+              </div>
+            </div>
+
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card style="padding:0px 0px 20px 0px;">
+        <mat-card-content>
+
+          <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+            <div fxFlex class="left">
+              <h2 class="heading" *ngIf="similarProjectData?.entries.length">
+                <!-- <span class="material-icons h-icon">apartment</span>  -->
+                <span class="h-icon"><img src="assets/images/insight-icon/similar.png" alt=""></span> Similar Projects
+                ({{similarProjectData?.entries.length}})
+              </h2>
+              <h2 class="heading" *ngIf="!similarProjectData?.entries.length">
+                <!-- <span class="material-icons h-icon">apartment</span>  -->
+                <span class="h-icon"><img src="assets/images/insight-icon/similar.png" alt=""></span> Similar Projects
+                (0)
+              </h2>
+            </div>
+
+            <!-- <div fxFlex class="right">
+              <a class="organge-button" href="javascript:void(0)">
+                <span class="material-icons analyse-icon">insights</span> Analyse Data</a>
+            </div> -->
+
+          </div>
+
+          <div *ngIf="similarProjectData?.entries.length" id="insightOtherProject" fxLayout="row warp"
+            fxLayoutAlign="space-between start" fxlayoutgap="10px">
+
+            <div
+              *ngFor="let similarItem of similarProjectData?.entries | slice:0:(viewMoreSimilar ? undefined : 4); let i=index"
+              fxFlex="45" class="project-card">
+              <p class="heading">{{similarItem?.name}}</p>
+              <p class="para">{{similarItem?.extra?.min_price}}<span class="material-icons pin">place</span>
+                {{similarItem?.distance_in_km | number:'1.0-2'}} KM</p>
+            </div>
+          </div>
+          <div style="text-align: center;margin-top: 20px;" *ngIf="similarProjectData?.entries.length > 4">
+            <button class="btn" *ngIf="!viewMoreSimilar" (click)="viewMoreSimilar = !viewMoreSimilar">
+              View More
+            </button>
+            <button class="btn" *ngIf="viewMoreSimilar" (click)="viewMoreSimilar = !viewMoreSimilar">
+              View Less
+            </button>
+          </div>
+
+          <div *ngIf="!similarProjectData?.entries.length" id="insightOtherProject" fxLayout="row"
+            fxLayoutAlign="start start" fxlayoutgap="10px">
+
+            <div fxFlex="100" class="project-card">
+              <p>No Similar Projects Found!</p>
+            </div>
+
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+    <div fxFlex class="card-p">
+
+      <div fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="30px" style="margin: 0 0 20px 0;">
+
+        <!-- Industries -->
+        <div fxFlex>
+          <mat-card style="padding: 0 0 30px 0;">
+            <mat-card-content>
+
+              <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+                <div fxFlex class="left">
+                  <h2 class="heading">
+                    <!-- <span class="material-icons h-icon">factory</span>  -->
+                    <span class="h-icon"><img src="assets/images/insight-icon/industry.png" alt=""></span> RoC/SME
+                    ({{SMEGroupData?.entries.length}})
+                  </h2>
+                  <p class="sub-heading">Likelihood To Run Campaign</p>
+                </div>
+
+                <div fxFlex class="right">
+                  <a class="organge-button"
+                    href="https://leads.aurumanalytica.in/#/appSocial/search?locations={{project?.city}}&company=&property={{project?.name}}&sp=0&qualifications=btech,technology"
+                    target="_blank">
+                    <span class="material-icons analyse-icon">insights</span> Analyse Data</a>
+                </div>
+
+              </div>
+
+              <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+                <div fxFlex>
+                  <div class="progress-bar-container">
+                    <div class="progress-top"
+                      [style.width]="SMEGroupData?.percentile > 100 ? '100%' : SMEGroupData?.percentile + '%' "
+                      [style.background]="getColorForPercentage(SMEGroupData?.percentile/100)">
+                      {{SMEGroupData?.percentile > 100 ? 100 : SMEGroupData?.percentile
+                      |
+                      number: '1.0-2'}}%</div>
+                    <div class="progress-bottom"></div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div id="insightTableHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+                <div fxFlex>
+                  <ul>
+                    <li>
+                      <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around center" fxlayoutgap="10px">
+                        <div fxFlex="70" class="left table-heading">Name</div>
+                        <div fxFlex="30" class="right table-heading">Distance</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+                <div fxFlex class="scroller">
+                  <ul>
+                    <li *ngFor="let SMEitem of SMEGroupData?.entries">
+                      <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around center" fxlayoutgap="10px">
+                        <div fxFlex="70" class="left ">{{SMEitem?.name}}
+                          <span class="delete-button" (click)="delete(SMEitem)">X</span>
+                        </div>
+                        
+                        <div fxFlex="30" class="right"><span
+                            class="material-icons pin">place</span>{{SMEitem?.distance_in_km | number:'1.0-2'}} KM</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="30px">
+        <!-- PSUs -->
+        <div fxFlex>
+          <mat-card style="padding: 0 0 30px 0;">
+            <mat-card-content>
+
+              <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+                <div fxFlex class="left">
+                  <h2 class="heading">
+                    <span class="material-icons h-icon">factory</span> PSU ({{PSUData?.entries.length}})
+                    <!-- <span class="h-icon"><img src="assets/images/insight-icon/industry.png" alt=""></span> -->
+                  </h2>
+                  <p class="sub-heading">Likelihood To Run Campaign</p>
+                </div>
+
+                <div fxFlex class="right">
+                  <a class="organge-button"
+                    href="https://leads.aurumanalytica.in/#/appSocial/search?locations={{project?.city}}&company=&property={{project?.name}}&sp=0&qualifications=btech,technology"
+                    target="_blank">
+                    <span class="material-icons analyse-icon">insights</span> Analyse Data</a>
+                </div>
+
+              </div>
+
+              <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+                <div fxFlex>
+                  <div class="progress-bar-container">
+                    <div class="progress-top"
+                      [style.width]="PSUData?.percentile > 100 ? 100 : PSUData?.percentile + '%' "
+                      [style.background]="getColorForPercentage(PSUData?.percentile/100)">{{PSUData?.percentile > 100 ?
+                      100 : PSUData?.percentile |
+                      number:
+                      '1.0-2'}}%
+                      
+                    </div>
+                    <div class="progress-bottom"></div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div id="insightTableHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+                <div fxFlex>
+                  <ul>
+                    <li>
+                      <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around center" fxlayoutgap="10px">
+                        <div fxFlex="70" class="left table-heading">PSU</div>
+                        <div fxFlex="30" class="right table-heading">Distance</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+                <div fxFlex>
+                  <div fxFlex class="scroller">
+                    <ul>
+                      <li *ngFor="let PSUSitem of PSUData?.entries">
+                        <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around center" fxlayoutgap="10px">
+                          <div fxFlex="70" class="left">{{PSUSitem?.name}}
+
+                            <span class="delete-button" (click)="delete(PSUSitem)">X</span>
+
+                          </div>
+                          <div fxFlex="30" class="right"><span
+                              class="material-icons pin">place</span>{{PSUSitem?.distance_in_km | number:'1.0-2'}} KM
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div fxFlex class="card-p">
+
+      <div fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="30px" style="margin: 0 0 20px 0;">
+
+        <!-- IT Companies -->
+        <div fxFlex>
+          <mat-card style="padding: 0 0 30px 0;">
+            <mat-card-content>
+
+              <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+                <div fxFlex class="left">
+                  <h2 class="heading">
+                    <!-- <span class="material-icons h-icon">business_center</span>  -->
+                    <span class="h-icon"><img src="assets/images/insight-icon/IT.png" alt=""></span> IT Companies
+                    ({{ITGroupData?.entries.length}})
+                  </h2>
+                  <p class="sub-heading">Likelihood To Run Campaign</p>
+                </div>
+
+                <div fxFlex class="right">
+                  <a class="organge-button"
+                    href="https://leads.aurumanalytica.in/#/appSocial/search?locations={{project?.city}}&company=&property={{project?.name}}&sp=0&qualifications=btech,technology"
+                    target="_blank">
+                    <span class="material-icons analyse-icon">insights</span> Analyse Data</a>
+                </div>
+
+              </div>
+
+              <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+                <div fxFlex>
+                  <div class="progress-bar-container">
+                    <div class="progress-top"
+                      [style.width]="ITGroupData?.percentile > 100 ? '100%' : ITGroupData?.percentile + '%' "
+                      [style.background]="getColorForPercentage(ITGroupData?.percentile/100)">
+                      {{ITGroupData?.percentile > 100 ? 100 : ITGroupData?.percentile |
+                      number: '1.0-2'}}%</div>
+                    <div class="progress-bottom"></div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div id="insightTableHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+                <div fxFlex>
+                  <ul>
+                    <li>
+                      <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around center" fxlayoutgap="10px">
+                        <div fxFlex="70" class="left table-heading">Company</div>
+                        <div fxFlex="30" class="right table-heading">Distance</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+
+              <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+                <div fxFlex>
+                  <div fxFlex class="scroller">
+                    <ul>
+                      <li *ngFor="let ITitem of ITGroupData?.entries">
+                        <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around center" fxlayoutgap="10px">
+                          <div fxFlex="70" class="left">{{ITitem?.name}}
+                            <span class="delete-button" (click)="delete(ITitem)"> X</span>
+                          </div>
+                          <div fxFlex="30" class="right"><span
+                              class="material-icons pin">place</span>{{ITitem?.distance_in_km | number:'1.0-2'}} KM
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="30px">
+
+        <!-- BFSI Group -->
+        <div fxFlex>
+          <mat-card style="padding: 0 0 30px 0;">
+            <mat-card-content>
+
+              <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+                <div fxFlex class="left">
+                  <h2 class="heading">
+                    <span class="material-icons h-icon">factory</span> BFSI ({{BFSIGroupData?.entries.length}})
+                    <!-- <span class="h-icon"><img src="assets/images/insight-icon/IT.png" alt=""></span> -->
+                  </h2>
+                  <p class="sub-heading">Likelihood To Run Campaign</p>
+                </div>
+
+                <div fxFlex class="right">
+                  <a class="organge-button"
+                    href="https://leads.aurumanalytica.in/#/appSocial/search?locations={{project?.city}}&company=&property={{project?.name}}&sp=0&qualifications=btech,technology"
+                    target="_blank">
+                    <span class="material-icons analyse-icon">insights</span> Analyse Data</a>
+                </div>
+
+              </div>
+
+              <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+                <div fxFlex>
+                  <div class="progress-bar-container">
+                    <div class="progress-top"
+                      [style.width]="BFSIGroupData?.percentile > 100 ? '100%' : BFSIGroupData?.percentile + '%' "
+                      [style.background]="getColorForPercentage(BFSIGroupData?.percentile/100)">
+                      {{BFSIGroupData?.percentile > 100 ? 100 : BFSIGroupData?.percentile |
+                      number: '1.0-2'}}%</div>
+                    <div class="progress-bottom"></div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div id="insightTableHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+                <div fxFlex>
+                  <ul>
+                    <li>
+                      <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around center" fxlayoutgap="10px">
+                        <div fxFlex="70" class="left table-heading">Name</div>
+                        <div fxFlex="30" class="right table-heading">Distance</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+
+                <div fxFlex>
+                  <div fxFlex class="scroller">
+                    <ul>
+
+                      <li *ngFor="let BFSIitem of BFSIGroupData?.entries">
+                        <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around center" fxlayoutgap="10px">
+                          <div fxFlex="70" class="left">{{BFSIitem?.name}}<span class="delete-button" (click)="delete(BFSIitem)">&nbsp; X</span></div>
+                          <div fxFlex="30" class="right"><span
+                              class="material-icons pin">place</span>{{BFSIitem?.distance_in_km | number:'1.0-2'}} KM
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div style="margin-top: 20px;">
+    <div fxFlex class="card-p">
+      <div fxLayout="row wrap" fxLayoutAlign="start start">
+        <mat-card fxFlex="32" *ngIf="bankingData != undefined"
+          style="padding:0px 0px 15px 0px; margin: 0 24px 20px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">Banking</h2>
+              </div>
+            </div>
+            <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <div class="progress-bar-container">
+                  <div class="progress-top"
+                    [style.width]="bankingData?.percentile > 100 ? '100%' : bankingData?.percentile + '%' "
+                    [style.background]="getColorForPercentage(bankingData?.percentile/100)">
+                    {{bankingData?.percentile > 100 ? 100 : bankingData?.percentile | number: '1.0-2'}}%</div>
+                  <div class="progress-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="32" *ngIf="businessPlanData != undefined"
+          style="padding:0px 0px 15px 0px; margin: 0 24px 20px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">Business Man</h2>
+              </div>
+            </div>
+            <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <div class="progress-bar-container">
+                  <div class="progress-top"
+                    [style.width]="businessPlanData?.percentile > 100 ? '100%' : businessPlanData?.percentile + '%' "
+                    [style.background]="getColorForPercentage(businessPlanData?.percentile/100)">
+                    {{businessPlanData?.percentile > 100 ? 100 : businessPlanData?.percentile | number: '1.0-2'}}%</div>
+                  <div class="progress-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="32" *ngIf="competitorData != undefined"
+          style="padding:0px 0px 15px 0px; margin: 0 24px 20px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">Competitor</h2>
+              </div>
+            </div>
+            <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <div class="progress-bar-container">
+                  <div class="progress-top"
+                    [style.width]="competitorData?.percentile > 100 ? '100%' : competitorData?.percentile + '%' "
+                    [style.background]="getColorForPercentage(competitorData?.percentile/100)">
+                    {{competitorData?.percentile > 100 ? 100 : competitorData?.percentile | number: '1.0-2'}}%</div>
+                  <div class="progress-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="32" *ngIf="geo10KMData != undefined"
+          style="padding:0px 0px 15px 0px; margin: 0 24px 20px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">Geo Fencing (10KM)</h2>
+              </div>
+            </div>
+            <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <div class="progress-bar-container">
+                  <div class="progress-top"
+                    [style.width]="geo10KMData?.percentile > 100 ? '100%' : geo10KMData?.percentile + '%' "
+                    [style.background]="getColorForPercentage(geo10KMData?.percentile/100)">
+                    {{geo10KMData?.percentile > 100 ? 100 : geo10KMData?.percentile | number: '1.0-2'}}%</div>
+                  <div class="progress-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="32" *ngIf="geo6KMData != undefined"
+          style="padding:0px 0px 15px 0px; margin: 0 24px 20px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">Geo Fencing (6KM)</h2>
+              </div>
+            </div>
+            <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <div class="progress-bar-container">
+                  <div class="progress-top"
+                    [style.width]="geo6KMData?.percentile > 100 ? '100%' : geo6KMData?.percentile + '%' "
+                    [style.background]="getColorForPercentage(geo10KMData?.percentile/100)">
+                    {{geo6KMData?.percentile > 100 ? 100 : geo6KMData?.percentile | number: '1.0-2'}}%</div>
+                  <div class="progress-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="32" *ngIf="hniData != undefined" style="padding:0px 0px 15px 0px; margin: 0 24px 20px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">HNI</h2>
+              </div>
+            </div>
+            <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <div class="progress-bar-container">
+                  <div class="progress-top"
+                    [style.width]="hniData?.percentile > 100 ? '100%' : hniData?.percentile + '%' "
+                    [style.background]="getColorForPercentage(hniData?.percentile/100)">
+                    {{hniData?.percentile > 100 ? 100 : hniData?.percentile | number: '1.0-2'}}%</div>
+                  <div class="progress-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="32" *ngIf="homeByuerData != undefined"
+          style="padding:0px 0px 15px 0px; margin: 0 24px 20px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">Home Buyer</h2>
+              </div>
+            </div>
+            <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <div class="progress-bar-container">
+                  <div class="progress-top"
+                    [style.width]="homeByuerData?.percentile > 100 ? '100%' : homeByuerData?.percentile + '%' "
+                    [style.background]="getColorForPercentage(homeByuerData?.percentile/100)">
+                    {{homeByuerData?.percentile > 100 ? 100 : homeByuerData?.percentile | number: '1.0-2'}}%</div>
+                  <div class="progress-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="32" *ngIf="investorData != undefined"
+          style="padding:0px 0px 15px 0px; margin: 0 24px 20px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">Investor</h2>
+              </div>
+              <div fxFlex class="right">
+                <a class="organge-button"
+                  href="https://leads.aurumanalytica.in/#/appSocial/search?locations=faridabad,sonipat,delhi,gurgaon&company=investor&property={{project?.name}}&sp=0&autoSearch=true"
+                  target="_blank">
+                  <span class="material-icons analyse-icon">insights</span> Analyse Data</a>
+              </div>
+            </div>
+
+            <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <div class="progress-bar-container">
+                  <div class="progress-top"
+                    [style.width]="investorData?.percentile > 100 ? '100%' : investorData?.percentile + '%' "
+                    [style.background]="getColorForPercentage(investorData?.percentile/100)">
+                    {{investorData?.percentile > 100 ? 100 : investorData?.percentile | number: '1.0-2'}}%</div>
+                  <div class="progress-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="31" *ngIf="educationData != undefined"
+          style="padding:0px 0px 15px 0px; margin: 0 25px 20px 0px;">
+        <mat-card-content>
+          <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+            <div fxFlex class="left">
+              <h2 class="heading1">Education(Prof/Teacher)</h2>
+            </div>
+            <div fxFlex class="right">
+                <a class="organge-button"
+                href="https://leads.aurumanalytica.in/#/appSocial/search?locations=faridabad,sonipat,delhi,gurgaon&company=professor&property={{project?.name}}&sp=0&autoSearch=true"
+                target="_blank">
+                  <span class="material-icons analyse-icon">insights</span> Analyse Data</a>
+              </div>
+
+          </div>
+          <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+            <div fxFlex>
+              <div class="progress-bar-container">
+                <div class="progress-top"
+                  [style.width]="educationData?.percentile > 100 ? '100%' : educationData?.percentile + '%' "
+                  [style.background]="getColorForPercentage(educationData?.percentile/100)">
+                  {{educationData?.percentile > 100 ? 100 : educationData?.percentile | number: '1.0-2'}}%</div>
+                <div class="progress-bottom"></div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="31" *ngIf="manufacturingData != undefined"
+          style="padding:0px 0px 15px 0px; margin: 0 25px 20px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">Manufacturing</h2>
+              </div>
+            </div>
+            <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <div class="progress-bar-container">
+                  <div class="progress-top"
+                    [style.width]="manufacturingData?.percentile > 100 ? '100%' : manufacturingData?.percentile + '%' "
+                    [style.background]="getColorForPercentage(manufacturingData?.percentile/100)">
+                    {{manufacturingData?.percentile > 100 ? 100 : manufacturingData?.percentile | number: '1.0-2'}}%
+                  </div>
+                  <div class="progress-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="32" *ngIf="marketPlaceData != undefined"
+          style="padding:0px 0px 15px 0px; margin: 0 24px 20px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">Market Place</h2>
+              </div>
+            </div>
+            <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <div class="progress-bar-container">
+                  <div class="progress-top"
+                    [style.width]="marketPlaceData?.percentile > 100 ? '100%' : marketPlaceData?.percentile + '%' "
+                    [style.background]="getColorForPercentage(marketPlaceData?.percentile/100)">
+                    {{marketPlaceData?.percentile > 100 ? 100 : marketPlaceData?.percentile | number: '1.0-2'}}%</div>
+                  <div class="progress-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="32" *ngIf="nriData != undefined" style="padding:0px 0px 15px 0px; margin: 0 24px 20px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">NRI(GCC)</h2>
+              </div>
+            </div>
+            <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <div class="progress-bar-container">
+                  <div class="progress-top"
+                    [style.width]="nriData?.percentile > 100 ? '100%' : nriData?.percentile + '%' "
+                    [style.background]="getColorForPercentage(nriData?.percentile/100)">
+                    {{nriData?.percentile > 100 ? 100 : nriData?.percentile | number: '1.0-2'}}%</div>
+                  <div class="progress-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="32" *ngIf="relianceEmployeesData != undefined"
+          style="padding:0px 0px 15px 0px; margin: 0 24px 20px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">Reliance Employees</h2>
+              </div>
+            </div>
+            <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <div class="progress-bar-container">
+                  <div class="progress-top"
+                    [style.width]="relianceEmployeesData?.percentile > 100 ? '100%' : relianceEmployeesData?.percentile + '%' "
+                    [style.background]="getColorForPercentage(relianceEmployeesData?.percentile/100)">
+                    {{relianceEmployeesData?.percentile > 100 ? 100 : relianceEmployeesData?.percentile | number:
+                    '1.0-2'}}%</div>
+                  <div class="progress-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="32" *ngIf="sealineData != undefined"
+          style="padding:0px 0px 15px 0px; margin: 0 24px 20px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">Sealine</h2>
+              </div>
+            </div>
+            <div id="insightProgressBar" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <div class="progress-bar-container">
+                  <div class="progress-top"
+                    [style.width]="sealineData?.percentile > 100 ? '100%' : sealineData?.percentile + '%' "
+                    [style.background]="getColorForPercentage(sealineData?.percentile/100)">
+                    {{sealineData?.percentile > 100 ? 100 : sealineData?.percentile | number: '1.0-2'}}%</div>
+                  <div class="progress-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card fxFlex="32" *ngIf="pastAudienceData.length != 0" style="padding:0px 0px 15px 0px;">
+          <mat-card-content>
+            <div id="insightCardHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="left">
+                <h2 class="heading1">Best Recommended Audience</h2>
+              </div>
+            </div>
+            <div id="insightTableHeader" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex>
+                <ul>
+                  <li>
+                    <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around center" fxlayoutgap="10px">
+                      <div fxFlex="70" class="left table-heading">Target</div>
+                      <div fxFlex="70" class="left table-heading">Audience</div>
+                      <div fxFlex="30" class="right table-heading">Age</div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around start" fxlayoutgap="10px">
+              <div fxFlex class="scroller">
+                <ul>
+                  <li *ngFor="let item of pastAudienceData">
+                    <div id="insightTable" fxLayout="row" fxLayoutAlign="space-around center" fxlayoutgap="10px">
+                      <div fxFlex="70" class="left">{{item?.target}}</div>
+                      <div fxFlex="70" class="left">{{item?.audience}}</div>
+                      <div fxFlex="30" class="right">{{item?.age}}</div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center">
+		<h3>
+			EDIT TASK
+		</h3>
+		<i class="material-icons close-modal" (click)="close()">
+			clear
+		</i>
+	</div>
+	<!-- <span style="font-size: 12px;color: #b7b7b7;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span> -->
+	<mat-dialog-content class="mat-dialog-container-div" style="font-size: 12px;">
+		<form [formGroup]="createTaskForm" fxLayout="column" fxLayoutGap="10px">
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+				<div class="rule-title" fxFlex="1 1 auto">Lead :<span class="rule-name"> {{lead.name}}</span></div>
+				<div class="rule-title" fxFlex="1 1 auto">Project :<span class="rule-name"> {{lead.project.name}}</span>
+				</div>
+			</div>
+			<div fxLayout="column" fxLayoutGap="10px">
+				<div class="rule-title" fxFlex="1 1 auto">Email :<span class="rule-name"> {{lead.email}}</span></div>
+				<div class="rule-title" fxFlex="1 1 auto">Phone :<span class="rule-name"> {{lead.phone}}</span>
+				</div>
+			</div>
+			<div class="form-group" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px"
+				style="margin-bottom: 10px;">
+				<mat-select class="form-input" placeholder="Select Category *" formControlName="task_category">
+					<mat-option value="Follow Up">Follow Up</mat-option>
+					<mat-option value="Appointment">Appointment</mat-option>
+					<mat-option value="Call">Call</mat-option>
+					<mat-option value="Email">Email</mat-option>
+				</mat-select>
+				<mat-select class="form-input" placeholder="Select Priority *" formControlName="priority">
+					<mat-option value="1">High</mat-option>
+					<mat-option value="2">Medium</mat-option>
+					<mat-option value="3">Low</mat-option>
+				</mat-select>
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-input" name="subject" id="subject" placeholder="Subject *"
+					formControlName="subject">
+			</div>
+			<div class="form-group">
+				<textarea class="form-input" rows="3" placeholder="Description"
+					formControlName="description"></textarea>
+			</div>
+			<div class="form-group">
+				<input class="form-input" placeholder="Due Date Time:" formControlName="due_date" [min]="min"
+					[owlDateTimeTrigger]="dt" [owlDateTime]="dt">
+				<owl-date-time #dt [hour12Timer]="true"></owl-date-time>
+			</div>
+			<div class="form-group">
+				<div style="display: flex;padding: 3px;">
+					<mat-slide-toggle [checked]="autoReminderNotification" (change)="checkAutoReminder()">
+					</mat-slide-toggle>
+					<label style="margin-left: 20px;margin-top: -3px;">Auto Reminder</label>
+					<mat-icon style="font-size: 16px;margin-top: -3px;"
+						matTooltip="Will remind you before 15 min of due date">info</mat-icon>
+				</div>
+				<input class="form-input" placeholder="Custom Date Time:" [ngStyle]="{'display':!autoReminderNotification?'block':'none'}"
+					formControlName="custom_remainder" [max]="max" [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1">
+				<owl-date-time #dt1 [hour12Timer]="true"></owl-date-time>
+			</div>
+			<div class="form-group" style="position: relative;">
+				<input type="text" class="form-input" name="taskNote" id="taskNote" placeholder="Task Notes"
+					formControlName="taskNote">
+			</div>
+			<div class="assign-container" style="margin-bottom: 10px;" *ngIf="taskNotes.length != 0">
+				<h4>Task Notes</h4>
+				<div class="assign-project-container">
+					<div class="assign-project" *ngFor="let taskNote of taskNotes">
+						<label class="assign-project-name">{{taskNote}}</label>
+					</div>
+				</div>
+			</div>
+		</form>
+	</mat-dialog-content>
+</div>
+<div class="user-action-btn"
+	style="bottom: 0px;position: fixed;width: 96%;padding: 10px;border-top: 2px solid #eaeaea;background: #eaeaea;">
+	<button mat-button class="click-btn" *ngIf="!saveStatus" (click)="addTask()">UPDATE</button>
+	<button mat-button class="click-btn" *ngIf="saveStatus" disabled>UPDATING...</button>
+	<button mat-button class="close-btn" (click)="close()">CANCEL</button>
+</div>

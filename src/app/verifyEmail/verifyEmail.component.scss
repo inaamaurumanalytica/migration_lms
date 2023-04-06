@@ -1,0 +1,67 @@
+$gray-lighter: #eceeef !default;
+$image_path: "/assets/images/" !default;
+
+$prefix: 'sigin';
+
+.#{$prefix} {
+
+    &-conainer {
+        min-height: 100%;
+        background-size: cover;
+        padding: 100px;
+    }
+
+    &-main {
+        position: relative;
+        margin: 0 auto;
+        width: 500px;
+    }
+}
+
+.cdk-global-overlay-wrapper {
+    justify-content: flex-end !important;
+    align-items: flex-start !important;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.redirect {
+    font-size: 14px;
+    margin-left: 10px;
+    color: #00AAAA;
+}
+
+.blue-snackbar {
+    background: #2196F3 !important;
+}
+
+.red-snackbar {
+    background: #F44336 !important;
+}
+
+.mat-header {
+    margin: 15px 0 20px !important;
+}
+
+.mat-header .verified-user {
+    font-size: 50px !important;
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    min-height: 50px !important;
+    line-height: 50px !important;
+    color: #00C08D;
+}
+
+.user-verified-btn .click-btn {
+    background: #00C08D;
+    color: #fff;
+    border-radius: 10rem;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+.user-verified-btn{
+  margin: 20px 0 !important;
+}

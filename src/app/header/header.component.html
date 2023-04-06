@@ -1,0 +1,32 @@
+<header id="home-header">
+    <div class="container" fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="header-mobile-top" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="start center">
+            <div class="home-logo mr-1">
+                <a href="/">
+                    <img src="../../assets/images/logo.png">
+                </a>
+            </div>
+            <button mat-icon-button id="menu-toggle" (click)="toggleMenu()">
+                <mat-icon>menu</mat-icon>
+            </button>
+        </div>
+
+        <div fxFlex class="top-menu">
+            <span fxFlex></span>
+            <button mat-button id="dashboard-topbtn" class="hometop-btn" (click)="ScrollIntoView('#home')">Home</button>
+            <button mat-button id="dashboard-topbtn" class="hometop-btn"
+                (click)="ScrollIntoView('#features')">Features</button>
+            <button mat-button id="dashboard-topbtn" class="hometop-btn"
+                (click)="ScrollIntoView('#contact-section')">Contact Us</button>
+            <button mat-button id="dashboard-topbtn" class="hometop-btn icon-button login-btn"
+                [routerLink]="['/auth/login']">
+                <mat-icon>person</mat-icon> Sign In
+            </button>
+            <button mat-button id="dashboard-topbtn" class="hometop-btn icon-button login-btn"
+                [routerLink]="['/auth/sign-up']">
+                <mat-icon>person_add</mat-icon> Sign Up
+            </button>
+        </div>
+        
+    </div>
+</header>

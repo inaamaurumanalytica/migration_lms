@@ -1,0 +1,37 @@
+.mat-standard-chip{
+    min-height: 26px !important; 
+}
+
+.mat-chip {
+    font-size: 12px !important;
+}
+
+.mat-dialog-content {
+    max-height: 77vh !important;
+    // overflow: inherit !important;
+}
+
+
+.permission-info.mat-icon {
+    font-size: 15px !important;
+    width: 15px !important;
+    height: 15px !important;
+    min-width: 15px !important;
+    min-height: 15px !important;
+    line-height: 15px !important;
+    color: #5F6368;
+    margin-right: 5px;
+}
+
+tr.lhtr {
+    line-height: 35px;
+}
+
+.permission-view{
+    margin-top: 30px;
+}
+
+.form-group{
+    padding: 15px 15px 9px;
+    background-color: #e3e3e3;
+}

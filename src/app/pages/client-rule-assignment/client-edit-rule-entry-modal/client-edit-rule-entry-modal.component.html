@@ -1,0 +1,244 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>
+			Lead Assignment Rule
+		</h3>
+		<button mat-icon-button tabindex="-1" (click)="close()">
+			<mat-icon>clear</mat-icon>
+		</button>
+	</div>
+	<mat-dialog-content fxLayout="column" class="mat-dialog-container-div">
+		<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+			<h5>RULE ENTRIES</h5>
+		</div>
+		<div class="rl-section" fxLayout="column" fxLayoutGap="16px">
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="padding: 0 1rem;">
+				<h5>RULE ENTRIES</h5>
+				<!-- <button mat-icon-button tabindex="-1" (click)="addnewrow()">
+					<mat-icon style="color: #00C08D;">add_circle</mat-icon>
+				</button> -->
+			</div>
+			<div style="overflow-y: auto;">
+				<div class="rule-criteria" fxLayout="column" fxLayoutGap="8px"
+					*ngFor="let field of fieldArray; let i = index">
+					<div fxLayoutAlign="center center" *ngIf="i != 0"
+						style="margin-top: 8px !important;cursor: pointer !important;">
+						<span (click)="changeAndOr(false, i)"
+							[ngStyle]="{'color' : field.andOr ? '' : '#00C08D'}">OR</span>/
+						<span (click)="changeAndOr(true, i)"
+							[ngStyle]="{'color' : field.andOr ? '#00C08D' : ''}">AND</span>
+					</div>
+					<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" style="padding: 0 10px;">
+						<div fxFlex="2">{{i+1}}</div>
+						<div class="" fxFlex="30">
+							<mat-select class="form-input" (selectionChange)="selectField(field, i)"
+								[(ngModel)]="field.rule_name">
+								<mat-option value="">None</mat-option>
+								<mat-option [value]="rule" *ngFor="let rule of entries">{{rule.name}}
+								</mat-option>
+							</mat-select>
+						</div>
+						<div class="" fxFlex="30">
+							<mat-select class="form-input" [(ngModel)]="field.rule_operator"
+								(selectionChange)="selectOperator(field, i)"
+								[disabled]="field.rule_name == undefined || field.rule_name == ''">
+								<mat-option value="">None</mat-option>
+								<mat-option [value]="key" *ngFor="let key of field.operatorsByFeild">{{key}}
+								</mat-option>
+							</mat-select>
+						</div>
+						<div class="" fxFlex="30">
+							<mat-select class="form-input" [(ngModel)]="field.between_one"
+								*ngIf="field.rule_name.name_value == 'score' && field.rule_operator == 'between' && !field.rule_operator_contains  && (field.rule_name != undefined || field.rule_name != '' || field.rule_operator != undefined || field.rule_operator != '' || field.rule_operator != 'is empty' || field.rule_operator != 'is not empty')">
+								<mat-option value="1">1</mat-option>
+								<mat-option value="2">2</mat-option>
+								<mat-option value="3">3</mat-option>
+								<mat-option value="4">4</mat-option>
+								<mat-option value="5">5</mat-option>
+								<mat-option value="6">6</mat-option>
+								<mat-option value="7">7</mat-option>
+								<mat-option value="8">8</mat-option>
+								<mat-option value="9">9</mat-option>
+								<mat-option value="10">10</mat-option>
+								<mat-option value="11">11</mat-option>
+								<mat-option value="12">12</mat-option>
+								<mat-option value="13">13</mat-option>
+								<mat-option value="14">14</mat-option>
+								<mat-option value="15">15</mat-option>
+								<mat-option value="16">16</mat-option>
+								<mat-option value="17">17</mat-option>
+								<mat-option value="18">18</mat-option>
+								<mat-option value="19">19</mat-option>
+								<mat-option value="20">20</mat-option>
+							</mat-select>
+							<mat-select class="form-input" [(ngModel)]="field.between_two"
+								*ngIf="field.rule_name.name_value == 'score' && field.rule_operator == 'between' && !field.rule_operator_contains  && (field.rule_name != undefined || field.rule_name != '' || field.rule_operator != undefined || field.rule_operator != '' || field.rule_operator != 'is empty' || field.rule_operator != 'is not empty')">
+								<mat-option value="1">1</mat-option>
+								<mat-option value="2">2</mat-option>
+								<mat-option value="3">3</mat-option>
+								<mat-option value="4">4</mat-option>
+								<mat-option value="5">5</mat-option>
+								<mat-option value="6">6</mat-option>
+								<mat-option value="7">7</mat-option>
+								<mat-option value="8">8</mat-option>
+								<mat-option value="9">9</mat-option>
+								<mat-option value="10">10</mat-option>
+								<mat-option value="11">11</mat-option>
+								<mat-option value="12">12</mat-option>
+								<mat-option value="13">13</mat-option>
+								<mat-option value="14">14</mat-option>
+								<mat-option value="15">15</mat-option>
+								<mat-option value="16">16</mat-option>
+								<mat-option value="17">17</mat-option>
+								<mat-option value="18">18</mat-option>
+								<mat-option value="19">19</mat-option>
+								<mat-option value="20">20</mat-option>
+							</mat-select>
+							<div *ngIf="field.rule_operator != 'between'">
+
+								<input class="form-input" [(ngModel)]="field.rule_value" disabled
+									*ngIf="field.rule_name == undefined || field.rule_name == '' || field.rule_operator == undefined || field.rule_operator == '' || field.rule_operator == 'is empty' || field.rule_operator == 'is not empty' && !field.rule_operator_contains && !field.rule_operator_isnt">
+
+								<input class="form-input" [(ngModel)]="field.rule_value"
+									*ngIf="field.rule_name.name_value == 'source' && (field.rule_operator == 'is' || field.rule_operator_isnt) && !field.rule_operator_contains  && (field.rule_name != undefined || field.rule_name != '' || field.rule_operator != undefined || field.rule_operator != '' || field.rule_operator != 'is empty' || field.rule_operator != 'is not empty')">
+
+								<mat-chip-list #chipList
+									*ngIf="field.rule_name.name_value == 'source' && (field.rule_operator == 'contains' || field.rule_operator_contains) && !field.rule_operator_isnt && (field.rule_name != undefined || field.rule_name != '' || field.rule_operator != undefined || field.rule_operator != '' || field.rule_operator != 'is empty' || field.rule_operator != 'is not empty')">
+									<mat-chip *ngFor="let value of field.rule_value" [selectable]="selectable"
+										[removable]="removable" (removed)="remove(value, i)">
+										{{value}}
+										<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+									</mat-chip>
+									<input class="form-input" placeholder="Add Value..." [matChipInputFor]="chipList"
+										[matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+										[matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event, i)">
+								</mat-chip-list>
+								<mat-select class="form-input" [(ngModel)]="field.rule_value"
+									*ngIf="field.rule_name.name_value == 'score' && (field.rule_operator == '=' || field.rule_operator == '!=' || field.rule_operator == '<' || field.rule_operator == '<=' || field.rule_operator == '>=' || field.rule_operator == '>') && !field.rule_operator_contains && (field.rule_name != undefined || field.rule_name != '' || field.rule_operator != undefined || field.rule_operator != '' || field.rule_operator != 'is empty' || field.rule_operator != 'is not empty') && !field.rule_operator_isnt">
+									<mat-option value="1">1</mat-option>
+									<mat-option value="2">2</mat-option>
+									<mat-option value="3">3</mat-option>
+									<mat-option value="4">4</mat-option>
+									<mat-option value="5">5</mat-option>
+									<mat-option value="6">6</mat-option>
+									<mat-option value="7">7</mat-option>
+									<mat-option value="8">8</mat-option>
+									<mat-option value="9">9</mat-option>
+									<mat-option value="10">10</mat-option>
+									<mat-option value="11">11</mat-option>
+									<mat-option value="12">12</mat-option>
+									<mat-option value="13">13</mat-option>
+									<mat-option value="14">14</mat-option>
+									<mat-option value="15">15</mat-option>
+									<mat-option value="16">16</mat-option>
+									<mat-option value="17">17</mat-option>
+									<mat-option value="18">18</mat-option>
+									<mat-option value="19">19</mat-option>
+									<mat-option value="20">20</mat-option>
+								</mat-select>
+								<mat-select class="form-input" multiple [(ngModel)]="field.rule_value"
+									*ngIf="field.rule_name.name_value == 'score' && (field.rule_operator == 'contains' || field.rule_operator_contains) && (field.rule_name != undefined || field.rule_name != '' || field.rule_operator != undefined || field.rule_operator != '' || field.rule_operator != 'is empty' || field.rule_operator != 'is not empty') && !field.rule_operator_isnt">
+									<mat-option value="1">1</mat-option>
+									<mat-option value="2">2</mat-option>
+									<mat-option value="3">3</mat-option>
+									<mat-option value="4">4</mat-option>
+									<mat-option value="5">5</mat-option>
+									<mat-option value="6">6</mat-option>
+									<mat-option value="7">7</mat-option>
+									<mat-option value="8">8</mat-option>
+									<mat-option value="9">9</mat-option>
+									<mat-option value="10">10</mat-option>
+									<mat-option value="11">11</mat-option>
+									<mat-option value="12">12</mat-option>
+									<mat-option value="13">13</mat-option>
+									<mat-option value="14">14</mat-option>
+									<mat-option value="15">15</mat-option>
+									<mat-option value="16">16</mat-option>
+									<mat-option value="17">17</mat-option>
+									<mat-option value="18">18</mat-option>
+									<mat-option value="19">19</mat-option>
+									<mat-option value="20">20</mat-option>
+								</mat-select>
+							</div>
+						</div>
+						<div fxFlex="2" class="action-icon" style="display: contents !important">
+							<span *ngIf="fieldArray.length == i+1">
+								<mat-icon (click)="addnewrow()" style="color: #00C08D;">add_circle</mat-icon>
+							</span>
+							<span *ngIf="i != 0">
+								<mat-icon style="cursor:pointer; margin-left: 20px;" (click)="deleteFieldValue(i)">
+									remove</mat-icon>
+							</span>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+			<div class="rl-footer" fxLayout="row" fxLayoutAlign="space-between center" style="padding: 0 1rem;"
+				*ngIf="!editPattern && fieldArray.length > 1">
+				<h5>RULE ENTRIES</h5>
+				<p>{{pattern}}</p>
+				<button mat-icon-button>
+					<mat-icon (click)="editPatternClick()">edit</mat-icon>
+				</button>
+			</div>
+			<div class="rl-footer" fxLayout="row" fxLayoutAlign="space-between center" style="padding: 0 1rem;"
+				*ngIf="editPattern">
+				<h5>RULE ENTRIES</h5>
+				<textarea name="patternVal" id="patternVal" class="patternVal dB resizeNone" rows="1"
+					style="width: 55%; border: 1px solid #a4a4a4; height: 55px;"
+					[(ngModel)]="textAreaPattern"></textarea>
+				<div>
+					<button (click)="savePatternClick()" mat-icon-button> Save </button>
+					<button (click)="cancelPatternClick()" mat-icon-button> Cancel </button>
+				</div>
+
+			</div>
+		</div>
+		<div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx"
+			style="margin-top:1.67em; margin-bottom: 3.34em;">
+			<h5>OWNERSHIP</h5>
+			<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="30px">
+				<mat-radio-button [checked]="!showRoundRobin" (change)="radioChange()">Assign To</mat-radio-button>
+				<mat-radio-button [checked]="showRoundRobin" (change)="radioChange()">Assign To Multiple User
+				</mat-radio-button>
+			</div>
+		</div>
+		<div fxLayout="row" *ngIf="!showRoundRobin">
+			<mat-select [(ngModel)]="assignSingleUser" class="form-input">
+				<mat-option value="">None</mat-option>
+				<mat-option [value]="user.id" *ngFor="let user of users">{{user.name}}
+				</mat-option>
+			</mat-select>
+		</div>
+		<div class="dragdrop" cdkDropListGroup *ngIf="showRoundRobin">
+			<div fxLayout="column" style="padding: 0.1rem 0.5rem;">
+				<h3 style="margin-bottom: 0px;">Assign Multiple Users</h3>
+				<p style="font-size: 13px;">Drag and drop or Select to assign lead to multiple users using round-robin
+					pattern</p>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-around center">
+				<div class="example-container">
+					<label style="font-weight: 600;margin-bottom: 10px;">Existing Users</label>
+					<div cdkDropList [cdkDropListData]="leftUser" class="example-list"
+						(cdkDropListDropped)="drop($event)">
+						<div class="example-box" *ngFor="let user of leftUser" cdkDrag>{{user.name}}</div>
+					</div>
+				</div>
+				<div class="example-container">
+					<label style="font-weight: 600;margin-bottom: 10px;">New Users</label>
+					<div cdkDropList [cdkDropListData]="addUsers" class="example-list"
+						(cdkDropListDropped)="drop($event)">
+						<div class="example-box" *ngFor="let addUser of addUsers" cdkDrag>{{addUser.name}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" *ngIf="!showSaveButton" (click)="save()">Update</button>
+	<button mat-button class="btn btn-primary" *ngIf="showSaveButton" disabled>Updating...</button>
+</div>

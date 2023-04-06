@@ -1,0 +1,144 @@
+<div class="modal-content">
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+    <h3>Edit {{header}}</h3>
+    <span>
+      <i class="material-icons close-modal" (click)="close()">
+        clear
+      </i></span>
+  </div>
+
+  <mat-dialog-content class="main-content" style="font-size: 12px !important;">
+    <div *ngIf="header == 'Property preferences'">
+      <div class="form-group">
+        <label for="">Property Type</label>
+        <input type="text" class="form-input" name="category" id="category" [(ngModel)]="profileData.property_category"
+          placeholder="Property Category">
+      </div>
+
+      <div class="form-group">
+        <label for="">Budget</label>
+        <mat-select class="form-input" placeholder="Select Budget" [(ngModel)]="profileData.budget">
+          <mat-option value="10L-30L">10 Lakh - 30 Lakh</mat-option>
+          <mat-option value="30L-50L">30 Lakh - 50 Lakh</mat-option>
+          <mat-option value="50L-70L">50 Lakh - 70 Lakh </mat-option>
+          <mat-option value="70L-1Cr">70 Lakh- 1 Crore</mat-option>
+          <mat-option value="1Cr-2Cr">1 Crore - 2 Crore</mat-option>
+          <mat-option value="2Cr-Above">2 Crore - Above</mat-option>
+        </mat-select>
+      </div>
+      <div class="form-group" style="position: relative;">
+        <input type="text" class="form-input" (keyup.enter)="addLocation()" name="Preferred Location"
+          id="Preferred Location" placeholder="Preferred Location" [(ngModel)]="location">
+        <mat-icon class="project-input-icon" (click)="addLocation()">add_circle</mat-icon>
+      </div>
+      <div class="assign-container" style="margin-bottom: 10px;" *ngIf="lookingForLocation.length != 0">
+        <h4>Existing Preferred Location</h4>
+        <div class="assign-project-container">
+          <div class="assign-project" *ngFor="let location of lookingForLocation">
+            <label class="assign-project-name">{{location}}</label>
+            <label class="cancel-assign-project" (click)="removeLocation(location)" style="cursor: pointer">x</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" style="position: relative;">
+        <input type="text" class="form-input" (keyup.enter)="addTag()" name="Tags" id="Tags" [(ngModel)]="tag"
+          placeholder="Tags">
+        <mat-icon class="project-input-icon" (click)="addTag()">add_circle</mat-icon>
+      </div>
+      <div class="assign-container" style="margin-bottom: 10px;" *ngIf="tags.length != 0">
+        <h4>Existing Tags</h4>
+        <div class="assign-project-container">
+          <div class="assign-project" *ngFor="let tag of tags">
+            <label class="assign-project-name">{{tag}}</label>
+            <label class="cancel-assign-project" (click)="removeTag(tag)" style="cursor: pointer">x</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="header == 'Personal Details'">
+      <div class="form-group">
+        <label for="">Company Name</label>
+        <input type="text" class="form-input" [(ngModel)]="profileData.company" name="company_name" id=" company_name"
+          placeholder="Company Name">
+      </div>
+      <div class="form-group">
+        <label for="">Alternate Contact No.</label>
+        <input type="text" class="form-input" name="Contact No." [(ngModel)]="profileData.alternate_number"
+          placeholder="Contact No.">
+      </div>
+      <div class="form-group">
+        <label for="">Alternate Email</label>
+        <input type="text" class="form-input" name="Mail" id="Mail" [(ngModel)]="profileData.email" placeholder="Mail">
+      </div>
+      <div class="form-group">
+        <label for="">Gender</label>
+        <mat-select class="form-input" placeholder="Gender" [(ngModel)]="profileData.gender">
+          <mat-option value="Male">Male</mat-option>
+          <mat-option value="Female">Female</mat-option>
+        </mat-select>
+      </div>
+      <div class="form-group">
+        <label for="">FAX</label>
+        <input type="text" class="form-input" name="fax" id="fax" [(ngModel)]="profileData.fax" placeholder="FAX">
+      </div>
+      <div class="form-group">
+        <label for="">Occupation</label>
+        <input type="text" class="form-input" name="occupation" id="occupation" [(ngModel)]="profileData.occupation"
+          placeholder="Occupation">
+      </div>
+      <div class="form-group" style="position: relative;">
+        <input type="text" class="form-input" (keyup.enter)="addWebsiteLink()" name="website" id="website"
+          [(ngModel)]="websiteLink" placeholder="Website Link">
+        <mat-icon class="project-input-icon" (click)="addWebsiteLink()">add_circle</mat-icon>
+      </div>
+      <div class="assign-container" style="margin-bottom: 10px;" *ngIf="websiteLinks.length != 0">
+        <h4>Existing Website Link</h4>
+        <div class="assign-project-container">
+          <div class="assign-project" *ngFor="let websiteLink of websiteLinks">
+            <label class="assign-project-name">{{websiteLink}}</label>
+            <label class="cancel-assign-project" (click)="removeWebsiteLink(tag)" style="cursor: pointer">x</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="rl-section" fxLayout="column" fxLayoutGap="10px">
+        <label>Social Links</label>
+        <div style="overflow-y: auto;">
+          <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="10px"
+            *ngFor="let field of fieldArray; let i = index">
+            <div class="form-group" fxFlex="40%">
+              <input type="text" class="form-input" required [(ngModel)]="field.key" name="{{field.key}}"
+                placeholder="Key">
+            </div>
+            <div class="form-group" fxFlex="40%">
+              <input type="text" class="form-input" required [(ngModel)]="field.value" name="{{field.value}}"
+                placeholder="Value">
+            </div>
+            <div class="form-group" fxFlex="12%" fxLayoutAlign="space-between center">
+              <span>
+                <mat-icon style="color: #00C08D;" (click)="addnewrow()">add_circle</mat-icon>
+              </span>
+              <span (click)="deleteFieldValue(i)" *ngIf="i > 0">
+                <mat-icon>clear</mat-icon>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div *ngIf="header == 'Additional Info'">
+      <div class="form-group">
+        <label for="">Description</label>
+        <textarea class="form-input" [(ngModel)]="profileData.description" placeholder="Description"> </textarea>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+  <button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+  <button mat-button class="btn btn-primary" (click)="updateProfile()" *ngIf="!saveStatus">Update</button>
+  <button mat-button class="btn btn-primary" disabled *ngIf="saveStatus">Updating...</button>
+</div>

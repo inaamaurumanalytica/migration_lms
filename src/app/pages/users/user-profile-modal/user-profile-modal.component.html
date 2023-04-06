@@ -1,0 +1,151 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>PROFILE</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+	<mat-dialog-content class="main-content profile">
+		<div tabindex="1"></div>
+		<section class="right-content about-profile">
+			<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="px">
+				<div class="example-header-image" *ngIf="userInfo.avatar == null">
+					<div class="logo" style="text-transform:uppercase;">
+						{{userInfo.shortName}}</div>
+					<div class="img-loader" *ngIf="showImgLoader">
+						<mat-progress-spinner mode="indeterminate" diameter="20" strokeWidth="3"></mat-progress-spinner>
+					</div>
+					<!-- <img [src]="userInfo.avatar" *ngIf="userInfo.avatar != null" class="profile-image"> -->
+					<div class="img-content">
+						<label for="userProfileFile">
+							<a class="edit-icon">
+								<mat-icon>edit</mat-icon>
+							</a>
+						</label>
+					</div>
+					<input type="file" name="userProfileFile" id="userProfileFile" hidden
+						(change)="fileChangeEvent($event)" accept="image/x-png,image/jpeg,image/jpg" />
+				</div>
+				<div mat-card-avatar class="example-header-image"
+					[ngStyle]="{'background-image': 'url('+ userInfo.avatar +')'}" *ngIf="userInfo.avatar != null">
+					<div class="img-loader" *ngIf="showImgLoader">
+						<mat-progress-spinner mode="indeterminate" diameter="20" strokeWidth="3"></mat-progress-spinner>
+					</div>
+					<!-- <img [src]="userInfo.avatar" *ngIf="userInfo.avatar != null" class="profile-image"> -->
+					<div class="img-content">
+						<label for="userProfileFile">
+							<a class="edit-icon">
+								<mat-icon>edit</mat-icon>
+							</a>
+						</label>
+					</div>
+					<input type="file" name="userProfileFile" id="userProfileFile" hidden
+						(change)="fileChangeEvent($event)" accept="image/x-png,image/jpeg,image/jpg" />
+				</div>
+				<div class="" style="text-align: center; margin-bottom: 1em;">
+					<p style="margin-bottom: 0px">{{userInfo.name}}</p>
+					<small>{{userInfo.admin ? 'SUPER ADMIN' : userInfo.org_admin ? 'ADMIN' : 'USER'}}</small>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+					<div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="profile-detail" style="background-color: #fff;">
+			<div fxLayout="column" fxLayoutGap="5px">
+				<div class="" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx"
+					style="margin-bottom: 15px;">
+					<p class="prop">Account Details</p>
+					<p>
+						<mat-icon (click)="clickToEditUser()">edit</mat-icon>
+					</p>
+				</div>
+				<div fxLayout="column" fxLayoutGap="20px">
+					<div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+						<div>
+							<h4 class="title">User Name</h4>
+							<p class="p-info">{{userInfo.username}}</p>
+						</div>
+						<div class="" fxLayout="column" fxLayoutAlign="end end" fxLayoutGap="gappx">
+							<h4 class="title">Email</h4>
+							<p class="p-info">{{userInfo.email}}</p>
+						</div>
+					</div>
+					<div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+						<div class="">
+							<h4 class="title">Member Of</h4>
+							<p class="p-info">{{userInfo.member.name}}</p>
+						</div>
+						<div class="" fxLayout="column" fxLayoutAlign="end end" fxLayoutGap="gappx">
+							<h4 class="title">User Type</h4>
+							<p class="p-info" *ngIf="userInfo.admin">SUPER ADMIN</p>
+							<p class="p-info" *ngIf="!userInfo.admin && userInfo.member_type == 'Client'">{{userInfo.member_type}} {{userInfo.org_admin ? 'Admin' : 'User'}}</p>
+							<p class="p-info" *ngIf="!userInfo.admin && userInfo.member_type == 'Vendor'">{{!userInfo.org_admin ? userInfo.role == 'SalesAdmin'?'Vendor Sales Admin':'Standard Vendor User':'Vendor Admin'}}</p>
+						</div>
+					</div>
+					<div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+						<div class="">
+							<h4 class="title">Address</h4>
+							<p class="p-info">{{userInfo.address != null ? userInfo.address : '---' }}</p>
+						</div>
+						<div class="" fxLayout="column" fxLayoutAlign="end end" fxLayoutGap="gappx"
+							*ngIf="userInfo.member_type == 'Vendor'">
+							<h4 class="title">Telephony Number</h4>
+							<p class="p-info">+91{{userInfo.telephony_number != null ? userInfo.telephony_number
+								: '---' }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="profile-detail" style="background-color: #fff;">
+			<div fxLayout="column" fxLayoutGap="5px">
+				<div class="" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx"
+					style="margin-bottom: 15px;">
+					<p class="prop">Password</p>
+
+				</div>
+				<div fxLayout="row" fxLayoutAlign="space-between center">
+					<h4 class="title">Change Password</h4>
+					<p>
+						<mat-icon (click)="clickToShowPassword()">edit</mat-icon>
+					</p>
+				</div>
+				<form [formGroup]="createUserForm" *ngIf="showChangePassword">
+					<div class="form-group">
+						<label style="font-weight: 500">Current Password <span style="color: #00C08D">*</span></label>
+						<input type="password" class="form-input" name="current_password" id="current_password"
+							placeholder="Current Password" formControlName="current_password" required>
+					</div>
+					<div class="form-group">
+						<label style="font-weight: 500">New Password <span style="color: #00C08D">*</span></label>
+						<input type="password" class="form-input" name="password" id="password" placeholder="Must have atleast 6 characters"
+							formControlName="password" required>
+					</div>
+					<div class="form-group">
+						<label style="font-weight: 500">Confirm New Password <span
+								style="color: #00C08D">*</span></label>
+						<input type="password" class="form-input" name="password_confirmation"
+							id="password_confirmation" placeholder="Confirm Password"
+							formControlName="password_confirmation" required>
+						<div *ngIf="createUserForm.controls.password_confirmation.errors?.checkPasswords"
+							class="help is-danger" style="color:red">
+							Password not match
+						</div>
+					</div>
+					<div style="margin-bottom: 50px;"></div>
+				</form>
+				<!-- </div> -->
+			</div>
+		</section>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start" *ngIf="showChangePassword"
+	style="z-index:1 !important">
+	<button mat-button class="btn btn-light" (click)="cancle()">Cancel</button>
+	<button mat-button class="btn btn-primary" *ngIf="!btnStatus" [disabled]="!createUserForm.valid"
+		(click)="save()">Save</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Saving...</button>
+</div>

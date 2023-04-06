@@ -1,0 +1,17 @@
+<div class="modal-content">
+	<mat-dialog-content style="text-align: center;">
+		<div>
+			<mat-icon style="color:green;font-size: 65px;margin-right: 55px;">check_circle</mat-icon>
+		</div>
+		<label style="font-size:11px">Task has mark as done. Please leave a note about it.</label>
+		<div class="form-group" style="position: relative;margin-top: 25px;">
+			<textarea class="form-input" [(ngModel)]="note" placeholder="Enter Note"> </textarea>
+		</div>
+	</mat-dialog-content>
+</div>
+<div class="user-action-btn">
+	<button mat-button class="click-btn" *ngIf="!saveStatus" (click)="saveNote()"
+		[disabled]="note == ''">SUBMIT</button>
+	<button mat-button class="click-btn" *ngIf="saveStatus" disabled>SUBMITING...</button>
+	<button mat-button class="close-btn" (click)="close()">CANCEL</button>
+</div>

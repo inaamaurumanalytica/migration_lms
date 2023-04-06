@@ -1,0 +1,87 @@
+<i class="material-icons close-modal" style="float: right;cursor: pointer;" (click)="close()">
+	clear
+</i>
+
+
+<h2>Call</h2>
+
+<mat-dialog-content style="width: 500px !important;">
+	<div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+		<div>
+			<mat-card
+				style="margin-right: 0px;width: 150px;text-align: center;margin: 20px;background: black;color: white;">
+				<div class="text-center">
+					<img src="../../../../assets/images/noavatar.png"
+						style="width: 70px;border: 2px solid;border-radius: 3em;">
+				</div>
+				<div>
+					<p style="font-size: 16px;font-weight: 600;">{{lead.name}}</p>
+					<p style="font-size: 14px;font-weight: 600;">{{lead.phone}}</p>
+				</div>
+				<div>
+					<p style="font-size: 14px;font-weight: 600;color: red;" *ngIf="startCallBtn">{{callMessage}}</p>
+					<button matTooltip="Click to Call" mat-icon-button *ngIf="!startCallBtn" (click)="makeCall(lead)"
+						style="color: white;background: green;border: 1px solid;width: 50px;height: 50px;">
+						<mat-icon>call</mat-icon>
+					</button>
+				</div>
+			</mat-card>
+		</div>
+		<div [formGroup]="makeCallAction">
+			<h2>Action</h2>
+
+			<div class="form-group" [formGroup]="makeCallAction" *ngIf="lead.vendor_appointment_date == null">
+				<label for="">Lead Status</label>
+				<mat-select placeholder="Select Status" class="form-input" formControlName="status">
+					<mat-option value="Fresh" *ngIf="userInfo.member_type != 'Client'">Fresh</mat-option>
+					<mat-option value="Verified">Verified</mat-option>
+					<mat-option value="Appointment Proposed">Appointment Proposed</mat-option>
+					<mat-option value="Interested" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+						Interested
+						{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}</mat-option>
+					<mat-option value="V Not Interested" *ngIf="userInfo.member_type != 'Client'">V Not Interested
+					</mat-option>
+					<mat-option value="V Not Responding" *ngIf="userInfo.member_type != 'Client'">V Not Responding
+					</mat-option>
+					<mat-option value="V Not Available" *ngIf="userInfo.member_type != 'Client'">V Not Available
+					</mat-option>
+					<mat-option value="Not Interested" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+						Not
+						Interested {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+					</mat-option>
+					<mat-option value="Not Responding" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+						Not
+						Responding {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+					</mat-option>
+					<mat-option value="Not Available" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+						Not
+						Available
+						{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+					</mat-option>
+					<mat-option value="Contacted" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+						Contacted
+						{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+					</mat-option>
+					<mat-option value="Follow Up" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+						Follow
+						Up
+						{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}</mat-option>
+					<mat-option value="Callback" *ngIf="userInfo.member_type != 'Client'">Callback</mat-option>
+					<mat-option value="Wrong Number" *ngIf="userInfo.member_type != 'Client'">Wrong Number
+					</mat-option>
+					<mat-option value="Closed/Won" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+						Closed/Won
+						{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}</mat-option>
+					<mat-option value="Site Visit" [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+						Site
+						Visit
+						{{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}</mat-option>
+				</mat-select>
+			</div>
+			<div class="form-group" [formGroup]="makeCallAction" *ngIf="showRemark">
+				<textarea placeholder="Add Remark" class="form-input" formControlName="remark" name="remark" id="remark"></textarea>
+			</div>
+			<button mat-button class="btn btn-primary" [disabled]="checkData()" (click)="submit()">Submit</button>
+		</div>
+	</div>
+</mat-dialog-content>

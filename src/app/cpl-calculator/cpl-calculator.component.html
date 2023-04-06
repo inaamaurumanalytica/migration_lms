@@ -1,0 +1,66 @@
+<body>
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col">
+        <h3>
+          CPL/CPQL Calculator
+        </h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <form [formGroup]="cplForm">
+          <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+            <div class="form-group" style="width: 300px;">
+              <label>No.of years Remaining in Possession<span style="color: #00C08D">*</span></label>
+              <mat-select placeholder="Select Score" class="form-input" formControlName="years">
+                <mat-option value="0">0</mat-option>
+                <mat-option value="1">1</mat-option>
+                <mat-option value="2">2</mat-option>
+                <mat-option value="3">3</mat-option>
+                <mat-option value="4">4</mat-option>
+                <mat-option value="5">5</mat-option>
+                <mat-option value="6">6</mat-option>
+                <mat-option value="7">7</mat-option>
+              </mat-select>
+            </div>
+          </div>
+          <div class="form-group" style="width: 300px;">
+            <label>Property Cost <span style="color: #00C08D">*</span></label>
+            <input id="budget" type="number" class="form-input" name="budget" 
+              (input)="valueInWords($event)"  formControlName="budget" placeholder="Enter Budget">
+              <p *ngIf="valuesWithCommaSystem != null">{{valuesWithCommaSystem}}</p>
+              <p *ngIf="numInWords != null"><strong>{{numInWords}}</strong></p>
+            </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+            <div class="form-group" style="width: 300px;">
+              <label>Select a Matrix Type<span style="color: #00C08D">*</span></label>
+              <mat-select placeholder="Select A Matrix Type" class="form-input" formControlName="matrix_type">
+                <mat-option value="plot">Plot</mat-option>
+                <mat-option value="apartment">Apartment</mat-option>
+              </mat-select>
+            </div>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+            <div class="form-group" style="width: 300px;">
+              <label>Select a Matrix<span style="color: #00C08D">*</span></label>
+              <mat-select placeholder="Select a Matrix" class="form-input" formControlName="matrix">
+                <mat-option value="cpl">CPL</mat-option>
+                <mat-option value="cpql">CPQL</mat-option>
+              </mat-select>
+            </div>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions class="modal-action">
+    <button mat-button [disabled]="!cplForm.valid" class="btn btn-primary" (click)="calculate()">Calculate</button>
+  </div>
+  <div class="form-group" style="width: 300px;padding-left: 35px;padding-top: 20px;" *ngIf="output">
+    <label>Output:</label>
+    <input id="output" type="text" class="form-input output-btn" name="output" readonly [(ngModel)]="outputValue"
+        placeholder="The Output is:"/>
+    </div>
+</body>

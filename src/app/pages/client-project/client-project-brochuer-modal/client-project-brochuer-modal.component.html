@@ -1,0 +1,28 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>BROCHUER LIST</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+
+	<mat-dialog-content class="main-content" style="font-size: 12px !important;" class="mat-dialog-container-div">
+		<div class="assign-container" style="margin-bottom: 10px;" *ngIf="files != null && files.length != 0">
+			<h4>BROCHUER</h4>
+			<div class="assign-project-container">
+				<div class="assign-project" *ngFor="let file of files">
+					<a [href]="file.link" target="_blank" style="text-decoration: none;" tabindex="-1">
+						{{file.name}}
+					</a>
+					<!-- <label class="cancel-assign-project" *ngIf="showProjectAccess" (click)="removeFile(file)"
+						style="cursor: pointer">x</label> -->
+				</div>
+			</div>
+		</div>
+	</mat-dialog-content>
+
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+</div>

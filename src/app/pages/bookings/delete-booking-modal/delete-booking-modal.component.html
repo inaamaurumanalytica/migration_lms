@@ -1,0 +1,11 @@
+<i class="material-icons close-modal" style="float: right;cursor: pointer;" (click)="close()">
+	clear
+</i>
+
+
+<h2>Are you sure you want to delete the booking of "{{dataSource.name}}" ?</h2>
+
+<mat-dialog-actions>
+	<button class="mat-raised-button" (click)="close()">No</button>
+	<button class="mat-raised-button mat-primary" (click)="yes()">Yes</button>
+</mat-dialog-actions>

@@ -1,0 +1,36 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>ASSIGN PROJECTS</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+
+	<mat-dialog-content>
+		<form [formGroup]="projectAssignForm">	
+			<div class="form-group">
+				<label for="">Project</label>
+				<mat-select class="form-input" placeholder="Select Project" (selectionChange)="assignProject($event)" formControlName="project">
+					<mat-option [value]="project" *ngFor="let project of unassignedProjectAfterFilter">{{project.name}} - {{project.created_at}}</mat-option>
+				</mat-select>
+			</div>
+		</form>
+	</mat-dialog-content>
+	<div class="assign-container">
+		<h4>ASSIGNED PROJECT</h4>
+		<!-- <h1 style="color:#00C08D; text-align:center" *ngIf="assignedUsers.length == 0"> No Project Assigned</h1> -->
+		<div class="assign-project-container">
+			<div class="assign-project" fxLayoutAlign="space-between" *ngFor="let assignedProject of assignedProjectAfterFilter">
+				<label class="assign-project-name">{{assignedProject.name}}</label>
+				<span style="    cursor: pointer;font-size: 12px;font-weight: 600;"
+					matTooltip="Click to Unassigned Project" (click)="removeProject(assignedProject)">x</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- <mat-dialog-content *ngIf="!showAssignProject">
+		<div class="dark-overlay">
+			<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+		</div>
+	</mat-dialog-content> -->
+</div>

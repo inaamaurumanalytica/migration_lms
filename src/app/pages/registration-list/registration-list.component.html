@@ -1,0 +1,66 @@
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="page-container wrapper" *ngIf="!showComponentLoader">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+        <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+            <div class="logo" fxlayout="row" fxlayoutalign="start center">
+                <span class="logo-text h1 ng-trigger ng-trigger-animate"> Registration </span>
+            </div>
+        </div>
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <div class="user-action-btn">
+                <button mat-button class="click-btn" (click)="filter()">
+                    <mat-icon matTooltip="Filter">filter_list</mat-icon>
+                    Filter
+                </button>
+            </div>
+            <div class="user-action-btn">
+                <button mat-button class="click-btn" (click)="openCreateModal()">
+                    <mat-icon>add_circle</mat-icon> create registration
+                </button>
+            </div>
+        </div>
+    </div>
+    <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+        *ngIf="registrations.my_registrations.length == 0">No Registration Found</h1>
+    <mat-card
+        [ngStyle]="{'background':  registration.expiry_time == 0 || registration.expiry_time == 1 ? '#ea1b1bd4' : registration.expiry_time < 0 ? '#bdbcbca1': ''}"
+        *ngFor="let registration of registrations.my_registrations" style="margin-top: 1rem;"
+        [hidden]="registrations.my_registrations == 0">
+        <mat-card-content>
+            <div class="vendor-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+                <div class="user-info" fxFlex="1 1 20%">
+                    <p class="user-title">{{registration.name}}</p>
+                    <label class="user-label" *ngIf="registration.email != null && registration.email != ''" style="margin-right:5px;">{{registration.email}}</label>
+                </div>
+                <div class="vendor-info">
+                    <p class="title">Phone</p>
+                    <span class="status-check">{{registration.phone}}</span>
+                </div>
+                <div class="vendor-info">
+                    <p class="title">Project</p>
+                    <span class="status-check">{{registration.project_name}}</span>
+                </div>
+                <div class="vendor-info">
+                    <p class="title">Created By</p>
+                    <span class="status-check">{{registration.created_by}}</span>
+                </div>
+                <div class="vendor-info">
+                    <p class="title">Created At</p>
+                    <span class="status-check">{{registration.created_at | date : 'dd-MM-yyyy h:mm:aa'}}</span>
+                </div>
+                <div class="vendor-info">
+                    <p class="title">Project</p>
+                    <span class="status-check">
+                        {{registration.expiry_time < 0 ? 'Expired' : registration.expiry_time==0 ||
+                            registration.expiry_time==1 ? 'Will Expire Soon' : registration.expiry_time}} </span>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-paginator [ngStyle]="{'display':registrations.my_registrations.length == 0 ? 'none' : 'block' }"
+        style="margin-top: 1rem;" #paginator [length]="registrations.pagination.total_count" [pageIndex]="pageIndex"
+        [pageSize]="pageSize" [pageSizeOptions]="[100, 150]" (page)="getNext($event)">
+    </mat-paginator>
+</div>

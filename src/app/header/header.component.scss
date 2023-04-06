@@ -1,0 +1,172 @@
+.container {
+    max-width: 1170px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+span {
+    letter-spacing: 1px;
+}
+
+#home-header {
+    position: absolute;
+    width: 100%;
+    background: #FFFFFF;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 0;
+    transition: padding 0.3s linear;
+    -webkit-transition: padding 0.3s linear;
+    z-index: 999;
+}
+
+#home-header > .container {
+    height: auto;
+}
+
+.hometop-btn:hover ::ng-deep .mat-button-focus-overlay {
+    display: none;
+}
+
+#home-header:not(.header-fixed) .hometop-btn ::ng-deep .mat-button-ripple {
+    top: -22px;
+    bottom: -22px;
+}
+
+.header-fixed {
+    position: fixed !important;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: #fff;
+    padding: 0 !important;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
+    animation: 0.6s slideDown forwards;
+}
+
+.header-fixed .container {
+    height: 60px !important;
+}
+
+.header-fixed .hometop-btn {
+    line-height: 60px !important;
+}
+
+.home-logo {
+    display: flex;
+    align-items: center;
+    a {
+        font-size: 0px;
+        // font-weight: bold;
+        color: #151515;
+        position: relative;
+
+        .base-title {
+            font-size: 10px;
+            position: absolute;
+            top: 30px;
+            right: 0;
+            color: #00C08D;
+        }
+        img{
+            width: 250px;
+
+        }
+    }
+}
+
+.mat-button,
+.mat-icon-button,
+.mat-stroked-button {
+    color: #151515;
+    background: 0 0;
+}
+
+.mat-button:hover,
+.mat-icon-button:hover,
+.mat-stroked-button:hover {
+    color: #00C08D;
+    background: 0 0;
+}
+
+#menu-toggle {
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 10px;
+}
+
+.icon-button {
+    .mat-icon {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 991px) {
+    #home-header {
+        padding: 0;
+    }
+    #home-header > .container {
+        height: 60px;
+        padding: 0;
+    }
+    .menu-opened:host .header-mobile-top {
+        padding: 13px 0;
+    }
+    #menu-toggle {
+        display: block;
+    }
+    .menu-opened:host .container {
+        height: auto !important;
+    }
+    .home-logo {
+        margin-left: 15px;
+    }
+    .top-menu {
+        display: none !important;
+    }
+    .menu-opened:host .top-menu {
+        display: block !important;
+        width: 100% !important;
+        flex: none !important;
+        background: #eee;
+    }
+    .menu-opened:host .top-menu button {
+        display: block;
+        width: 100%;
+        line-height: 56px !important;
+    }
+    .login-btn.mat-button {
+        background: none !important;
+        color: #000 !important;
+        border-radius: 0px !important;
+        padding: 0px !important;
+        margin-right: 0px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-btn.mat-button {
+        background: none !important;
+        color: #000 !important;
+        border-radius: 0px !important;
+        padding: 0px !important;
+        margin-right: 0px !important;
+    }
+}
+
+.login-btn.mat-button {
+    background: #00C08D;
+    color: #fff;
+    border-radius: 20px;
+    padding: 0 20px;
+    margin-right: 10px;
+}
+.login-btn:hover{
+    background: #BF9724;
+    color: #fff;
+    border-radius: 20px;
+    padding: 0 20px;
+    margin-right: 10px;
+}

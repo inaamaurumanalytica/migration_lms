@@ -1,0 +1,44 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>CREATE SALES ACCOUNT</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+	<mat-dialog-content class="main-content">
+		<form [formGroup]="createSalesAccountForm">
+      
+			<div class="form-group">
+				<label style="font-weight: 500">Name <span style="color: #00C08D">*</span></label>
+				<input type="text" class="form-input" placeholder="Enter Name" formControlName="salesAccountName"
+					required>
+			</div>
+
+      <div class="form-group">
+				<label for="">Vendor <span style="color: #00C08D">*</span></label>
+				<mat-select class="form-input" placeholder="Select Vendor" formControlName="vendor_id" (selectionChange)="changeByClient($event)" required >
+
+					<mat-option *ngFor="let vendors of filteredVendors" [value]="vendors.id">{{vendors.name}}</mat-option>
+					<!-- <div class="not-found-data" *ngIf="filteredClients.length == 0">No Result Found</div> -->
+				</mat-select>
+			</div>
+
+      <div class="form-group">
+				<label for="">Client <span style="color: #00C08D">*</span></label>
+				<mat-select class="form-input" placeholder="Select Client" formControlName="client_id"  required>
+					<mat-option *ngFor="let client of filteredClients" [value]="client.id">{{client.name}}</mat-option>
+					<!-- <div class="not-found-data" *ngIf="filteredClients.length == 0">No Result Found</div> -->
+				</mat-select>
+			</div>
+
+		</form>
+	</mat-dialog-content>
+
+
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="add()" 
+		>Save</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Saving...</button>
+</div>

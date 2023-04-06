@@ -1,0 +1,162 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>
+			Lead Assignment Rule
+		</h3>
+		<button mat-icon-button tabindex="-1" (click)="close()">
+			<mat-icon>clear</mat-icon>
+		</button>
+	</div>
+	<!-- <i class="material-icons close-modal" style="float: right;cursor: pointer;margin-top: 20px;" (click)="close()">
+		clear
+	</i> -->
+
+	<!-- <span style="font-size: 12px;color: #b7b7b7;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span> -->
+	<mat-dialog-content fxLayout="column" fxLayoutGap="16px" class="mat-dialog-container-div">
+		<div fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="10px">
+			<div class="rule-title">Rule :<span class="rule-name"> {{rule.rule_name}}</span></div>
+			<div class="rule-title">Project :<span class="rule-name"> {{rule.project.name}}</span></div>
+		</div>
+		<div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="50px">
+			<div fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="2px">
+				<small>Created By - {{rule.created_by}}</small>
+				<small>{{rule.created_at | date : 'dd/MM/yyyy'}}, {{rule.created_at | date : 'hh:mm a'}}</small>
+			</div>
+			<div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="2px">
+				<small>Modified By - {{rule.modified_by}}</small>
+				<small>{{rule.updated_at | date : 'dd/MM/yyyy'}}, {{rule.updated_at | date : 'hh:mm a'}}</small>
+			</div>
+		</div>
+		<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+			<h5>RULE ENTRIES</h5>
+			<div class="" fxLayout="row" fxLayoutGap="10px">
+				<button mat-button class="btn rule mat-elevation-z0" (click)="cancelReorder()"
+					*ngIf="showDataTable">Cancel
+				</button>
+				<button *ngIf="showDataTable" mat-button class="btn btn-primary rule mat-elevation-z0"
+					(click)="saveReorder()">
+					<mat-icon>add_circle</mat-icon> Save
+				</button>
+				<button class="reorder" mat-icon-button tabindex="1" aria-label="reorder button" (click)="reorder()"
+					*ngIf="assignmentRule.assignment_rule_criterias.length > 1 && !showDataTable">
+					<mat-icon matTooltip="Reorder">reorder</mat-icon>
+				</button>
+				<button mat-button class="btn btn-primary rule mat-elevation-z0" *ngIf="!showDataTable"
+					(click)="createRuleEntry()">
+					<mat-icon>add_circle</mat-icon> new rule entry
+				</button>
+			</div>
+		</div>
+		<div class="rl-section">
+			<div style="padding: 15px;text-align: center;" *ngIf="assignmentRule.assignment_rule_criterias.length == 0">
+				<div>
+					<h3 style="color:#00C08D;font-size: 25px;">No Rule
+						Entry Criteria</h3>
+				</div>
+				<div>
+					<button mat-button class="btn btn-primary rule mat-elevation-z0" (click)="createRuleEntry()">
+						<mat-icon>add_circle</mat-icon> new rule entry
+					</button>
+				</div>
+			</div>
+			<div *ngIf="!showDataTable">
+				<div class="rl-header" fxLayout="row" fxLayoutAlign="center center"
+					*ngIf="assignmentRule.assignment_rule_criterias.length != 0">
+					<div class="header-txt" fxFlex="40%">
+						CRITERIA
+					</div>
+					<div class="header-txt" fxFlex="40%" fxLayout="row" fxLayoutAlign="space-between center">
+						<div>ASSIGNED TO</div>
+					</div>
+					<div class="header-txt" fxFlex="10%" fxLayout="row" fxLayoutAlign="space-between center">
+						<div>Status</div>
+					</div>
+					<div class="header-txt" fxFlex="10%" fxLayout="row" fxLayoutAlign="space-between center">
+						<div>Action</div>
+					</div>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx"
+					style="padding: 15px;border-bottom: 1px solid #e3e3e3;"
+					*ngFor="let element of assignmentRule.assignment_rule_criterias">
+					<div fxLayout="column" fxFlex="40%" fxLayoutGap="5px">
+						<div *ngFor="let criteria of element.rules">
+							<span
+								style="color:#20b8a8; font-size: 15px;word-wrap: break-word;">{{criteria.field}}</span>&nbsp;
+							<span style="font-size: 15px;">{{criteria.operator}}</span>&nbsp;
+							<span style="color:#20b8a8; font-size: 15px;word-wrap: break-word;"
+								*ngIf="criteria.values != undefined">{{criteria.values}}</span>
+							<span style="color:#20b8a8; font-size: 15px;word-wrap: break-word;"
+								*ngIf="criteria.value != undefined">{{criteria.value}}</span>
+						</div>
+					</div>
+					<div fxFlex="40%">
+						<div *ngFor="let assignUser of element.assign_users_names" style="padding:5px;">
+							<span style="color:#20b8a8; font-size: 15px;">{{assignUser}}</span>
+						</div>
+					</div>
+					<div fxFlex="10%">
+						<mat-slide-toggle class="example-margin" [checked]="element.active"
+							(change)="changeActive(element, $event)"></mat-slide-toggle>
+					</div>
+					<div fxFlex="10%" class="action-icon" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="15px">
+						<!-- <mat-icon (click)="edit(element)">edit</mat-icon>
+						<mat-icon (click)="delete(element)">delete</mat-icon> -->
+						<mat-icon [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"
+							(click)="menuTrigger.openMenu()">more_vert</mat-icon>
+						<mat-menu #menu="matMenu">
+							<span (mouseleave)="menuTrigger.closeMenu()">
+								<div mat-menu-item (click)="edit(element)">
+									<mat-icon>edit</mat-icon>
+									<span>Edit</span>
+								</div>
+								<div mat-menu-item (click)="copy(element)">
+									<mat-icon>file_copy</mat-icon>
+									<span>Clone</span>
+								</div>
+								<div mat-menu-item (click)="delete(element)">
+									<mat-icon>delete</mat-icon>
+									<span>Delete</span>
+								</div>
+							</span>
+						</mat-menu>
+					</div>
+				</div>
+			</div>
+			<div cdkDropList (cdkDropListDropped)="drop($event)" *ngIf="showDataTable">
+				<div class="rl-header" fxLayout="row" fxLayoutAlign="center center"
+					*ngIf="assignmentRule.assignment_rule_criterias.length != 0">
+					<div class="header-txt" fxFlex="40%">
+						CRITERIA
+					</div>
+					<div class="header-txt" fxFlex="60%" fxLayout="row" fxLayoutAlign="space-between center">
+						<div>ASSIGNED TO</div>
+					</div>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx"
+					style="padding: 15px;border-bottom: 1px solid #e3e3e3;cursor: move;"
+					*ngFor="let element of assignmentRule.assignment_rule_criterias" cdkDrag>
+					<div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+					<div fxLayout="column" fxFlex="40%" fxLayoutGap="5px">
+						<div *ngFor="let criteria of element.rules">
+							<span
+								style="color:#20b8a8; font-size: 15px;word-wrap: break-word;">{{criteria.field}}</span>&nbsp;
+							<span style="font-size: 15px;">{{criteria.operator}}</span>&nbsp;
+							<span style="color:#20b8a8; font-size: 15px;word-wrap: break-word;"
+								*ngIf="criteria.values != undefined">{{criteria.values}}</span>
+							<span style="color:#20b8a8; font-size: 15px;word-wrap: break-word;"
+								*ngIf="criteria.value != undefined">{{criteria.value}}</span>
+						</div>
+					</div>
+					<div fxFlex="60%">
+						<div *ngFor="let assignUser of element.assign_users_names" style="padding:5px;">
+							<span style="color:#20b8a8; font-size: 15px;">{{assignUser}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+</div>

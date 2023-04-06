@@ -1,0 +1,37 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>ASSIGN CLIENT</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+
+	<mat-dialog-content *ngIf="!showComponentLoader && unassignedClients.length != 0">
+		<form [formGroup]="clientsVendorForm">
+			<div class="form-group">
+				<label for="">Client</label>
+				<mat-select class="form-input" placeholder="Select Client" formControlName="assign"
+					(selectionChange)="assignClient()">
+					<mat-option [value]="client" *ngFor="let client of unassignedClients">{{client.name}}</mat-option>
+				</mat-select>
+			</div>
+		</form>
+	</mat-dialog-content>
+	<div class="assign-container" *ngIf="!showComponentLoader">
+		<h4>ASSIGNED CLIENTS</h4>
+		<h1 style="color:#BF9724; text-align:center" *ngIf="assignedClients.length == 0"> No Client Assigned</h1>
+		<div class="assign-project-container">
+			<div class="assign-project" fxLayoutAlign="space-between" *ngFor="let assignedClient of assignedClients">
+				<label class="assign-project-name">{{assignedClient.name}}</label>
+				<span style="cursor: pointer;font-size: 12px;font-weight: 600;" matTooltip="Click to Unassigned Client"
+					(click)="removeClient(assignedClient)">x</span>
+			</div>
+		</div>
+	</div>
+
+	<mat-dialog-content *ngIf="showComponentLoader">
+		<div class="dark-overlay">
+			<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+		</div>
+	</mat-dialog-content>
+</div>

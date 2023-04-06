@@ -1,0 +1,300 @@
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div class="dark-overlay" *ngIf="statusSpinner">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div class="page-container wrapper" *ngIf="!showComponentLoader">
+
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+
+        <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+            <div class="logo" fxlayout="row" fxlayoutalign="start center">
+                <span class="logo-text h1 ng-trigger ng-trigger-animate"> PROJECTS</span>
+            </div>
+        </div>
+
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                *ngIf="userInfo.member_type == 'Vendor' ">
+                <div>
+                    New Requests
+                </div>
+                <div class="mr-15">
+                    <mat-slide-toggle matTooltip="Latest Lead" [(ngModel)]="newRequest" (change)="makeActive($event)">
+                    </mat-slide-toggle>
+                </div>
+            </div>
+            <div class="search-wrapper" fxLayout="row" fxLayoutAlign="start start">
+                <div class="search1" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" role="img"
+                        aria-hidden="true" style="cursor: pointer" (click)="allClientProjects()">
+                        search
+                    </mat-icon><input placeholder="Search" style="flex: 1 1 0%; box-sizing: border-box;"
+                        [(ngModel)]="elasticSearch" (keyup.enter)="allClientProjects()">
+                    <mat-icon (click)="removeSearch()" *ngIf="elasticSearch.trim() != ''"
+                        class="mat-icon notranslate material-icons mat-icon-no-color" role="img" aria-hidden="true">
+                        cancel
+                    </mat-icon>
+                </div>
+            </div>
+            <div class="user-action-btn">
+                <button mat-button class="click-btn" (click)="filter()">
+                    <mat-icon>filter_list</mat-icon>
+                    Filter
+                </button>
+
+                <button mat-button class="click-btn" (click)="create()"
+                    *ngIf="userInfo.admin"><mat-icon>add_circle</mat-icon> create project
+                </button>
+
+                <button mat-button class="click-btn" (click)="leadRequest(project)"
+                    *ngIf="userInfo.org_admin && userInfo.member_type=='Client'">
+                    <mat-icon>add_circle</mat-icon> create Project
+                </button>
+
+                <button mat-button class="click-btn" (click)="create()"
+                    *ngIf="userInfo.org_admin && userInfo.member_type=='Vendor'">
+                    <mat-icon>add_circle</mat-icon> create Project
+                </button>
+
+
+            </div>
+        </div>
+    </div>
+
+    <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+        *ngIf="project.projects.length == 0">No Project Found</h1>
+
+    <mat-card *ngFor="let project of project.projects;let i = index" style="margin-top: 1rem;"
+        [ngStyle]="{'background-color' : project.disable ? '#e3e3e3': ''}">
+        <mat-card-content>
+            <div class="users-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+                <div><strong>{{i+1}}.</strong></div>
+                <div>
+                    <div *ngIf="userInfo.admin || (userInfo.org_admin && userInfo.member_type != 'Client')">
+                        <a matTooltip="View Insights" (click)="viewInsight(project)">
+                            <span style="transform: rotate(180deg); cursor: pointer;" class="material-icons">
+                                tungsten
+                            </span>
+                        </a>
+                    </div>
+                    <div style="margin:8px 2px;" matTooltip="View Stats"
+                        *ngIf="userInfo.admin || (userInfo.org_admin && userInfo.member_type != 'Client')">
+                        <a (click)="viewStats(project)"><span style="cursor: pointer;font-size: 18px;"
+                                class="material-icons">
+                                table_chart
+                            </span></a>
+                    </div>
+                </div>
+
+                <div class="user-info" fxFlex="1 1 20%" style="cursor: pointer;" (click)="viewLeadsByProjects(project)">
+                    <p class="user-title">{{project.name}}</p>
+                    <label class="user-label" style="margin-right:5px;"
+                        (click)="clientById(project)">{{project.client_name}}</label>
+                </div>
+
+                <div class="create-date">
+                    <p class="title">Total Leads</p>
+                    <span (click)="viewLeadsByProjects(project)"
+                        style="font-weight: 500;font-size: 14px; cursor: pointer;"
+                        matTooltip="View Leads">{{project.total_leads}}</span>
+                </div>
+                <div class="create-date"
+                    *ngIf="userInfo.admin || (userInfo.member_type == 'Vendor' && userInfo.org_admin)">
+                    <p class="title">Is Live</p>
+                    <mat-slide-toggle disabled [checked]="project.is_live">
+                    </mat-slide-toggle>
+                </div>
+                <div class="create-date" *ngIf="userInfo.admin">
+                    <p class="title">Is Approved</p>
+                    <mat-slide-toggle (change)="approvedProject(project.id, $event)" [checked]="project.approved"
+                        [disabled]="project.approved">
+                    </mat-slide-toggle>
+                </div>
+                <div class="create-date" *ngIf="smsPermissions">
+                    <p class="title">SMS Access</p>
+                    <mat-slide-toggle (change)="smsAccess(project, $event)" [checked]="project.client_sms_enabled">
+                    </mat-slide-toggle>
+                </div>
+                <div class="create-date">
+                    <p class="title">Created At</p>
+                    <span class="status-check">{{ (project?.created_at)?(project?.created_at | date :
+                        'dd/MM/yyyy'):'NA'}}</span>
+                </div>
+                <div class="create-date" *ngIf="userInfo.member_type != 'Client'">
+                    <p class="title">Last Lead Created At</p>
+                    <span class="status-check">{{ (project?.latest_lead_created_at)?(project?.latest_lead_created_at |
+                        date : 'dd/MM/yyyy'):'NA'}}</span>
+                </div>
+                <!-- <div class="assign-project" *ngIf="userInfo.org_admin">
+                    <p class="title">Assign Users</p>
+                    <mat-icon (click)="openAssignProjectDialog(user)">people</mat-icon>
+                </div> -->
+                <!-- <div class="create-date">
+                    <p class="title">Modified At</p>
+                    <span class="status-check">{{project.updated_at | date : 'dd/MM/yyyy'}}</span>
+                </div> -->
+                <div class="create-date"
+                    *ngIf="userInfo.admin || (userInfo.member_type == 'Vendor' && userInfo.org_admin)">
+                    <p class="title">Post to MLS</p>
+                    <span class="status-check" (click)="postToMLS()">
+                        <mat-icon (click)="postToMLS()">post_add</mat-icon>
+                    </span>
+                </div>
+                <!-- commented brochure -->
+                <!-- <div class="create-date">
+                    <p class="title">Brochure</p>
+                    <span class="status-check" (click)="brochureList(project)"
+                        *ngIf="project.brochure != null && project.brochure.length != 0">
+                        <mat-icon>insert_drive_file</mat-icon>
+                        <span style="position: absolute">{{project.brochure.length > 1 ? '1+': ''}}</span>
+                    </span>
+                </div> -->
+                <!-- /// -->
+                <div class="create-date">
+                    <p class="title">Banner</p>
+                    <span class="status-check" *ngIf="project.avatar != null && project.avatar != ''">
+                        <img [src]="project.avatar" style="width: 50px;">
+                    </span>
+                </div>
+
+                <!-- added whatspp toggle button -->
+                <div class="create-date" *ngIf="userInfo.admin">
+                    <!-- {{project.whatsapp_enabled}} -->
+                    <!-- {{project.whats_app_profile}} -->
+                    <p class="title">Whatsapp</p>
+                    <mat-slide-toggle (change)="whatsappStatusChange(project,$event)"
+                        [checked]="project.whatsapp_enabled">
+                    </mat-slide-toggle>
+                </div>
+                <!-- // -->
+                <div class="create-date" *ngIf="userInfo.admin">
+                    <p class="title">Qualified Status</p>
+                    <mat-slide-toggle class="qualified-status" disabled [checked]="project.qualified">
+                        <label>{{project.lead_expiry}}</label>
+                    </mat-slide-toggle>
+                </div>
+                <div class="create-date" *ngIf="userInfo.admin">
+                    <p class="title">Status</p>
+                    <mat-slide-toggle (change)="disableProject(project, $event)" [checked]="!project.disable">
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="user-action" fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="5px">
+                    <mat-icon matTooltip="Info" [ngStyle]="{'cursor': project.disable ? 'not-allowed' : ''}"
+                        (click)="info(project)" style="cursor: pointer">info</mat-icon>
+                    <mat-icon [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (click)="menuTrigger.openMenu()"
+                        *ngIf="userInfo.admin || (userInfo.member_type == 'Vendor' && userInfo.org_admin)|| (userInfo.member_type == 'Client' && userInfo.org_admin)">
+                        more_vert</mat-icon>
+                    <mat-menu #menu="matMenu">
+                        <span (mouseleave)="menuTrigger?.closeMenu()">
+                            <div mat-menu-item (click)="emailNotify(project)" *ngIf="userInfo.admin">
+                                <mat-icon>email</mat-icon>
+                                <span>Edit Emails</span>
+                            </div>
+                            <div mat-menu-item (click)="edit(project)"
+                                *ngIf="userInfo.admin || (userInfo.org_admin && userInfo.member_type == 'Vendor') || (userInfo.org_admin && userInfo.member_type == 'Client')">
+                                <mat-icon>edit</mat-icon>
+                                <span>Edit</span>
+                            </div>
+                            <div mat-menu-item (click)="uploadAvatar(project)"
+                                *ngIf="userInfo.admin || userInfo.org_admin">
+                                <mat-icon>attach_file</mat-icon>
+                                <span>Upload Banner</span>
+                            </div>
+                            <!-- whatsapp profile added -->
+                            <div mat-menu-item (click)="whatsappProfileView(project)" *ngIf="userInfo.admin">
+                                <mat-icon>account_circle</mat-icon>
+                                <span>Whatsapp Profile</span>
+                            </div>
+                            <!-- // -->
+                            <div mat-menu-item (click)="feedback(project)"
+                                *ngIf="userInfo.org_admin && userInfo.member_type == 'Vendor'">
+                                <mat-icon>feedback</mat-icon>
+                                <span>Upload Feedback</span>
+                            </div>
+                            <div mat-menu-item (click)="mediaPlan(project)"
+                                *ngIf="userInfo.org_admin && userInfo.member_type == 'Vendor'">
+                                <mat-icon>party_mode</mat-icon>
+                                <span>Media Plan</span>
+                            </div>
+                            <div mat-menu-item (click)="viewAssignedUsers(project)">
+                        
+                                <mat-icon>group</mat-icon>
+                                <span>Assigned Users</span>
+                            </div>
+
+                            <!-- <div mat-menu-item (click)="leadRequest(project)">
+                                <span>Lead Request</span>
+                            </div> -->
+
+                            <!-- <div mat-menu-item *ngIf="userInfo.admin" (click)="liveProject(project)">
+                                <mat-icon [ngStyle]="{'color':project.is_live ? 'green' : 'red' }">
+                                    fiber_manual_record</mat-icon>
+                                <span
+                                    title="{{project.is_live?'Click to Disable Live':'Click to Enable Live'}}">Live</span>
+                            </div> -->
+                            <div mat-menu-item *ngIf="userInfo.admin && project.is_live"
+                                (click)="updateProjectStatus(project)">
+                                <mat-icon [ngStyle]="{'color':project.is_live ? 'green' : 'red' }">
+                                    fiber_manual_record</mat-icon>
+                                <span
+                                    title="{{project.is_live?'Click to Disable Live':'Click to Enable Live'}}">Live</span>
+                            </div>
+
+                            <div mat-menu-item
+                                *ngIf="userInfo.admin || (userInfo.org_admin && userInfo.member_type == 'Vendor')"
+                                (click)="updateAllowShuffling(project)">
+                                <mat-icon [ngStyle]="{'color':project.allow_shuffling ? 'green' : 'red' }">
+                                    fiber_manual_record</mat-icon>
+                                <span
+                                    title="{{project.allow_shuffling ? 'Click to Disable Allow Shuffling':'Click to Enable Allow Shuffling'}}">Allow
+                                    Shuffling</span>
+                            </div>
+
+                            <div mat-menu-item
+                                *ngIf="userInfo.admin || (userInfo.org_admin && userInfo.member_type == 'Vendor')"
+                                (click)="updateAllowDuplicateLeads(project)">
+                                <mat-icon [ngStyle]="{'color':project.allowed_duplicate_lead ? 'green' : 'red' }">
+                                    fiber_manual_record</mat-icon>
+                                <span
+                                    title="{{project.allowed_duplicate_lead ? 'Click to Disable Allow Duplicates':'Click to Enable Allow Duplicates'}}">Allow
+                                    Duplicates</span>
+                            </div>
+
+                            <div mat-menu-item (click)="registration(project)" *ngIf="userInfo.member_type == 'Client'">
+                                <mat-icon>event_note</mat-icon>
+                                <span>Create Registration</span>
+                            </div>
+
+                            <div mat-menu-item (click)="openQualifiedModal(project)" *ngIf="userInfo.admin">
+                                <mat-icon>rate_review</mat-icon>
+                                <span>Check Qualified</span>
+                            </div>
+
+                            <!-- <div mat-menu-item (click)="sendLeadMI(project)" *ngIf="userInfo.admin">
+                                <mat-icon>send</mat-icon>
+                                <span>Send Data to MI</span>
+                            </div> -->
+
+                            <div mat-menu-item *ngIf="userInfo.admin" (click)="delete(project)">
+                                <mat-icon>delete</mat-icon>
+                                <span>Delete</span>
+                            </div>
+                        </span>
+                    </mat-menu>
+
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-paginator [ngStyle]="{'display':project.projects.length == 0 ? 'none' : 'block' }" style="margin-top: 1rem;"
+        #paginator [length]="project.pagination.total_count" [pageIndex]="pageIndex" [pageSize]="pageSize"
+        [pageSizeOptions]="[25, 50, 100, 150]" (page)="getNext($event)">
+    </mat-paginator>
+
+</div>

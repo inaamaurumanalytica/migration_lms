@@ -1,0 +1,29 @@
+body{
+    background-color: white;
+}
+.container{
+
+    margin-top: 40px;
+    margin-left: 40px;
+
+}
+.modal-action{
+    margin-left:40px
+}
+.select-size{
+    width:260px;
+}
+table {
+    width: 100%;
+  }
+
+  input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+//   margin: 0;
+}
+.output-btn{
+font-size: 18px;
+font-weight: bold;
+background-color: lightgray;
+}

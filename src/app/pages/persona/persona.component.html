@@ -1,0 +1,126 @@
+<div class="page-container wrapper" *ngIf="!showComponentLoader">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+        <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+            <div class="logo" fxlayout="row" fxlayoutalign="start center">
+                <span class="logo-text h1 ng-trigger ng-trigger-animate"> PERSONA </span>
+            </div>
+        </div>
+    </div>
+
+    <mat-card>
+        <mat-card-content>
+            <label style="margin-bottom: 10px;display: block;">Enter LinkedIn Url</label>
+            <form [formGroup]="personaForm">
+                <div fxLayout="row" fxLayoutAlign="start end" fxLayoutGap="40px">
+                    <div style="width: 35%;">
+                        <input class="form-input" formControlName="id"
+                            placeholder="eg: https://www.linkedin.com/in/xxxxx-xxxxx/">
+                    </div>
+                    <div fxLayoutGap="10px">
+                        <button mat-button class="btn-primary" (click)="search()"
+                            [disabled]="personaForm.invalid">Search</button>
+                        <button mat-button (click)="reset()">Reset</button>
+                    </div>
+                </div>
+                <div *ngIf="personaForm.controls['id'].hasError('pattern')" style="color:red;font-size: 12px;">
+                    Not a valid pattern
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+    <div class="container" *ngIf="showError && !showComponentLoader" style="text-align: center;">
+        <mat-card style="box-shadow:0px 19px 40px 18px rgb(0 0 0 / 10%)">
+            <img src="../../../assets/images/profile-not-found.png" alt="">
+            <h2>No Profile found with this URL</h2>
+        </mat-card>
+    </div>
+
+    <div class="container" *ngIf="showProfile && !showComponentLoader">
+        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
+            <div class="profile-image">
+                <img [src]="personaDetails.profile_image" alt="">
+            </div>
+            <div class="text-center" style="width: 100%;">
+                <h1 class="profile-name">{{personaDetails.display_name}}</h1>
+                <h2 class="profile-location">{{personaDetails.location}}</h2>
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="gappx" *ngIf="personaDetails.persona.adjectives">
+            <div class="profile-adj" *ngFor="let item of personaDetails.persona.adjectives">
+                <p class="adj-text">{{item}} </p>
+            </div>
+        </div>
+        <div class="profile-summary">
+            <span *ngFor="let item of personaDetails.persona.description">
+                {{item}}
+            </span>
+            <!-- They respond well to confident salespeople. They can be nudged to make faster decisions by offering what
+            they value. They don't always try to control the conversation but neither do they like yielding it fully. -->
+        </div>
+
+        <hr class="divider-hr">
+
+        <div>
+            <h2>Insights For Selling To {{personaDetails.display_name}}</h2>
+            <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="40px">
+                <mat-card class="mail-cards">
+                    <div class="mail-cards-text" *ngFor="let item of personaDetails.persona.email_personalization">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+                            <label class="mail-head">{{item.key}}:</label>
+                            <label class="mail-text">{{item.value}}</label>
+                        </div>
+                        <div class="mail-text1" *ngIf="item.example">
+                            <i>Example: {{item.example}}</i>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+
+        <hr class="divider-hr">
+
+        <div>
+            <h2>During A Call Or A Meeting</h2>
+            <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="40px">
+                <mat-card class="card-dos" fxFlex="49">
+                    <h2 class="do-dont-head">DO's</h2>
+                    <div>
+                        <ul>
+                            <li class="do-dont-text" *ngFor="let item of personaDetails.persona.dos">{{item}}</li>
+                        </ul>
+                    </div>
+                </mat-card>
+                <mat-card class="card-donts" fxFlex="49">
+                    <h2 class="do-dont-head">DONT's</h2>
+                    <div>
+                        <ul>
+                            <li class="do-dont-text" *ngFor="let item of personaDetails.persona.donts">{{item}}</li>
+                        </ul>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+
+        <hr class="divider-hr">
+
+        <div>
+            <h2>{{personaDetails.display_name}}: Key Traits</h2>
+
+            <div>
+                <div class="personality-cards" *ngFor="let item of personaDetails.persona.key_traits">
+                    <div class="personality-head">
+                        {{item.key}}
+                    </div>
+                    {{item.value}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>

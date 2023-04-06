@@ -1,0 +1,142 @@
+<!-- <div style="height: 100%;background-color: #ffffff94 !important;" *ngIf="showComponentLoader">
+    <div class="loader" style="position: fixed;top: 50%;left: 50%;">
+        <img src="/assets/images/orange-loader.gif" class="ajax-loader" style="width:50px;">
+    </div>
+</div> -->
+<!-- <div class="ph-item" *ngIf="showComponentLoader">
+        <div class="ph-picture"></div>
+    </div> -->
+<div class="page-container wrapper" *ngIf="!showComponentLoader">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+        <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+            <div class="logo" fxlayout="row" fxlayoutalign="start center">
+                <span class="logo-text h1 ng-trigger ng-trigger-animate"> USER </span>
+            </div>
+        </div>
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+
+            <div class="search-wrapper" fxLayout="row" fxLayoutAlign="start start">
+                <div class="search1" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon (click)="getAllUsers()" class="mat-icon notranslate material-icons mat-icon-no-color"
+                        role="img" aria-hidden="true">
+                        search
+                    </mat-icon><input placeholder="Search" [(ngModel)]="elasticSearch" (keyup.enter)="getAllUsers()"
+                        style="flex: 1 1 0%; box-sizing: border-box;">
+                    <mat-icon (click)="removeSearch()" *ngIf="elasticSearch.trim() != ''"
+                        class="mat-icon notranslate material-icons mat-icon-no-color" role="img" aria-hidden="true">
+                        cancel
+                    </mat-icon>
+                </div>
+            </div>
+            <div class="user-action-btn">
+                <!-- <button mat-button class="click-btn" (click)="sort()">sort</button> -->
+                <button mat-button class="click-btn" (click)="filter()">
+                    <mat-icon>filter_list</mat-icon>
+                    Filter
+                </button>
+                <button mat-button class="click-btn" (click)="create()">
+                    <mat-icon>add_circle</mat-icon> create user
+                </button>
+            </div>
+        </div>
+    </div>
+    <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+        *ngIf="user.users.length == 0">No User Found</h1>
+    <mat-card *ngFor="let user of user.users" style="margin-top: 1rem;">
+        <mat-card-content>
+            <div class="users-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+                <div class="user-info" fxFlex="1 1 20%">
+                    <p class="user-title">{{user.name}}
+                        <label *ngIf="user.admin" class="user-label" style="margin-right:5px;">Super Admin</label>
+                        <label *ngIf="user.org_admin" class="user-label" style="margin-right:5px;">Admin</label>
+                    </p>
+                    <p [matTooltip]="user.email">{{user.email}}</p>
+                </div>
+                <div class="user-status">
+                    <p class="title">Verification Status</p>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon *ngIf="user.email_verified"
+                            style="cursor: default !important;color:green;vertical-align: middle;">
+                            check_circle</mat-icon>
+                        <mat-icon *ngIf="!user.email_verified" matTooltip="Click to Resend Email"
+                            style="vertical-align: middle;cursor: pointer;" (click)="resendEmail(user)">email
+                        </mat-icon>
+                        <span class="status-check"
+                            [ngStyle]="{'color':user.email_verified  ? 'green' : '' }">{{user.email_verified ?
+                            'Verified':'Not Verified'}}</span>
+                    </div>
+                </div>
+                <div class="status" *ngIf="userInfo.admin">
+                    <p class="title">Member Type</p>
+                    <span class="status-check">{{user.member_type}}</span>
+                </div>
+                <div class="admin-status">
+                    <p class="title">Is Admin</p>
+                    <mat-slide-toggle [disabled]="user.id == userInfo.id" (change)="makeUserAdmin(user, $event)"
+                        [checked]=user.org_admin>
+                    </mat-slide-toggle>
+                </div>
+                <div class="status">
+                    <p class="title">Active</p>
+                    <mat-slide-toggle [disabled]="user.id == userInfo.id" (change)="disableUser(user, $event)"
+                        [checked]=user.active></mat-slide-toggle>
+                </div>
+                <div class="status">
+                    <p class="title">Member Of</p>
+                    <span class="status-check">{{user.member.name}}</span>
+                </div>
+                <div class="assign-project" *ngIf="userInfo.org_admin">
+                    <p class="title">Assign Project</p>
+                    <mat-icon (click)="openAssignProjectDialog(user)">library_books</mat-icon>
+                </div>
+                <div class="create-date">
+                    <p class="title">Created At</p>
+                    <span class="status-check">{{user.created_at | date : 'dd/MM/yyyy'}}</span>
+                </div>
+                <div class="assign-project">
+                    <p class="title">Action</p>
+                    <mat-icon [matMenuTriggerFor]="menu">more_vert</mat-icon>
+                    <!-- </button> -->
+                    <mat-menu #menu="matMenu" [hasBackdrop]="true">
+                        <div mat-menu-item matTooltip="Info" (click)="userData(user)">
+                            <mat-icon>info</mat-icon>
+                            <span>Info</span>
+                        </div>
+                        <div mat-menu-item matTooltip="Permissions" (click)="permission(user)">
+                            <mat-icon>vpn_key</mat-icon>
+                            <span>Set Permissions</span>
+                        </div>
+                        <div mat-menu-item (click)="verifyPhone(user)"
+                            *ngIf="userInfo.admin && user.member_type == 'Client'">
+                            <mat-icon [ngStyle]="{'color':user.phone_verified ? 'green' : 'red' }">
+                                fiber_manual_record</mat-icon>
+                            <span
+                                [matTooltip]="user.phone_verified?'Click to Unverify Phone':'Click to Verify Phone'">{{user.phone_verified?'Phone
+                                Verified':'Phone Not Verified'}}</span>
+                        </div>
+                        <div mat-menu-item (click)="verifyEmail(user)"
+                            *ngIf="userInfo.admin && user.member_type == 'Client'">
+                            <mat-icon [ngStyle]="{'color':user.email_verified ? 'green' : 'red' }">
+                                fiber_manual_record</mat-icon>
+                            <span
+                                [matTooltip]="user.email_verified?'Click to Unverify Email':'Click to Verify Email'">{{user.email_verified?'Email
+                                Verified':'Email Not Verified'}}</span>
+                        </div>
+                        <div mat-menu-item *ngIf="userInfo.admin" (click)="getUserToken(user)">
+                            <mat-icon>perm_data_setting</mat-icon>
+                            <span>Generate Token</span>
+                        </div>
+                    </mat-menu>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-paginator [ngStyle]="{'display':user.users.length == 0 ? 'none' : 'block' }" style="margin-top: 1rem;"
+        #paginator [length]="user.pagination.total_count" [pageIndex]="pageIndex" [pageSize]="pageSize"
+        [pageSizeOptions]="[25, 50, 100, 150]" (page)="getNext($event)">
+    </mat-paginator>
+</div>
+
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>

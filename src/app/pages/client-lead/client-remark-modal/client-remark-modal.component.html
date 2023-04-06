@@ -1,0 +1,73 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>REMARK - {{data.lead_status}}</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+	<mat-dialog-content class="main-content" class="mat-dialog-container-div">
+		<div class="remark-container" *ngIf="data.member_type == 'Client'">
+			<div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="gappx">
+				<h1 *ngIf="data.member_type == 'Client' && clientRemarks.length == 0" style="color: #00C08D;">No Remarks</h1>
+				<h1 *ngIf="data.member_type == 'Vendor' && vendorRemarks.length == 0" style="color: #00C08D;">No Remarks</h1>
+			</div>
+			<div id="content" *ngIf="clientRemarks.length != 0">
+				<ul class="timeline">
+					<li class="event" *ngFor="let remark of clientRemarks">
+						<time class="timeline-time" datetime="2014-01-10T03:45">
+							<div class="date-time">{{remark.created_at | date : 'dd/MM/yyyy'}}</div>
+							<div class="date-time">{{remark.created_at | date : 'hh:mm a'}}</div>
+						</time>
+						<h3>{{remark.remarkDesc}}</h3>
+						<p>{{remark.clientRemark}}</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="remark-container" *ngIf="data.member_type == 'Vendor'">
+			<div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="gappx">
+				<h1 *ngIf="vendorRemarks.length == 0" style="color: #00C08D;">No Remarks</h1>
+			</div>
+			<div id="content" *ngIf="vendorRemarks.length != 0">
+				<ul class="timeline">
+					<li class="event" *ngFor="let remark of vendorRemarks">
+						<time class="timeline-time" datetime="2014-01-10T03:45">
+							<div class="date-time">{{remark.created_at | date : 'dd/MM/yyyy'}}</div>
+							<div class="date-time">{{remark.created_at | date : 'hh:mm a'}}</div>
+						</time>
+						<h3>{{remark.remark}}</h3>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div style="position: fixed;bottom:100px;">
+			<div class="form-group" *ngIf="showSuggestion">
+				<label for="">Status Description <span style="color: #00C08D;">*</span></label>
+				<mat-select class="form-input" placeholder="Select Status Description" [(ngModel)]="selectedStatus">
+					<mat-option [value]="status" *ngFor="let status of autoRemark">{{status}}</mat-option>
+				</mat-select>
+			</div>
+			<textarea *ngIf="userInfo.member_type == 'Client'" placeholder="Enter Remark" class="form-input" rows="5"
+				cols="50" [(ngModel)]="newClientRemark"></textarea>
+			<textarea *ngIf="userInfo.member_type == 'Vendor'" placeholder="Enter Remark" class="form-input" rows="5"
+				cols="50" [(ngModel)]="newVendorRemark"></textarea>
+		</div>
+	</mat-dialog-content>
+</div>
+<div *ngIf="userInfo.member_type == 'Client'" mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" *ngIf="!showSuggestion" [disabled]="newClientRemark == ''"
+		(click)="yes()">Save</button>
+	<button mat-button class="btn btn-primary" *ngIf="showSuggestion"
+		[disabled]="newClientRemark == '' || selectedStatus == undefined || selectedStatus == ''"
+		(click)="yes()">Save</button>
+</div>
+
+<div *ngIf="userInfo.member_type == 'Vendor'" mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" *ngIf="!showSuggestion" [disabled]="newVendorRemark == ''"
+		(click)="yes()">Save</button>
+	<button mat-button class="btn btn-primary" *ngIf="showSuggestion"
+		[disabled]="newVendorRemark == '' || selectedStatus == undefined || selectedStatus == ''"
+		(click)="yes()">Save</button>
+</div>

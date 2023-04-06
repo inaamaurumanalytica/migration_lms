@@ -1,0 +1,109 @@
+<div id="login" fxLayout="column">
+  <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+    <div id="login-form">
+      <mat-card>
+        <div class="avatar">
+          <img [src]="signupForm.value.selectedUserCategory.image" width="100%">
+        </div>
+        <mat-card-header fxLayoutAlign="center center">
+          <mat-card-subtitle class="ato text-center">{{signupForm.value.selectedUserCategory.label}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="form-content">
+          <form [formGroup]="signupForm">
+            <mat-radio-group fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="30px"
+            formControlName="selectedUserCategory">
+              <mat-radio-button [value]="cat" *ngFor="let cat of userCategory">{{cat.value}}</mat-radio-button>
+            </mat-radio-group>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 1.5rem;">
+              <div fxFlex="100">
+                <label>Name <span style="color: #00C08D">*</span></label>
+                <div class="input-group" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+                  <mat-icon aria-hidden="false" aria-label="Example home icon">person</mat-icon>
+                  <input type="text" placeholder="Name" formControlName="name" required="">
+                </div>
+              </div>
+              <div fxFlex="100">
+                <label>Email <span style="color: #00C08D">*</span></label>
+                <div class="input-group" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+                  <mat-icon aria-hidden="false" aria-label="Example home icon">email</mat-icon>
+                  <input type="email" placeholder="Email" formControlName="email" required="">
+                  <div *ngIf="signupForm.controls['email'].hasError('pattern')" class="help is-danger"
+                    style="color: red;font-size: 11px;">
+                    <span>Not a valid pattern</span>
+                  </div>
+                </div>
+              </div>
+              <div fxFlex="100" *ngIf="signupForm.value.selectedUserCategory.id == 2">
+                <label>Location <span style="color: #00C08D">*</span></label>
+                <div class="input-group" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+                  <mat-icon aria-hidden="false" aria-label="Example home icon">place</mat-icon>
+                  <input type="text" placeholder="Location" formControlName="location">
+                </div>
+              </div>
+              <div fxFlex="100" *ngIf="signupForm.value.selectedUserCategory.id == 1">
+                <label>Organization Name <span style="color: #00C08D">*</span></label>
+                <div class="input-group" fxLayout="row" fxLayoutAlign="start center">
+                  <mat-icon aria-hidden="false" aria-label="Example home icon">place</mat-icon>
+                  <input type="text" placeholder="Organization Name" formControlName="organizationName">
+                </div>
+              </div>
+              <div fxFlex="1 1 0%" fxLayout="row wrap" fxLayoutGap="16px">
+                <div fxFlex="1 1 0%">
+                  <label>Password <span style="color: #00C08D">*</span></label>
+                  <div class="input-group" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon aria-hidden="false" aria-label="Example home icon">lock</mat-icon>
+                    <input type="Password" placeholder="Min length 6 characters" formControlName="password" required="">
+                    <div
+                      *ngIf="signupForm.controls['password'].invalid && (signupForm.controls['password'].dirty || signupForm.controls['password'].touched)">
+                      <div class="help is-danger" style="color:red;font-size: 11px;"
+                        *ngIf="signupForm.controls['password'].errors.required">
+                        <span>You must enter a password</span>
+                      </div>
+                      <div *ngIf="signupForm.controls['password'].hasError('minlength')"
+                        style="color:red;font-size: 11px;" class="help is-danger">
+                        <span>Password should contain at least 6 characters</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div fxFlex="1 1 0%">
+                  <label>Confirm Password <span style="color: #00C08D">*</span></label>
+                  <div class="input-group" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+                    <mat-icon aria-hidden="false" aria-label="Example home icon">lock</mat-icon>
+                    <input type="Password" placeholder="Confirm Password" formControlName="confirmPassword" required="">
+                    <div
+                      *ngIf="signupForm.controls['confirmPassword'].invalid && (signupForm.controls['confirmPassword'].dirty || signupForm.controls['confirmPassword'].touched)">
+                      <div style="color:red;font-size: 11px;" class="help is-danger"
+                        *ngIf="signupForm.controls['confirmPassword'].errors?.notEquivalent">
+                        <span>Password not match</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="privacy-terms-condition" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
+            <mat-checkbox class="terms-condition" [(ngModel)]="checkedTermsAndPrivacy" aria-label="terms & condition"
+              (change)="checkTerms($event)">
+              I agree to <a class="policyClass" [routerLink]="['/privacy-policy']" target="_blank">Privacy
+                Policy</a> & <a class="policyClass" [routerLink]="['/terms-condition']" target="_blank">Terms and
+                Condition</a>
+            </mat-checkbox>
+          </div>
+          <button mat-button class="submit-button login-btn mb-2" *ngIf="!btnStatus" (click)="signup()"
+            [disabled]="!signupForm.valid || !checkedTermsAndPrivacy">Signup</button>
+          <button mat-button class="submit-button login-btn mb-2" *ngIf="btnStatus" disabled>Loding...</button>
+          <div class="mb-2" fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <a mat-button class="back-home" (click)="backToHome()">
+              <mat-icon>keyboard_arrow_left</mat-icon> Back to home
+            </a>
+            <div class="loginlink">
+              <p>Already Register? <a [routerLink]="['/auth/login']" tabindex="0">Login</a> here</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

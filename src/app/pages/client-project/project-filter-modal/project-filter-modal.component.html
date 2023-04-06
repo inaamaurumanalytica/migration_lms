@@ -1,0 +1,39 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>FILTER BY</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+	<mat-dialog-content class="main-content" class="mat-dialog-container-div">
+		<div class="form-group" *ngIf="userInfo.member_type == 'Vendor'">
+			<label style="font-weight: 500">Client</label>
+			<mat-select placeholder="Select Client" class="form-input" name="client" [(ngModel)]="client_id">
+				<mat-option [value]="client.id" *ngFor="let client of clients">{{client.name}}</mat-option>
+				<mat-option value="vendor">Vendor</mat-option>
+			</mat-select>
+		</div>
+		<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start">
+			<label style="font-weight: 500">Created At</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="createdAt" class="date-input transfer-lead" placeholder="Created At"
+				required>
+			</my-date-range-picker>
+		</div>
+		<div *ngIf="userInfo.admin || (userInfo.member_type == 'Vendor' && userInfo.org_admin)">
+			<div class="form-group form-group-1" >
+				<mat-checkbox [(ngModel)]="auto_verify">Auto Verified</mat-checkbox>
+			</div>
+			<div class="form-group form-group-1" >
+				<mat-checkbox [(ngModel)]="disable">Disable</mat-checkbox>
+			</div>
+			<div class="form-group form-group-1" >
+				<mat-checkbox [(ngModel)]="qualified">Qualified</mat-checkbox>
+			</div>
+		</div>
+
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="clear()">Clear All</button>
+	<button mat-button class="btn btn-primary" (click)="filterLead()">Apply</button>
+</div>

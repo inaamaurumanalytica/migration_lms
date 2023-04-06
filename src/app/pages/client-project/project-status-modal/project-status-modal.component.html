@@ -1,0 +1,203 @@
+<div class="modal-content">
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+    <h3>PROJECT STATUS</h3>
+    <span>
+      <i class="material-icons close-modal" (click)="close()">
+        clear
+      </i></span>
+  </div>
+  <mat-dialog-content class="project-status-dialog" [formGroup]="statusForm">
+    <div style="margin-bottom: 20px">
+      <button mat-button class="click-btn btn-primary" (click)="addMore()">Add More</button>
+    </div>
+    <div fxLayout="row" style="font-size: 12px;" formArrayName="data" *ngFor="let item of statusForm.get('data')['controls'];let i = index" fxLayoutAlign="start">
+      <mat-card style="margin-bottom: 20px;">
+        <mat-icon class="delete-icon" aria-hidden="false" (click)="delete(i)" *ngIf="i > 0" aria-label="Delete icon">
+          clear</mat-icon>
+        <div fxLayout="row wrap" [formGroupName]="i" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+          fxLayoutGap="20px">
+
+          <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.lg="45" fxFlex.md="45"
+            fxFlex.sm="45">
+            <mat-select class="form-input" placeholder="Select Target" formControlName="target" required>
+              <mat-option value="Social Media">Social Media</mat-option>
+              <mat-option value="Real Estate Listing">Real Estate Listing</mat-option>
+            </mat-select>
+          </div>
+
+          <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.lg="45" fxFlex.md="45"
+            fxFlex.sm="45" *ngIf="item.controls.target.value == 'Social Media'">
+            <mat-select class="form-input" placeholder="Select Platform" formControlName="platform_name" required>
+              <mat-option value="Facebook Traffic">Facebook Traffic</mat-option>
+              <mat-option value="Facebook Lead">Facebook Lead</mat-option>
+              <mat-option value="Google PPC">Google PPC</mat-option>
+              <mat-option value="Google Lead">Google Lead</mat-option>
+              <mat-option value="Google Display">Google Display</mat-option>
+              <mat-option value="LinkedIn">LinkedIn</mat-option>
+              <mat-option value="Tabola">Tabola</mat-option>
+              <mat-option value="Youtube">Youtube</mat-option>
+              <mat-option value="Twitter">Twitter</mat-option>
+            </mat-select>
+          </div>
+
+          <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.lg="45" fxFlex.md="45"
+            fxFlex.sm="45" *ngIf="item.controls.target.value == 'Real Estate Listing'">
+            <mat-select class="form-input" placeholder="Select Platform" formControlName="platform_name" required>
+              <mat-option value="commonfloor">Commonfloor</mat-option>
+              <mat-option value="99acres">99acres</mat-option>
+              <mat-option value="magicbricks">Magicbricks</mat-option>
+              <mat-option value="housing">Housing</mat-option>
+            </mat-select>
+          </div>
+
+          <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.lg="45" fxFlex.md="45"
+            fxFlex.sm="45">
+            <mat-select class="form-input" placeholder="Select Audience" formControlName="audience">
+              <mat-option value="Airport">Airport</mat-option>
+              <mat-option value="Automobile">Automobile</mat-option>
+              <mat-option value="Aviation">Aviation</mat-option>
+              <mat-option value="Banking">Banking</mat-option>
+              <mat-option value="BFSI">BFSI</mat-option>
+              <mat-option value="Business Man">Business Man</mat-option>
+              <mat-option value="Cross Border">Cross Border</mat-option>              
+              <mat-option value="Chemical">Chemical</mat-option>
+              <mat-option value="Doctors">Doctors</mat-option>
+              <mat-option value="Education(Prof/Teacher)">Education(Prof/Teacher)</mat-option>
+              <mat-option value="FMCG">FMCG</mat-option>
+              <mat-option value="Geo Fencing">Geo Fencing</mat-option>
+              <mat-option value="Gems & Jwellers">Gems & Jwellers</mat-option>
+              <mat-option value="HNIs">HNIs</mat-option>
+              <mat-option value="Home Buyer">Home Buyer</mat-option>
+              <mat-option value="IIT/IIM">IIT/IIM</mat-option>
+              <mat-option value="Information Technology">Information Technology</mat-option>
+              <mat-option value="Investor">Investor</mat-option>
+              <mat-option value="Lawyers">Lawyers</mat-option>
+              <mat-option value="Luxury Car">Luxury Car</mat-option>              
+              <mat-option value="Logistics">Logistics</mat-option>              
+              <mat-option value="Mechanical">Mechanical</mat-option>
+              <mat-option value="Market Place">Market Place</mat-option>              
+              <mat-option value="Manufacturing">Manufacturing</mat-option>
+              <mat-option value="NRI(ALL)">NRI(ALL)</mat-option>
+              <mat-option value="NRI(GCC)">NRI(GCC)</mat-option>
+              <mat-option value="NRI(USA)">NRI(USA)</mat-option>             
+              <mat-option value="Pharmaceutical">Pharmaceutical</mat-option>
+              <mat-option value="PSU">PSU</mat-option>
+              <mat-option value="RoC/SME">RoC/SME</mat-option>
+              <mat-option value="Sealine">Sealine</mat-option>                            
+              <mat-option value="Stock Market">Stock Market</mat-option>             
+            </mat-select>
+          </div>
+
+          <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.lg="45" fxFlex.md="45"
+            fxFlex.sm="45">
+            <input class="form-input" type="number" placeholder="Enter Success Rate" formControlName="success">
+          </div>
+
+          <!-- start row Gender -->
+
+          <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.lg="45" fxFlex.md="45" fxFlex.sm="45">
+
+            <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="50" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+              <input class="form-input" type="text" placeholder="Male" formControlName="male">
+            </div>
+  
+            <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="50" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+              <input class="form-input" type="number" placeholder="Enter Rate" formControlName="maleSuccess">
+            </div>
+
+          </div>
+
+          <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.lg="45" fxFlex.md="45" fxFlex.sm="45">
+
+            <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="50" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+              <input class="form-input" type="text" placeholder="Female" formControlName="female">
+            </div>
+  
+            <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="50" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+              <input class="form-input" type="number" placeholder="Enter Rate" formControlName="femaleSuccess">
+            </div>
+ 
+          </div>
+
+          <!-- end row Gender -->
+
+          <!-- start row Martial Status -->
+
+          <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.lg="45" fxFlex.md="45" fxFlex.sm="45">
+
+            <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="50" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+              <input class="form-input" type="text" placeholder="Married" formControlName="married">
+            </div>
+  
+            <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="50" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+              <input class="form-input" type="number" placeholder="Enter Rate" formControlName="marriedSuccess">
+            </div>
+
+          </div>
+
+          <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.lg="45" fxFlex.md="45" fxFlex.sm="45">
+
+            <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="50" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+              <input class="form-input" type="text" placeholder="Unmarried" formControlName="unmarried">
+            </div>
+  
+            <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="50" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+              <input class="form-input" type="number" placeholder="Enter Rate" formControlName="unmarriedSuccess">
+            </div>
+ 
+          </div>
+
+          <!-- end row Martial Status -->
+
+          <!-- start row Employement Type -->
+
+          <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.lg="45" fxFlex.md="45" fxFlex.sm="45">
+
+            <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="50" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+              <input class="form-input" type="text" placeholder="Salaried" formControlName="salaried">
+            </div>
+  
+            <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="50" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+              <input class="form-input" type="number" placeholder="Enter Rate" formControlName="salariedSuccess">
+            </div>
+
+          </div>
+
+          <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.lg="45" fxFlex.md="45" fxFlex.sm="45">
+
+            <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="50" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+              <input class="form-input" type="text" placeholder="Businessman" formControlName="businessman">
+            </div>
+  
+            <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="50" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+              <input class="form-input" type="number" placeholder="Enter Rate" formControlName="businessmanSuccess">
+            </div>
+ 
+          </div>
+
+          <!-- end row Employement Type -->
+
+          <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.lg="45" fxFlex.md="45"
+            fxFlex.sm="45">
+            <input class="form-input" matTooltip="Audience Age Group ( i.e 45-55 )" matTooltipPosition="above"
+              placeholder="Enter Age Group" formControlName="age" required>
+          </div>
+
+          <div fxLayout="row" class="mb-10" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.lg="45" fxFlex.md="45"
+            fxFlex.sm="45" fxLayoutAlign="start center">
+            <mat-slide-toggle formControlName="season_or_offer">Was Offer/Season
+            </mat-slide-toggle>
+          </div>
+
+        </div>
+      </mat-card>
+    </div>
+  </mat-dialog-content>
+
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+  <button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+  <button mat-button class="btn btn-primary"
+    [disabled]="!statusForm.valid || showErrorSuccess || audienceSuccessValue != 100 || employeeSuccessValue != 100 || genderSuccessValue != 100 || maritalSuccessValue != 100"(click)="changeStatus()">Update</button>
+  <button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Updating...</button>
+</div>

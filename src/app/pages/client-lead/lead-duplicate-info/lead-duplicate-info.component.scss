@@ -1,0 +1,83 @@
+.table-header {
+  background-color: #5c6bc0;
+  color: white;
+  padding: 0 5px;
+}
+.table-component-holder {
+  border: 1px solid #327ebd;
+  background-color: white;
+}
+
+.example-container {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.example-container > * {
+  width: 100%;
+}
+
+/********************** users-list *******************/
+.users-list .user-info {
+  border-right: 1px solid #cccccc;
+  min-height: 50px;
+  margin-right: 25px !important;
+  padding-right: 15px;
+}
+
+.user-info .user-label {
+  margin-left: 5px;
+  display: inline-block;
+  padding: 0.2em 1em;
+  font-size: 100%;
+  text-align: center;
+  border-radius: 10em;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  color: #fff;
+  background-color: #00C08D;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+/********* New CSS  *********/
+.users-list .user-info,
+.users-list .contact,
+.users-list .user-status,
+.users-list .assign-project,
+.users-list .create-date {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.75rem;
+  flex: 0.2 0 1%;
+}
+
+.users-list .admin-status,
+.users-list .system-admin,
+.users-list .status {
+  flex: 1 1 1%;
+  font-size: 0.75rem;
+}
+
+.user-info .user-title {
+  color: #444;
+  font-weight: 500;
+  font-size: 14px;
+  margin-top: 0;
+  text-transform: capitalize;
+}
+
+.users-list .user-status .mat-icon {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+  line-height: 16px !important;
+  margin-right: 8px;
+}
+
+.mat-padding {
+  padding: 10px;
+}

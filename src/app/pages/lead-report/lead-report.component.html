@@ -1,0 +1,148 @@
+<div class="page-container wrapper" *ngIf="!showComponentLoader">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+        <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+            <div class="logo" fxlayout="row" fxlayoutalign="start center">
+                <span class="logo-text h1 ng-trigger ng-trigger-animate"> LEAD REPORT </span>
+            </div>
+        </div>
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+            <div class="user-action-btn">
+                <button mat-button class="click-btn" (click)="openCreateModal()">
+                    <mat-icon>add_circle</mat-icon> create report
+                </button>
+            </div>
+        </div>
+    </div>
+    <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+        *ngIf="dataSource.reports.length == 0">No Client Found</h1>
+    <mat-card *ngFor="let item of dataSource.reports; let i = index;" style="margin-top: 1rem;"
+        [hidden]="dataSource.reports.length == 0">
+        <mat-card-content>
+            <div class="users-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+                <div class="user-info" fxFlex="1 1 20%">
+                    <p class="user-title" style="color: #BF9724;">{{item.name}}</p>
+                </div>
+                <div class="status">
+                    <p class="title">Report Type</p>
+                    <span class="status-check">{{item.report_type}}</span>
+                </div>
+                <div class="admin-status">
+                    <p class="title">Base Type</p>
+                    <span class="status-check">{{item.base_type}}</span>
+                </div>
+                <div class="status">
+                    <p class="title">Status</p>
+                    <span class="status-check">{{item.status}}</span>
+                </div>
+                <div class="assign-project">
+                    <p class="title">Action</p>
+                    <mat-icon [matMenuTriggerFor]="menu">more_vert</mat-icon>
+                    <!-- </button> -->
+                    <mat-menu #menu="matMenu" [hasBackdrop]="true">
+                        <div mat-menu-item matTooltip="Edit" *ngIf="item.status != 'COMPLETED'" (click)="edit(item)">
+                            <mat-icon>edit</mat-icon>
+                            <span>Edit</span>
+                        </div>
+                        <div mat-menu-item matTooltip="Delete" (click)="delete(item)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Delete</span>
+                        </div>
+                    </mat-menu>
+                </div>
+                <div class="status">
+                    <mat-icon style="font-size: 30px !important;margin-top: 10px;" (click)="selectReport(i)">
+                        {{selectedIndex == i && showData ?
+                        'expand_less' : 'expand_more'}}</mat-icon>
+                </div>
+            </div>
+            <mat-divider *ngIf="selectedIndex == i && showData" style="margin-top: 20px;"></mat-divider>
+            <div style="margin-top: 50px;" *ngIf="selectedIndex == i && showData">
+                <table class="report-info" style="width: 100%;table-layout: fixed;">
+                    <tr>
+                        <td>
+                            <label class="report-info-header">Type</label>
+                            <p class="report-info-value">{{item.base_type}}</p>
+                        </td>
+                        <td>
+                            <label class="report-info-header">Recurring Frequency</label>
+                            <p class="report-info-value">
+                                {{item.recurring_frequency != ''? item.recurring_frequency : 'None'}}</p>
+                        </td>
+                        <td>
+                            <label class="report-info-header">Recurring Range No.</label>
+                            <p class="report-info-value">
+                                {{item.recurring_range_number != null? item.recurring_range_number : 'None'}}
+                            </p>
+                        </td>
+                        <td>
+                            <label class="report-info-header">Recurring Range Type</label>
+                            <p class="report-info-value">
+                                {{item.recurring_range_type != ''? item.recurring_range_type : 'None'}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="report-info-header">Send Type</label>
+                            <p class="report-info-value">{{item.send_type}}</p>
+                        </td>
+                        <td>
+                            <label class="report-info-header">Send Time</label>
+                            <p class="report-info-value">{{item.send_time | date : 'hh:mm a'}}</p>
+                        </td>
+                        <td>
+                            <label class="report-info-header">Onetime Start Date</label>
+                            <p class="report-info-value">
+                                {{item.onetime_start_datetime | date : 'dd/MM/yyyy hh:mm a'}}</p>
+                        </td>
+                        <td>
+                            <label class="report-info-header">Onetime End Date</label>
+                            <p class="report-info-value">
+                                {{item.onetime_end_datetime | date : 'dd/MM/yyyy hh:mm a'}}
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="report-info-header">Email Include</label>
+                            <p class="report-info-value">{{item.email_include ? 'Yes': 'No'}}</p>
+                        </td>
+                        <td>
+                            <label class="report-info-header">Phone Include</label>
+                            <p class="report-info-value">{{item.phone_include ? 'Yes': 'No'}}</p>
+                        </td>
+                        <td>
+                            <label class="report-info-header">Lead Status Filter</label>
+                            <p class="report-info-value">
+                                <mat-chip-list>
+                                    <mat-chip *ngFor="let lead of item.lead_status_filter">{{lead}}</mat-chip>
+                                </mat-chip-list>
+                            </p>
+                        </td>
+                        <td>
+                            <label class="report-info-header">Emails</label>
+                            <p class="report-info-value">
+                                <mat-chip-list>
+                                    <mat-chip *ngFor="let email of item.to_emails">{{email}}</mat-chip>
+                                </mat-chip-list>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                    <div>
+                        <label class="report-info-header">Subject</label>
+                        <p class="report-info-value">{{item.subject_line}}</p>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-paginator [ngStyle]="{'display':dataSource.reports.length == 0 ? 'none' : 'block' }" style="margin-top: 1rem;"
+        #paginator [length]="dataSource.pagination.total_count" [pageIndex]="pageIndex" [pageSize]="pageSize"
+        [pageSizeOptions]="[25, 50, 100, 150]" (page)="getNext($event)">
+    </mat-paginator>
+</div>
+
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>

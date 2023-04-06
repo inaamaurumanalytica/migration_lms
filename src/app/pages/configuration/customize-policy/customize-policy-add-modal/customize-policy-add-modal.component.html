@@ -1,0 +1,44 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>CREATE POLICY</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+	<!-- <span style="font-size: 12px;color: #b7b7b7;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span> -->
+	<mat-dialog-content class="main-content">
+		<form>
+			<form [formGroup]="createPolicyForm">
+				<div class="form-group">
+					<label style="font-weight: 500">Select Type <span style="color: #00C08D">*</span></label>
+					<mat-select placeholder="Select Type" class="form-input" formControlName="doc_type">
+						<mat-option value="TANDC">Terms & Conditions</mat-option>
+						<mat-option value="PP">Privacy Policy</mat-option>
+					</mat-select>
+				</div>
+				<div class="form-group">
+					<label style="font-weight: 500">Published <span style="color: #00C08D">*</span></label>
+					<mat-select placeholder="Published" class="form-input" formControlName="published">
+						<mat-option value="true">True</mat-option>
+						<mat-option value="false">False</mat-option>
+					</mat-select>
+				</div>
+				<div class="form-group">
+					<label style="font-weight: 500">Version <span style="color: #00C08D">*</span></label>
+					<input type="text" class="form-input" name="version" id="version" placeholder="eg:- 1.0"
+						formControlName="version" required>
+				</div>
+				<div class="form-group">
+					<tinymce formControlName="description" [config]="config" required></tinymce>
+				</div>
+			</form>
+		</form>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="save()" [disabled]="!createPolicyForm.valid"
+		*ngIf="!btnStatus">Save</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Saving...</button>
+</div>

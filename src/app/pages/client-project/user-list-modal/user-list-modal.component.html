@@ -1,0 +1,13 @@
+<div class="modal-content">
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+    <span>
+      <h2>List of Assigned Users</h2>
+    </span>
+    <span>
+      <mat-icon (click)="close()">clear</mat-icon>
+    </span>
+  </div>
+  <div *ngFor="let user of users; let i = index">
+    <p>{{ i + 1 }}. {{ user.name }}</p>
+  </div>
+</div>

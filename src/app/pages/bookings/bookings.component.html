@@ -1,0 +1,115 @@
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div class="dark-overlay" *ngIf="statusSpinner">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div class="page-container wrapper" *ngIf="!showComponentLoader">
+
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+
+        <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+            <div class="logo" fxlayout="row" fxlayoutalign="start center">
+                <span class="logo-text h1 ng-trigger ng-trigger-animate"> BOOKINGS</span>
+            </div>
+        </div>
+
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+
+            <!-- <div class="search-wrapper" fxLayout="row" fxLayoutAlign="start start">
+                <div class="search1" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" role="img"
+                        aria-hidden="true" style="cursor: pointer">
+                        search
+                    </mat-icon><input placeholder="Search" style="flex: 1 1 0%; box-sizing: border-box;">
+                    <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" role="img"
+                        aria-hidden="true">
+                        cancel
+                    </mat-icon>
+                </div>
+            </div> -->
+            <div class="user-action-btn">
+                <button mat-button class="click-btn" (click)="filter()">
+                    <mat-icon>filter_list</mat-icon>
+                    Filter
+                </button>
+                <button mat-button *ngIf="userInfo.member_type == 'Client'" class="click-btn" (click)="createBooking()">
+                    <mat-icon>add_circle</mat-icon> Create Booking
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+        *ngIf="booking.bookings.length == 0">No Bookings Found</h1>
+
+    <mat-card *ngFor="let booking of booking.bookings" style="margin-top: 1rem;">
+        <mat-card-content>
+            <div class="users-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+                <div class="user-info" fxFlex="1 1 20%" style="cursor: pointer;">
+                    <p class="user-title">{{booking.name}}</p>
+                    <label class="user-label" style="margin-right:5px;"
+                        (click)="clientById(booking)">{{booking.project}}</label>
+                </div>
+                <div class="create-date">
+                    <p class="title">Status</p>
+                    <span style="font-weight: 500;">{{booking.status}}</span>
+                </div>
+                <div class="create-date">
+                    <p class="title">Created At</p>
+                    <span class="status-check">{{booking.created_at | date : 'dd/MM/yyyy'}}</span>
+                </div>
+                <div class="create-date">
+                    <p class="title">Booking Amount</p>
+                    <span class="status-check">{{booking.booking_amount}}</span>
+                </div>
+                <div class="create-date">
+                    <p class="title">Booking Date</p>
+                    <span class="status-check">{{booking.booking_date | date : 'dd/MM/yyyy'}}</span>
+                </div>
+                <div class="assign-project">
+                    <p class="title">Floor</p>
+                    <span class="status-check">{{booking.floor}}</span>
+                </div>
+                <div class="assign-project">
+                    <p class="title">Tower</p>
+                    <span class="status-check">{{booking.tower}}</span>
+                </div>
+                <div class="assign-project">
+                    <p class="title">Unit</p>
+                    <span class="status-check">{{booking.unit}}</span>
+                </div>
+                <div class="assign-project">
+                    <p class="title">Unit Price</p>
+                    <span class="status-check">{{booking.unit_price}}</span>
+                </div>
+                <div class="user-action" fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="5px">
+                    <!-- <mat-icon matTooltip="Info" (click)="info(booking)" style="cursor: pointer">info</mat-icon> -->
+                    <mat-icon [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (click)="menuTrigger.openMenu()">
+                        more_vert</mat-icon>
+                    <mat-menu #menu="matMenu">
+                        <span (mouseleave)="menuTrigger.closeMenu()">
+                            <div mat-menu-item (click)="edit(booking)" *ngIf="booking.status == 'Awaiting Approval'">
+                                <mat-icon>edit</mat-icon>
+                                <span>Edit</span>
+                            </div>
+                            <div mat-menu-item (click)="delete(booking)">
+                                <mat-icon>delete</mat-icon>
+                                <span>Delete</span>
+                            </div>
+                        </span>
+                    </mat-menu>
+
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-paginator [ngStyle]="{'display':booking.bookings.length == 0 ? 'none' : 'block' }" style="margin-top: 1rem;"
+        #paginator [length]="booking.pagination.total_count" [pageIndex]="pageIndex" [pageSize]="pageSize"
+        [pageSizeOptions]="[25, 50, 100, 150]" (page)="getNext($event)">
+    </mat-paginator>
+
+</div>

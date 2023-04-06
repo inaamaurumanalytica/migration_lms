@@ -1,0 +1,34 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>UPLOAD BANNER</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+	<mat-dialog-content class="main-content" style="font-size: 12px !important;" class="mat-dialog-container-div">
+		<div>
+			<div class="form-group" style="position: relative;">
+				<label for="clientProjectFile" style="cursor: pointer;" class="form-input"> Attach Image
+					<mat-icon class="project-attach-file-icon">attach_file</mat-icon>
+				</label>
+				<input id="clientProjectFile" name="clientProjectFile" type="file"
+					accept="image/x-png,image/jpeg,image/jpg" (change)="fileChangeEvent($event)" hidden>
+			</div>
+			<div class="assign-container" style="margin-bottom: 10px;" *ngIf="imageChangedEvent != ''">
+				<image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+					[aspectRatio]="16 / 9" [resizeToWidth]="1000" format="png" (imageCropped)="imageCropped($event)"
+					(imageLoaded)="imageLoaded()"
+					style="width: 400px !important;margin: 20px;box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);">
+				</image-cropper>
+			</div>
+		</div>
+	</mat-dialog-content>
+
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="save()" [disabled]="croppedImage == ''"
+		*ngIf="!btnStatus">UPLOAD</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">UPLOADING...</button>
+</div>

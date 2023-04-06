@@ -1,0 +1,147 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>PROJECT INFO</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+	<!-- <span style="font-size: 12px;color: #b7b7b7;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span> -->
+	<!-- <p style="font-weight: 600;">BASIC DETAILS</p> -->
+	<mat-dialog-content class="main-content" class="mat-dialog-container-div">
+		<form fxLayout="column" fxLayoutAlign="start" fxLayoutGap="16px">
+			
+			<div class="form-group">
+				<label>Developer</label>
+				<input type="text" class="form-input" name="developer" id="developer" placeholder="Developer" [(ngModel)]="developer" readonly>
+			</div>
+
+			<div class="form-group">
+				<label>Project</label>
+				<input type="text" class="form-input" name="name" id="name" placeholder="Project Name *" [(ngModel)]="name" readonly>
+			</div>
+
+			<div class="form-group">
+				<label>Location</label>
+				<input type="text" class="form-input" name="location" id="location" placeholder="Location"
+					[(ngModel)]="location" required readonly>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group">
+					<label>City</label>
+					<input type="text" class="form-input" name="city" id="city" placeholder="City" [(ngModel)]="city"
+					readonly>
+				</div>
+				<div class="form-group">
+					<label>Country</label>
+					<input type="text" class="form-input" name="country" id="country" placeholder="Country"
+						[(ngModel)]="country" readonly>
+				</div>
+			</div>
+
+			<!-- New -->
+
+			<div class="form-group">
+				<label>Project Type</label>
+				<input type="text" class="form-input" name="projectType" id="projectType" placeholder="Project Type" [(ngModel)]="projectType" required readonly>
+			</div>
+
+			<div class="form-group">
+				<label>Inventory Type</label>
+				<input type="text" class="form-input" name="inventoryType" id="inventoryType" placeholder="Inventory Type" [(ngModel)]="inventoryType" required readonly>
+			</div>		
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group">
+					<label>Min Price</label>
+					<input type="text" class="form-input" name="minPrice" id="minPrice" placeholder="Min Price" [(ngModel)]="minPrice" readonly>
+				</div>
+
+				<div class="form-group">
+					<label>Max Price</label>
+					<input type="text" class="form-input" name="maxPrice" id="maxPrice" placeholder="Max Price" [(ngModel)]="maxPrice" readonly>
+				</div>				
+			</div>
+
+			<div class="form-group">
+				<label>Possession Year</label>
+				<input type="text" class="form-input" name="possessionYear" id="possessionYear" placeholder="Possession Year" [(ngModel)]="possessionDate" required readonly>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group">
+					<label>Campaign Duration</label>
+					<input type="text" class="form-input" name="campaignDuration" id="campaignDuration" placeholder="Campaign Duration" [(ngModel)]="campaignDuration" readonly>
+				</div>
+
+				<div class="form-group">
+					<label>No. of Leads</label>
+					<input type="text" class="form-input" name="NumberOfLeads" id="NumberOfLeads" placeholder="No. of Leads" [(ngModel)]="NumberOfLeads" readonly>
+				</div>				
+			</div>
+			
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+				<div class="form-group">
+					<label>Lead Expiry</label>
+					<input type="number" class="form-input" name="lead_expiry" id="lead_expiry"
+						placeholder="Lead Expiry" [(ngModel)]="leadExpiry" readonly>
+				</div>
+				<div class="form-group">
+					<label>Completion Status</label>
+					<input type="text" class="form-input" name="completionStatus" id="completionStatus"
+						placeholder="Completion Status" [(ngModel)]="completionStatus" readonly>
+				</div>
+			</div>
+
+			<div class="assign-container" style="margin-bottom: 10px;" *ngIf="amenities.length != 0">
+				<h4>EXISTING AMENITIES</h4>
+				<div class="assign-project-container">
+					<div class="assign-project" *ngFor="let amenitie of amenities">
+						<label class="assign-project-name">{{amenitie}}</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Offer</label>
+				<input type="text" class="form-input" name="offers" id="offers" placeholder="Offers"
+					[(ngModel)]="offers" readonly>
+			</div>
+			<div class="assign-container" style="margin-bottom: 10px;" *ngIf="connectingRoads.length != 0">
+				<h4>EXISTING CONNECTING ROADS</h4>
+				<div class="assign-project-container">
+					<div class="assign-project" *ngFor="let connectingRoad of connectingRoads">
+						<label class="assign-project-name">{{connectingRoad}}</label>
+					</div>
+				</div>
+			</div>
+			<div class="assign-container" style="margin-bottom: 10px;" *ngIf="wowFactors.length != 0">
+				<h4>EXISTING WOW FACTOR</h4>
+				<div class="assign-project-container">
+					<div class="assign-project" *ngFor="let wowFactor of wowFactors">
+						<label class="assign-project-name">{{wowFactor}}</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" style="position: relative;">
+				<label>Description</label>
+				<textarea class="form-input" name="description" [(ngModel)]="description"
+					placeholder="Description"> </textarea>
+			</div>
+
+			<!-- <div class="assign-container" style="margin-bottom: 10px;" *ngIf="files != null && files.length != 0">
+				<h4>Buyer Persona</h4>
+				<div class="assign-project-container">
+					<div class="assign-project">
+						<a [href]="buyerPersonaSheet" target="_blank" download style="text-decoration: none;" tabindex="-1">{{buyerPersonaSheet}}</a>
+					</div>
+				</div>
+			</div> -->
+
+		</form>
+	</mat-dialog-content>
+
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+</div>

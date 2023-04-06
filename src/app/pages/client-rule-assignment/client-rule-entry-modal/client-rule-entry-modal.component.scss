@@ -1,0 +1,125 @@
+.table-header {
+  background-color: #5c6bc0;
+  color: white;
+  padding: 0 5px;
+}
+
+.table-component-holder {
+  border: 1px solid #327ebd;
+  background-color: white;
+}
+
+.example-container {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.example-container > * {
+  width: 100%;
+}
+
+.form-group {
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+// div.rule>span {
+//     background-color: #00C08D;
+//     color: #fff;
+//     font-weight: 500;
+//     padding: 5px 14px;
+//     border-radius: 20px;
+//     text-transform: capitalize;
+
+// }
+
+.rule-title {
+  color: #596776;
+  border: 1px solid #e0e0e0;
+  padding: 5px 0px 5px 10px;
+  border-radius: 5px;
+  background: #ebedf0;
+}
+
+.rule-title .rule-name {
+  color: #000;
+  padding-left: 11px;
+  padding: 5px 12px;
+  margin-left: 6px;
+  font-weight: 500;
+  line-height: 1;
+  color: #00C08D;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 0px 5px 5px 0px;
+  text-transform: capitalize;
+}
+
+button.reorder {
+  background: #f4f4f4;
+}
+
+.rule .mat-icon,
+.reorder .mat-icon {
+  font-size: 19px !important;
+  width: 19px !important;
+  height: 19px !important;
+  min-width: 19px !important;
+  min-height: 19px !important;
+  line-height: 17px !important;
+}
+
+.btn-primary.rule {
+  line-height: 31px;
+  text-transform: uppercase;
+  padding: 0 15px 0 10px !important;
+}
+
+.user-action-btn .close-btn {
+  background: #ebebeb;
+  color: #c3c3c3;
+  border-radius: 12px;
+  text-transform: uppercase;
+  font-size: 12px;
+  margin-right: 15px;
+  float: right;
+  width: 100px;
+  border: 1px solid #c3c3c3;
+}
+
+.rl-section {
+  border: 1px solid lightgrey;
+  border-radius: 3px;
+}
+
+.rl-header {
+  padding: 10px;
+  background-color: #ddd8d8ba;
+}
+
+.header-txt {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.action-icon > mat-icon {
+  font-size: 19px !important;
+  width: 19px !important;
+  height: 19px !important;
+  min-width: 19px !important;
+  min-height: 19px !important;
+  line-height: 19px !important;
+  color: #444444;
+}
+
+.mat-icon {
+  font-size: 19px !important;
+}
+.mat-menu-item {
+  line-height: 35px !important;
+  height: 35px !important;
+}
+
+.mat-menu-item span {
+  font-size: 12px !important;
+}

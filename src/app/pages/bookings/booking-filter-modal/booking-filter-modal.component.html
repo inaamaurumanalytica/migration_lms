@@ -1,0 +1,68 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>FILTER BY</h3>
+		<span>
+			<mat-icon (click)="close()">clear</mat-icon>
+		</span>
+	</div>
+	<mat-dialog-content class="main-content" class="mat-dialog-container-div">
+		<div class="form-group" *ngIf="userInfo.member_type == 'Vendor'">
+			<label style="font-weight: 500">Clients</label>
+			<mat-select placeholder="Select Client" class="form-input" name="name" [(ngModel)]="selectedClient"
+				(focusout)="onFocusOutEvent($event)">
+				<input (keyup)="onKeyClient($event.target.value)" [(ngModel)]="searchClient" class="form-input"
+					placeholder="Search">
+				<mat-option [value]="client.id" *ngFor="let client of filteredClients">{{client.name}}
+				</mat-option>
+				<div class="not-found-data" *ngIf="filteredClients.length == 0">
+					No Result Found
+				</div>
+			</mat-select>
+		</div>
+		<div class="form-group">
+			<label style="font-weight: 500">Projects</label>
+			<mat-select placeholder="Select Project" class="form-input" name="name" [(ngModel)]="selectedProject" (focusout)="onFocusOutEvent($event)">
+				<input (keyup)="onKeyProject($event.target.value)" [(ngModel)]="searchProject" class="form-input" placeholder="Search">
+				<mat-option [value]="project.id" *ngFor="let project of filteredProjects">{{project.name}}</mat-option>
+				<div class="not-found-data" *ngIf="filteredProjects.length == 0">
+					No Result Found
+				</div>
+			</mat-select>
+		</div>
+		<div class="form-group">
+			<label style="font-weight: 500">Select Status</label>
+			<mat-select class="form-input" placeholder="Filter By Status" multiple [(ngModel)]="selectStatus">
+				<mat-option value="Awaiting Approval">Awaiting Approval</mat-option>
+				<mat-option value="Approved">Approved</mat-option>
+				<mat-option value="Rejected">Rejected</mat-option>
+			</mat-select>
+		</div>
+
+		<div class="form-group" *ngIf="userList != null">
+			<label style="font-weight: 500">Select User</label>
+			<mat-select class="form-input" placeholder="Filter By User" [(ngModel)]="selectUser">
+				<ng-container *ngFor="let item of userList">
+					<mat-option *ngIf="item.active" [value]="item.id">{{item.name}}</mat-option>
+				</ng-container>
+			</mat-select>
+		</div>
+
+
+		<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start">
+			<label style="font-weight: 500">Created At</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="createdAt" class="date-input transfer-lead" placeholder="Created At"
+				required>
+			</my-date-range-picker>
+		</div>
+		<div class="form-group" fxLayout="column" fxLayoutAlign="space-between start">
+			<label style="font-weight: 500">Booking Date</label>
+			<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="bookingDate" class="date-input transfer-lead" placeholder="Booking Date"
+				required>
+			</my-date-range-picker>
+		</div>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="clear()">Clear All</button>
+	<button mat-button class="btn btn-primary" (click)="filterLead()">Apply</button>
+</div>

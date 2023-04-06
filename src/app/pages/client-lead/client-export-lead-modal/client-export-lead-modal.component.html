@@ -1,0 +1,102 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>EXPORT LEAD</h3>
+		<button mat-icon-button tabindex="-1" matTooltip="Close" (click)="close()">
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+	<!-- <span style="font-size: 12px;color: #b7b7b7;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span> -->
+
+
+	<mat-dialog-content fxLayout="column" fxLayoutGap="16px">
+		<div class="">
+			<mat-slide-toggle [checked]="allLeads" (change)="checkAutoExportLead()">
+			</mat-slide-toggle>
+			<label style="margin-left: 20px;margin-top: -3px;">Export All Leads</label>
+		</div>
+		<section *ngIf="!allLeads">
+			<div class="form-group" *ngIf="userInfo.member_type == 'Client' || userInfo.admin">
+				<label for="">Vendors</label>
+				<mat-select class="form-input" placeholder="Select Vendor" [(ngModel)]="filterByVen">
+					<mat-option [value]="vendor.id" *ngFor="let vendor of vendors">{{vendor.name}}</mat-option>
+				</mat-select>
+			</div>
+			<div class="form-group">
+				<label style="font-weight: 500">Lead Status</label>
+				<mat-select class="form-input" placeholder="Select Lead Status" multiple [(ngModel)]="selectStatus">
+					<mat-option value="Fresh" *ngIf="userInfo.member_type != 'Client'">Fresh</mat-option>
+					<mat-option value="Verified">Verified</mat-option>
+					<mat-option value="Appointment Proposed">Appointment Proposed</mat-option>
+					<mat-option value="Interested">Interested</mat-option>
+					<mat-option value="V Not Interested" *ngIf="userInfo.member_type != 'Client'">V Not Interested
+					</mat-option>
+					<mat-option value="V Not Responding" *ngIf="userInfo.member_type != 'Client'">V Not Responding
+					</mat-option>
+					<mat-option value="V Not Available" *ngIf="userInfo.member_type != 'Client'">V Not Available
+					</mat-option>
+					<mat-option value="Not Interested">Not
+						Interested</mat-option>
+					<mat-option value="Not Responding">Not
+						Responding</mat-option>
+					<mat-option value="Not Available">Not Available</mat-option>
+					<mat-option value="Contacted">Contacted</mat-option>
+					<mat-option value="Follow Up">Follow Up</mat-option>
+					<mat-option value="Callback" *ngIf="userInfo.member_type != 'Client'">Callback</mat-option>
+					<mat-option value="Wrong Number" *ngIf="userInfo.member_type != 'Client'">Wrong Number
+					</mat-option>
+					<mat-option value="Closed/Won">Closed/Won</mat-option>
+					<mat-option value="Site Visit">Site Visit</mat-option>
+				</mat-select>
+
+			</div>
+			<div class="form-group" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx"
+				*ngIf="userInfo.member_type == 'Vendor'">
+				<label style="font-weight: 500">Created At</label>
+				<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="filterCreateDate"
+					(dateRangeChanged)="createdDateRangeChanged($event)" class="date-input" placeholder="Created At"
+					required>
+				</my-date-range-picker>
+			</div>
+			<div class="form-group" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx"
+				*ngIf="userInfo.member_type == 'Vendor'">
+				<label style="font-weight: 500">Vendor Modified At</label>
+				<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="filterDate" (dateRangeChanged)="modifiedDateRangeChanged($event)"
+					class="date-input" placeholder="Vendor Modified At" required>
+				</my-date-range-picker>
+			</div>
+			<div class="form-group" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx"
+				*ngIf="userInfo.member_type == 'Client'">
+				<label style="font-weight: 500">Created At</label>
+				<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="filterDate" (dateRangeChanged)="modifiedDateRangeChanged($event)"
+					class="date-input" placeholder="Created At" required>
+				</my-date-range-picker>
+			</div>
+			<div class="form-group" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx"
+				*ngIf="userInfo.member_type == 'Client'">
+				<label style="font-weight: 500">Client Modified At</label>
+				<my-date-range-picker [options]="myDateRangePickerOptions" [(ngModel)]="filterClientDate"
+					(dateRangeChanged)="modifiedClientDateRangeChanged($event)" class="date-input"
+					placeholder="Client Modified At" required>
+				</my-date-range-picker>
+			</div>
+		</section>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<div *ngIf="allLeads">
+		<button mat-button class="btn btn-primary" [disabled]="exportLeadShow" (click)="save()">EXPORT ALL
+			LEADS</button>
+	</div>
+	<div *ngIf="!allLeads">
+		<button mat-button class="btn btn-primary" [disabled]="exportLeadShow" (click)="save()">EXPORT</button>
+		<button mat-button class="btn btn-light" (click)="clear()">CLEAR ALL</button>
+	</div>
+</div>
+
+<div class="dark-overlay" *ngIf="showComponentLoader">
+	<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+	<div
+		style="position: absolute;float: left;top: 60%;left: 52%;transform: translate(-50%, -50%);font-size: 20px;color: white;">
+		Please Wait ...
+	</div>
+</div>

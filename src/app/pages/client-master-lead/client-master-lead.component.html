@@ -1,0 +1,379 @@
+<div class="dark-overlay" *ngIf="showComponentLoader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="page-container wrapper" *ngIf="!showComponentLoader">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+        <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+            <div class="logo" fxlayout="row" fxlayoutalign="start center" style="display: flex">
+                <span class="logo-text h1 ng-trigger ng-trigger-animate" style="margin-top: 8px;"> LEADS
+                    {{leads.length != 0 ? '(' + lead.pagination.total_count + ')' : ''}}
+                </span>
+            </div>
+        </div>
+
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <div class="export-lead" matTooltip="Refresh" (click)="refresh()">
+                <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" style="margin-top: 5px;"
+                    role="img" aria-hidden="true">
+                    refresh
+                </mat-icon>
+            </div>
+            <!-- <div class="export-lead" matTooltip="Export Leads" *ngIf="leads.length != 0"
+                (click)="openExportLead('mLExport')">
+                <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" style="margin-top: 5px;"
+                    role="img" aria-hidden="true">
+                    cloud_download
+                </mat-icon>
+            </div> -->
+            <div class="export-lead" matTooltip="Upload Leads" *ngIf="userInfo.member_type == 'Vendor'"
+                (click)="uploadLead()">
+                <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" style="margin-top: 5px;"
+                    role="img" aria-hidden="true">
+                    cloud_upload
+                </mat-icon>
+            </div>
+            <div class="search-wrapper" fxLayout="row" fxLayoutAlign="start start">
+                <div class="search1" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" role="img"
+                        aria-hidden="true" (click)="getAllLeads()" style="cursor: pointer">
+                        search
+                    </mat-icon><input placeholder="Search" style="flex: 1 1 0%; box-sizing: border-box;"
+                        [(ngModel)]="elasticSearch" (keyup.enter)="getAllLeads()">
+                    <mat-icon (click)="removeSearch()" *ngIf="elasticSearch.trim() != ''"
+                        class="mat-icon notranslate material-icons mat-icon-no-color" role="img" aria-hidden="true">
+                        cancel
+                    </mat-icon>
+                </div>
+            </div>
+            <div class="user-action-btn">
+                <button mat-button class="click-btn" (click)="filter()">
+                    <mat-icon matTooltip="Filter">filter_list</mat-icon>
+                    filter
+                </button>
+            </div>
+            <div class="user-action-btn" *ngIf="userInfo.member_type == 'Vendor'">
+                <button mat-button class="click-btn" (click)="create()">
+                    <mat-icon matTooltip="Create Lead">add</mat-icon>
+                    create lead
+                </button>
+            </div>
+            <div class="user-action-btn" *ngIf="userInfo.member_type == 'Vendor' && leads.length != 0">
+                <button mat-button class="click-btn" (click)="bulkSelect()">
+                    {{showSelect ? 'Hide Bulk Select' :'Show Bulk Select'}}
+                </button>
+            </div>
+        </div>
+    </div>
+    <h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+        *ngIf="leads.length == 0">No Lead Found</h1>
+
+    <mat-card *ngIf="showSelect">
+        <mat-card-content>
+            <div class="lead-info" fxFlex="1 1 10%">
+                <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8px">
+                    <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">Select All</mat-checkbox>
+                </div>
+            </div>
+            <div class="lead-info" fxFlex="1 1 25%"
+                *ngIf="userInfo.member_type != 'Client' && showSelect && this.selection.selected.length != 0">
+                <div (click)="deleteLeadModal()" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8px">
+                    <mat-icon matTooltip="Delete Lead" style="color: red;">delete</mat-icon><span style="line-height: 27px; cursor: pointer;">Delete Selected</span>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-card style="margin-top: 1rem;" [ngStyle]="{'background-color': lead.lead_status == 'V Hold' ? '#dad3d3' : ''}"
+        *ngFor="let lead of leads;let i=index" [hidden]="leads.length == 0">
+        <mat-card-content>
+            <div class="lead-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+                <div><strong> {{i+1}}.</strong></div>
+                <div class="lead-info" fxFlex="1 1 2%" *ngIf="showSelect">
+                    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8px">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(lead.id) : null"
+                            [checked]="selection.isSelected(lead.id)"></mat-checkbox>
+                    </div>
+                </div>
+
+                <div class="lead-info" fxFlex="1 1 20%">
+                    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8px">
+                        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+                            <p class="user-name" matTooltip="{{lead.name}}" (click)="leadProfile(lead)">
+                                {{lead.name | slice:0:15 }}{{lead.name.length > 15 ? '...':''}}
+                            </p>
+                            <mat-icon class="lead-info-btn" matTooltip="Info" (click)="leadInfo(lead)"> info
+                            </mat-icon>
+                        </div>
+                        <label class="user-label" style="margin-right:5px;">{{lead.project.name | uppercase}}</label>
+                        <div *ngIf="userInfo.admin" class="lead-emph" fxLayout="column" fxLayoutAlign="start start"
+                            fxLayoutGap="5px">
+                            <span>{{lead.email}}</span>
+                            <span>{{lead.phone}}</span>
+                        </div>
+                        <div class="lead-info" fxFlex="1 1 2%"
+                            *ngIf="userInfo.member_type == 'Vendor' && lead.vendor_color_code != null">
+                            <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8px">
+                                <mat-icon class="lead-color-btn" [ngStyle]="backgroundColor(lead)"
+                                    (click)="setColor(lead)" matTooltip="Lead Color"> stars
+                                </mat-icon>
+                            </div>
+                        </div>
+                        <div class="lead-info" fxFlex="1 1 2%"
+                            *ngIf="userInfo.member_type == 'Client' && lead.client_color_code != null">
+                            <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8px">
+                                <mat-icon class="lead-color-btn" [ngStyle]="backgroundColor(lead)"
+                                    (click)="setColor(lead)" matTooltip="Lead Color"> stars
+                                </mat-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lead-status-col" fxFlex="1 1 21%">
+                    <div fxLayout="column wrap" fxLayoutAlign="space-between" fxLayoutGap="10px">
+                        <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                            <div class="project-info">
+                                <span class="title">Lead status</span>
+                            </div>
+                            <div class="project-info">
+                                <span class="title">Score</span>
+                            </div>
+                        </div>
+                        <div class="lead-status-info" fxLayout="row" fxLayoutAlign="space-between start">
+
+                            <div class="lead-status-select">
+                                <mat-label *ngIf="lead.lead_status == 'V Hold'" style="color: #00C08D;">On Hold
+                                </mat-label>
+                                <mat-select class="lead-select" (selectionChange)="updateLeadStatus(lead)"
+                                    [(ngModel)]="lead.lead_status" *ngIf="lead.lead_status != 'V Hold'">
+                                    <mat-option value="Fresh" *ngIf="userInfo.member_type != 'Client'">Fresh
+                                    </mat-option>
+                                    <mat-option value="Verified">Verified</mat-option>
+                                    <mat-option value="Appointment Proposed">Appointment Proposed</mat-option>
+                                    <mat-option value="Interested"
+                                        [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+                                        Interested
+                                        {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+                                    </mat-option>
+                                    <mat-option value="V Not Interested" *ngIf="userInfo.member_type != 'Client'">V
+                                        Not
+                                        Interested</mat-option>
+                                    <mat-option value="V Not Responding" *ngIf="userInfo.member_type != 'Client'">V
+                                        Not
+                                        Responding</mat-option>
+                                    <mat-option value="V Not Available" *ngIf="userInfo.member_type != 'Client'">V
+                                        Not
+                                        Available</mat-option>
+                                    <mat-option value="Not Interested"
+                                        [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+                                        Not
+                                        Interested {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)':
+                                        '' }}
+                                    </mat-option>
+                                    <mat-option value="Not Responding"
+                                        [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+                                        Not
+                                        Responding {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)':
+                                        '' }}
+                                    </mat-option>
+                                    <mat-option value="Not Available"
+                                        [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+                                        Not
+                                        Available
+                                        {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+                                    </mat-option>
+                                    <mat-option value="Contacted"
+                                        [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+                                        Contacted
+                                        {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+                                    </mat-option>
+                                    <mat-option value="Follow Up"
+                                        [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+                                        Follow
+                                        Up
+                                        {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+                                    </mat-option>
+                                    <mat-option value="Callback" *ngIf="userInfo.member_type != 'Client'">Callback
+                                    </mat-option>
+                                    <mat-option value="Wrong Number" *ngIf="userInfo.member_type != 'Client'">Wrong
+                                        Number
+                                    </mat-option>
+                                    <mat-option value="Closed/Won"
+                                        [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">
+                                        Closed/Won
+                                        {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+                                    </mat-option>
+                                    <mat-option value="Site Visit"
+                                        [disabled]="userInfo.member_type == 'Vendor' && !userInfo.admin">Site
+                                        Visit
+                                        {{userInfo.member_type == 'Vendor' && !userInfo.admin ? '(C)': '' }}
+                                    </mat-option>
+                                </mat-select>
+                            </div>
+                            <div>
+                                <span>{{lead.score}}</span>
+                            </div>
+                        </div>
+                        <div class="tags" fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="0px">
+                            <div class="project-info">
+                                <span class="title">Source</span>
+                            </div>
+                            </div>
+                            <div class="tags" fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="0px">
+                            <span class="tag"
+                                *ngIf="lead.source != null && lead.source != ''">{{lead.source}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="client-remark-col" fxFlex="1 1 18%" *ngIf="userInfo.member_type == 'Vendor'">
+                    <div fxLayout="column wrap" fxLayoutAlign="space-between" fxLayoutGap="gappx">
+                        <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                            <div class="client-remark">
+                                <span class="title">Remark</span>
+                            </div>
+                            <div class="client-remark">
+                                <span class="title">
+                                    <mat-icon style="color: #00C08D;cursor: pointer;" (click)="remarks(lead, 'Vendor')">
+                                        add_circle
+                                    </mat-icon>
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="lstatus">
+                                {{lead.vendor_remark}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="client-remark-col" fxFlex="1 1 18%" *ngIf="userInfo.member_type == 'Vendor'">
+                    <div fxLayout="column wrap" fxLayoutAlign="space-between" fxLayoutGap="10px">
+                        <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                            <div class="client-remark">
+                                <span class="title">Client Remark</span>
+                            </div>
+                            <div class="client-remark" *ngIf="userInfo.admin">
+                                <span class="title">
+                                    <mat-icon style="color: #00C08D;cursor: pointer;" (click)="remarks(lead, 'Client')">
+                                        add_circle
+                                    </mat-icon>
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="lstatus">
+                                {{lead.client_remark}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="client-remark-col" fxFlex="1 1 18%" *ngIf="userInfo.member_type == 'Client'">
+                    <div fxLayout="column wrap" fxLayoutAlign="space-between" fxLayoutGap="gappx">
+                        <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                            <div class="client-remark">
+                                <span class="title">Remark</span>
+                            </div>
+                            <div class="client-remark">
+                                <span class="title">
+                                    <mat-icon style="color: #00C08D;cursor: pointer;" (click)="remarks(lead, 'Client')">
+                                        add_circle
+                                    </mat-icon>
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="lstatus">
+                                {{lead.client_remark}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="client-remark-col" fxFlex="1 1 18%" *ngIf="userInfo.member_type == 'Client'">
+                    <div fxLayout="column wrap" fxLayoutAlign="space-between" fxLayoutGap="10px">
+                        <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="gappx">
+                            <div class="client-remark">
+                                <span class="title">Vendor Remark</span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="lstatus">
+                                {{lead.vendor_remark}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="create-date" fxFlex="1 1 10%">
+                    <div style="margin-bottom: 20px;">
+                        <p class="status">Created At</p>
+                        <span class="status-check">{{lead.created_at | date : 'dd/MM/yyyy hh:mm a'}}</span>
+                    </div>
+                    <div>
+                        <p class="status">Modified At</p>
+                        <span class="status-check">{{lead.updated_at | date : 'dd/MM/yyyy hh:mm a'}}</span>
+                    </div>
+                </div>
+                <div class="create-date" fxFlex="1 1 10%">
+                    <div style="margin-bottom: 20px;">
+                        <p class="status">Vendor Modified At</p>
+                        <span class="status-check">{{lead.last_vendor_status_updated_at | date : 'dd/MM/yyyy hh:mm
+                            a'}}</span>
+                    </div>
+                    <div>
+                        <p class="status">Client Modified At</p>
+                        <span class="status-check">{{lead.last_client_status_updated_at | date : 'dd/MM/yyyy hh:mm
+                            a'}}</span>
+                    </div>
+                </div>
+                <div class="lead-action" fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="5px">
+                    <mat-icon matTooltip="Edit" (click)="edit(lead)">edit</mat-icon>
+                    <mat-icon matTooltip="View Profile" (click)="leadProfile(lead)">person</mat-icon>
+                    <mat-icon [matMenuTriggerFor]="menu">more_vert</mat-icon>
+                    <mat-menu #menu="matMenu" [hasBackdrop]="true">
+                        <div mat-menu-item (click)="leadInfo(lead)">
+                            <mat-icon>info</mat-icon>
+                            <span>Info</span>
+                        </div>
+                        <div mat-menu-item (click)="leadCopy(lead)"
+                            *ngIf="userInfo.member_type != 'Client' && lead.phone != undefined">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Copy</span>
+                        </div>
+                        <div mat-menu-item *ngIf="lead.lead_status == 'V Hold' && userInfo.member_type == 'Vendor'"
+                            (click)="appointment(lead)">
+                            <mat-icon>date_range</mat-icon>
+                            <span>Appointment</span>
+                        </div>
+                        <div mat-menu-item (click)="setColor(lead)">
+                            <mat-icon>color_lens</mat-icon>
+                            <span>Set Color</span>
+                        </div>
+                        <div mat-menu-item (click)="resetColor(lead)"
+                            *ngIf="userInfo.member_type == 'Client' && lead.client_color_code != null">
+                            <mat-icon>format_color_reset</mat-icon>
+                            <span>Reset Color</span>
+                        </div>
+                        <div mat-menu-item (click)="resetColor(lead)"
+                            *ngIf="userInfo.member_type == 'Vendor' && lead.vendor_color_code != null">
+                            <mat-icon>format_color_reset</mat-icon>
+                            <span>Reset Color</span>
+                        </div>
+                        <div mat-menu-item *ngIf="userInfo.admin" (click)="disableLead(lead)">
+                            <mat-icon [ngStyle]="{'color':lead.disable ? 'red' : 'green' }">
+                                fiber_manual_record</mat-icon>
+                            <span
+                                title="{{lead.disable?'Click to Enable Lead':'Click to Disbale Lead'}}">{{lead.disable?'Enable':'Disbale'}}</span>
+                        </div>
+                        <div mat-menu-item *ngIf="userInfo.admin" (click)="deleteLead(lead)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Delete</span>
+                        </div>
+                    </mat-menu>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-paginator [ngStyle]="{'display':leads.length == 0 ? 'none' : 'block' }" style="margin-top: 1rem;" #paginator
+        [length]="lead.pagination.total_count" [pageIndex]="pageIndex" [pageSize]="pageSize"
+        [pageSizeOptions]="[25, 50, 100, 150]" (page)="getNext($event)">
+    </mat-paginator>
+</div>

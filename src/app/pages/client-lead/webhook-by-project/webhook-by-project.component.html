@@ -1,0 +1,41 @@
+<div class="modal-content">
+	<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx">
+		<h3>COPY OTHER WEBHOOK</h3>
+		<span>
+			<i class="material-icons close-modal" (click)="close()">
+				clear
+			</i></span>
+	</div>
+	<mat-dialog-content class="main-content">
+		<div class="form-group">
+			<label>Project <span style="color: #00C08D">*</span></label>
+			<mat-select class="form-input" placeholder="Select Project" [(ngModel)]="selectedProject"
+				(selectionChange)="changeProject()">
+				<input (keyup)="onKeyProject($event.target.value)" [(ngModel)]="baseSearchInput" class="form-input"
+					placeholder="Search">
+				<mat-option [value]="project" *ngFor="let project of filteredProjects">{{project.name}}
+				</mat-option>
+				<div class="not-found-data" *ngIf="filteredProjects.length == 0">
+					No Result Found
+				</div>
+			</mat-select>
+		</div>
+		<div class="form-group" *ngIf="showAssignProject">
+			<label>Webhook <span style="color: #00C08D">*</span></label>
+			<mat-select class="form-input" placeholder="Select Webhook" [(ngModel)]="selectedWebhook">
+				<mat-option *ngFor="let webhook of webhooks" [value]="webhook">
+					{{webhook.name}}
+				</mat-option>
+			</mat-select>
+			<div style="text-align: center;" *ngIf="webhooks.length == 0">
+				<h3>No Webhook Found</h3>
+			</div>
+		</div>
+	</mat-dialog-content>
+</div>
+<div mat-dialog-actions class="modal-action" fxLayoutAlign="end start">
+	<button mat-button class="btn btn-light" (click)="close()">Cancel</button>
+	<button mat-button class="btn btn-primary" (click)="submit()" [disabled]="selectedWebhook.id == undefined"
+		*ngIf="!btnStatus">Submit</button>
+	<button mat-button class="btn btn-primary" disabled *ngIf="btnStatus">Submitting...</button>
+</div>

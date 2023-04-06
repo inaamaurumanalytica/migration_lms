@@ -1,0 +1,20 @@
+<i class="material-icons" style="float: right;cursor: pointer;" (click)="close()">
+	clear
+</i>
+
+<h2>
+	User : {{dataSource.userDetail.name}}
+</h2>
+
+<mat-dialog-content>
+	<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+		<div class="form-group" style="width: 350px;">
+			<label>Key</label>
+			<textarea class="form-input" rows="3" cols="30" [(ngModel)]="dataSource.auth_token" readonly></textarea>
+			<button matTooltip="{{'Copy Content :' + dataSource.auth_token}}" (click)="copy(dataSource.auth_token)"
+				style="font-size: 20px;" mat-button matSuffix mat-icon-button>
+				<mat-icon>file_copy</mat-icon>
+			</button>
+		</div>
+	</div>
+</mat-dialog-content>

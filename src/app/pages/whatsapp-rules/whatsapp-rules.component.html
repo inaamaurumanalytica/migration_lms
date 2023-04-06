@@ -1,0 +1,75 @@
+<div class="dark-overlay" *ngIf="showComponentLoader">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="page-container wrapper" *ngIf="!showComponentLoader">
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="gappx" style="margin-bottom: 1rem;">
+      <div class="ng-tns-c93-256" fxlayout="row" fxlayoutalign="start center">
+          <div class="logo" fxlayout="row" fxlayoutalign="start center">
+              <span class="logo-text h1 ng-trigger ng-trigger-animate"> Whatsapp Rules Assignment </span>
+          </div>
+      </div>
+      <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+          <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+              <div class="search-wrapper" fxLayout="row" fxLayoutAlign="start start">
+                  <div class="search1" fxLayout="row" fxLayoutAlign="start center">
+                      <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" role="img"
+                          aria-hidden="true" style="cursor: pointer" (click)="searchRule()">
+                          search
+                      </mat-icon><input placeholder="Search" style="flex: 1 1 0%; box-sizing: border-box;"
+                          [(ngModel)]="elasticSearch" (keyup)="searchRule()">
+                      <mat-icon (click)="removeSearch()" *ngIf="elasticSearch.trim() != ''"
+                          class="mat-icon notranslate material-icons mat-icon-no-color" role="img" aria-hidden="true">
+                          cancel
+                      </mat-icon>
+                  </div>
+              </div>
+              <div class="user-action-btn">
+                  <button mat-button class="click-btn" (click)="createWhatsappRule()">
+                      <mat-icon>add_circle</mat-icon> create assignment rule
+                  </button>
+              </div>
+          </div>
+      </div>
+  </div>
+<h1 style="color:#BF9724;text-align:center;padding-top: 50px;font-size: -webkit-xxx-large;"
+      *ngIf="filteredRules.length == 0">No Assignment Rules Found</h1>
+  <mat-card *ngFor="let rule of filteredRules" style="margin-top: 1rem;" [hidden]="rules.length == 0">
+      <mat-card-content>
+          <div class="users-list" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+              <div class="user-info" fxFlex="1 1 20%" style="cursor: pointer;" (click)="showRuleEntryList(rule)">
+                  <p class="user-title">{{rule.rule_name}}</p>
+                  <label class="user-label" style="margin-right:5px;">{{rule.project.name}}</label>
+              </div>
+
+              <div class="create-date">
+                  <p class="title">Created By</p>
+                  <span class="status-check">{{rule.created_by}}</span>
+              </div>
+              <div class="create-date">
+                  <p class="title">Status</p>
+                  <mat-slide-toggle (change)="active(rule, $event)" [checked]="rule.active">
+                  </mat-slide-toggle>
+              </div>
+              <div class="create-date">
+                  <p class="title">Created At</p>
+                  <span class="status-check">{{rule.created_at | date : 'dd/MM/yyyy hh:mm a'}}</span>
+              </div>
+              <div class="create-date">
+                  <p class="title">Modified At</p>
+                  <span class="status-check">{{rule.updated_at | date : 'dd/MM/yyyy hh:mm a'}}</span>
+              </div>
+
+              <div class="user-action" fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="5px">
+                  <mat-icon matTooltip="Edit" (click)="edit(rule)" style="cursor: pointer">edit
+                  </mat-icon>
+                  <mat-icon matTooltip="Delete" (click)="delete(rule)" style="cursor: pointer">delete
+                  </mat-icon>
+              </div>
+          </div>
+      </mat-card-content>
+  </mat-card>
+  <!-- <mat-paginator [ngStyle]="{'display':rules.rules.length == 0 ? 'none' : 'block' }" style="margin-top: 1rem;"
+      #paginator [length]="rules.pagination.total_count" [pageIndex]="pageIndex" [pageSize]="pageSize"
+      [pageSizeOptions]="[100, 150]" (page)="getNext($event)">
+  </mat-paginator> -->
+</div>

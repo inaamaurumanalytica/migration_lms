@@ -1,0 +1,150 @@
+.container {
+  background: #ffffff;
+  padding: 50px;
+}
+.profile-image {
+  width: 100%;
+  text-align: center;
+  img {
+    width: 15%;
+    border-radius: 100%;
+  }
+}
+.profile-name{
+  font-family: Raleway;
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-align: center;
+  font-variant: small-caps;
+}
+.profile-location{
+  font-family: Noto Sans JP;
+  font-size: 16px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.profile-adj {
+  border-radius: 12px;
+  background-color: #e5f6fa;
+  margin: 20px 15px;
+  padding: 15px;
+}
+
+.adj-text {
+  text-align: center;
+  font-family: 'NOTO SANS JP';
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.profile-summary {
+  font-family: Noto Sans JP;
+  font-size: 20px;
+  text-align: center;
+  margin: 0 100px;
+}
+
+.divider-hr {
+  border: 1px solid #febd00;
+  max-width: 40%;
+  opacity: 33%;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.mail-cards {
+  margin: 0 5px;
+  margin-bottom: 25px !important;
+  border-radius: 12px;
+  box-shadow: 20px 20px 40px 0px rgb(0 0 0 / 10%);
+  height: 100%;
+  background-color: #b7aac766;
+  width: 100%;
+}
+
+.mail-head {
+  font-family: 'Noto Sans JP';
+  font-size: 20px;
+  font-weight: 500;
+  margin-left: 15px;
+}
+
+.mail-text {
+  font-family: 'Noto Sans JP';
+  font-size: 20px;
+  text-transform: none;
+  margin-left: 10px;
+}
+
+.mail-text1 {
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  padding: 15px 15px 0;
+  padding-top: 3px;
+  font-weight: 400;
+  color: #686f6e;
+  margin-bottom: 0;
+  font-style: italic;
+}
+
+.mail-cards-text {
+  margin-bottom: 20px;
+}
+
+.card-dos {
+  border-radius: 12px;
+  /* box-shadow: 0 4px 31px 6px rgb(0 0 0 / 10%); */
+  background-color: #799e88;
+  box-shadow: 20px 20px 40px 0px rgb(0 0 0 / 10%);
+  margin: 0 20px;
+  margin-right: 10px;
+}
+
+.card-donts {
+  border-radius: 12px;
+  /* box-shadow: 0 4px 31px 6px rgb(0 0 0 / 10%); */
+  background-color: #ba7777;
+  box-shadow: 20px 20px 40px 0px rgb(0 0 0 / 10%);
+  margin: 0 20px;
+  margin-left: 10px;
+}
+
+.do-dont-head {
+  text-align: left;
+  color: #fff;
+  font-weight: 500;
+  padding-left: 20px;
+  padding-top: 10px;
+  font-size: 20px;
+}
+
+.do-dont-text {
+  color: #fff;
+  font-weight: 100;
+  font-family: 'Noto Sans JP';
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.personality-cards {
+  border-radius: 12px;
+  background-color: #e6eff1;
+  box-shadow: 0px 0px 5px 0px rgb(0 0 0 / 10%);
+  margin-left: 10px;
+  margin-right: 10px;
+  height: 100%;
+  margin: 10px 0;
+  padding: 10px 15px !important;
+}
+
+.personality-head {
+  position: relative;
+  text-align: left;
+  font-weight: 500;
+  /* padding-left: 20px; */
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}

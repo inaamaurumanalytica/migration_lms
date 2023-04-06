@@ -1,0 +1,167 @@
+.logo .logo-text {
+    font-weight: 500;
+    letter-spacing: .5px;
+    font-size: 16px;
+}
+
+.search {
+    position: relative;
+    vertical-align: middle;
+    white-space: nowrap;
+    margin-right: 10px;
+}
+
+.search-wrapper,
+.click-btn:not(:last-child) {
+    margin-right: 10px;
+}
+
+#search {
+    width: 300px;
+    height: 40px;
+    background: #fff;
+    border: none;
+    font-size: 10pt;
+    float: left;
+    color: #63717f;
+    padding-left: 45px;
+    padding-right: 15px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 40px;
+    -webkit-transition: background .55s ease;
+    -moz-transition: background .55s ease;
+    -ms-transition: background .55s ease;
+    -o-transition: background .55s ease;
+    transition: background .55s ease;
+}
+
+.search mat-icon {
+    position: absolute;
+    // top: 50%;
+    margin-left: 17px;
+    margin-top: 10px;
+    z-index: 1;
+    color: #979b9e;
+    font-size: 24px;
+
+}
+
+input#search::-webkit-input-placeholder {
+    color: #65737e;
+}
+
+input#search:-moz-placeholder {
+    /* Firefox 18- */
+    color: #65737e;
+}
+
+input#search::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #65737e;
+}
+
+input#search:-ms-input-placeholder {
+    color: #65737e;
+}
+
+input#search:hover,
+input#search:focus,
+input#search:active {
+    outline: none;
+    background: #ffffff;
+}
+
+.user-action-btn .click-btn {
+    background: #00C08D;
+    color: #fff;
+    border-radius: 10rem;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.search-wrapper {
+    border-radius: 24px;
+    width: 350px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.search1 {
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 18px;
+}
+
+mat-icon {
+    color: rgba(0, 0, 0, .54);
+}
+
+.search1 input {
+    height: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    padding: 0 16px;
+    border: none;
+    outline: 0;
+    background: #fff;
+    color: rgba(0, 0, 0, .87);
+}
+
+/********************** user-list *******************/
+.users-list .user-info {
+    border-right: 1px solid #cccccc;
+    padding: 0px 10px;
+   
+}
+// .user-info, .user-status, .member, .mtype, .create-date {
+//     margin-right: 2rem;
+//     width:200px;
+//     text-align: center;
+// }
+
+.user-info .user-name {
+    font-weight: 500;
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.user-name .user-label {
+    background: #00C08D;
+    font-size: 10px;
+    position: relative;
+    // top: -5px;
+    color: #fff;
+    padding: 3px 15px;
+    border-radius: 10rem;
+    outline: none;
+}
+
+.status {
+    margin: 0px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: grey;
+}
+
+.type-action .mat-icon {
+    font-size: 18px;
+    border-left: 1px solid lightgray;
+    padding-left: 10px;
+    color: #989797;
+}
+
+.title {
+    font-size: 0.7rem;
+    color: gray;
+    margin-top: 0;
+}
+.lead-type .user-status,
+.lead-type .member {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.75rem;
+    flex: 1 1 50%;
+}
